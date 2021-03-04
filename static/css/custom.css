@@ -148,6 +148,14 @@ body {
     color: var(--yellow);
 }
 
+.system-black{
+    color: var(--black);
+}
+
+.system-white{
+    color: var(--white);
+}
+
 .border-left-blue {
     border-left: 0.25rem solid var(--blue) !important;
 }
@@ -200,8 +208,8 @@ body {
 }
 
 .btn-active:hover {
-    background-color: var(--gray5);
-    border-color: var(--gray5);
+    background-color: var(--gray2);
+    border-color: var(--gray2);
 }
 
 .btn-red {
@@ -210,8 +218,8 @@ body {
 }
 
 .btn-red:hover {
-    background-color: var(--gray5);
-    border-color: var(--gray5);
+    background-color: var(--gray2);
+    border-color: var(--gray2);
 }
 
 .table-bordered {
@@ -226,4 +234,36 @@ body {
 .table thead th {
     vertical-align: bottom;
     border-bottom: 3px solid var(--tertiary);
+}
+
+.modal-content {
+    background-color: var(--secondary);
+    border: 2px solid var(--tertiary);
+  }
+  
+.modal-header {
+    border-bottom: 2px solid var(--tertiary);
+}
+
+.modal-title {
+   color: var(--label);
+}
+
+.modal-footer {
+    border-top: 2px solid var(--tertiary);
+}
+
+.close {
+    float: right;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--label);
+    text-shadow: 0 0 0;
+    opacity: .5;
+}
+  
+.close:hover {
+    color: var(--label3);
+    text-decoration: none;
 }
