@@ -37,7 +37,7 @@
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4 ">
                         <h1 class="h3 mb-0 system-label">PoolCon 1 Dashboard</h1>
-                        <h1 class="h5 mb-0 system-label2">Friday, February 28 8:01 PM</h1> 
+                        <h1 class="h5 mb-0 system-label2">Friday, February 28 8:01 PM</h1>
                     </div>
 
                     <!-- Content Row -->
@@ -50,7 +50,7 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col">
                                             <div class="text-xs font-weight-bold system-blue text-uppercase mb-1">Filter Status</div>
-                                            <div class="h5 mb-0 font-weight-bold system-label2">ON</div>
+                                            <div class="h5 mb-0 font-weight-bold system-label2"><span id="pool-filter">...</span></div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-swimming-pool fa-2x system-label3"></i>
@@ -67,7 +67,7 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-1">
                                             <div class="text-xs font-weight-bold system-red text-uppercase mb-1">Heater Status</div>
-                                            <div class="h5 mb-0 font-weight-bold system-label2">OFF</div>
+                                            <div class="h5 mb-0 font-weight-bold system-label2"><span id="pool-heater">...</span></div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-fire-alt fa-2x system-label3"></i>
@@ -84,7 +84,7 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold system-green text-uppercase mb-1">Pool Temp</div>
-                                            <div class="h5 mb-0 font-weight-bold system-label2">40º F</div>
+                                            <div class="h5 mb-0 font-weight-bold system-label2"><span id="pool-temp">...</span></div> 
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-temperature-high fa-2x system-label3"></i>
@@ -101,7 +101,7 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold system-orange text-uppercase mb-1">Air Temp</div>
-                                            <div class="h5 mb-0 font-weight-bold system-label2">12º F</div>
+                                            <div class="h5 mb-0 font-weight-bold system-label2"><span id="air-temp">...</span></div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-cloud-sun fa-2x system-label3"></i>
@@ -121,8 +121,8 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold system-purple text-uppercase mb-1">Water Status</div>
-                                            <div class="h5 mb-0 font-weight-bold system-label2">Filling</div>
+                                            <div class="text-xs font-weight-bold system-purple text-uppercase mb-1">Water Valve</div>
+                                            <div class="h5 mb-0 font-weight-bold system-label2"><span id="water-valve">...</span></div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-faucet fa-2x system-label3"></i>
@@ -139,7 +139,7 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-1">
                                             <div class="text-xs font-weight-bold system-teal text-uppercase mb-1">Water Level</div>
-                                            <div class="h5 mb-0 font-weight-bold system-label2">Low</div>
+                                            <div class="h5 mb-0 font-weight-bold system-label2"><span id="water-level">...</span></div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-water fa-2x system-label3"></i>
@@ -156,7 +156,7 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold system-yellow text-uppercase mb-1">PH Level</div>
-                                            <div class="h5 mb-0 font-weight-bold system-label2">7</div>
+                                            <div class="h5 mb-0 font-weight-bold system-label2"><span id="ph-level">...</span></div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-flask fa-2x system-label3"></i>
@@ -173,7 +173,7 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-1">
                                             <div class="text-xs font-weight-bold system-indigo text-uppercase mb-1">ORP Level</div>
-                                            <div class="h5 mb-0 font-weight-bold system-label2">650 mV</div>
+                                            <div class="h5 mb-0 font-weight-bold system-label2"><span id="orp-level">...</span></div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-bolt fa-2x system-label3"></i>
@@ -201,8 +201,8 @@
                                             <div class="h5 mb-0 font-weight-bold system-label2">Pool Filter</div>
                                         </div>
                                         <div class="col-auto">
-                                            <a href="#" class="d-sm-inline-block btn btn-sm btn-active shadow-sm"><i
-                                                class="fas fa-power-off fa-2x system-label3"></i></a>
+                                            <button class="d-sm-inline-block btn btn-sm shadow-sm" id="pool-filter-btn" onclick="sendMessage('toggle-pool-filter')"><i
+                                                class="fas fa-power-off fa-2x system-label3"></i></button>
                                         </div>
                                     </div>
                                     <br>
@@ -211,8 +211,8 @@
                                             <div class="h5 mb-0 font-weight-bold system-label2">Pool Heater</div>
                                         </div>
                                         <div class="col-auto">
-                                            <a href="#" class="d-sm-inline-block btn btn-sm shadow-sm"><i
-                                                class="fas fa-power-off fa-2x system-label3"></i></a>
+                                            <button class="d-sm-inline-block btn btn-sm shadow-sm" id="pool-heater-btn" onclick="sendMessage('toggle-pool-heater')"><i
+                                                class="fas fa-power-off fa-2x system-label3"></i></button>
                                         </div>
                                     </div>
                                     <br>
@@ -221,8 +221,8 @@
                                             <div class="h5 mb-0 font-weight-bold system-label2">Water Valve</div>
                                         </div>
                                         <div class="col-auto">
-                                            <a href="#" class="d-sm-inline-block btn btn-sm shadow-sm"><i
-                                                class="fas fa-power-off fa-2x system-label3"></i></a>
+                                            <button class="d-sm-inline-block btn btn-sm shadow-sm" id="water-valve-btn" onclick="sendMessage('toggle-water-valve')"><i
+                                                class="fas fa-power-off fa-2x system-label3"></i></button>
                                         </div>
                                     </div>
                                 </div>
@@ -404,7 +404,8 @@
 
             <!-- Footer -->
             <footer class="sticky-footer bg-grey">
-                <div class="container my-auto">
+                <div class="container my-auto text-center  mb-2">
+                    <h1 class="h6 mb-0 system-label2">Client: <span id="ws-id"></span><br><br></h1>
                     <div class="copyright text-center my-auto">
                         <span>&copy;2021 PoolCon 1</span>
                     </div>
@@ -437,7 +438,7 @@
     <script src="{{ url_for('static', path='vendor/chart.js/Chart.min.js') }}"></script>
 
     <!-- Page level custom scripts -->
-    <script src="{{ url_for('static', path='js/time.js') }}"></script>
+    <script src="{{ url_for('static', path='js/poolcon.js') }}"></script>
     <script src="{{ url_for('static', path='js/chart.js') }}"></script>
 </body>
 
