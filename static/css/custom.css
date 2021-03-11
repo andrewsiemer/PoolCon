@@ -208,8 +208,8 @@ body {
 }
 
 .btn-active:hover {
-    background-color: var(--gray2);
-    border-color: var(--gray2);
+    background-color: var(--teal);
+    border-color: var(--teal);
 }
 
 .btn-red {
