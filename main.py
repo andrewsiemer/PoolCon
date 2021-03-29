@@ -11,7 +11,7 @@ from sqlalchemy.orm import Session
 from include.database import SessionLocal, engine
 import include.models as models
 from include.DS18B20 import DS18B20
-from include.grove import Relay
+from include.grove import Relay, WaterSensor
 
 app = FastAPI()
 
@@ -61,7 +61,7 @@ pool_data = {
     'pool-temp': '40 ºF',
     'air-temp': '12 ºF',
     'water-valve': 'OFF',
-    'water-level': 'Low',
+    'water-level': '100%',
     'ph-level': '7',
     'orp-level': '650 mv'
 }
@@ -80,7 +80,7 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
             await manager.broadcast(json.dumps(pool_data))
     except WebSocketDisconnect:
         manager.disconnect(websocket)
-        await manager.broadcast(f"Client #{client_id} left the chat")
+        await manager.broadcast(f"Client #{client_id} exited.")
 
 sched = BackgroundScheduler(daemon=True)
 sched.start()
@@ -89,12 +89,14 @@ water_temp = DS18B20()
 pool_pump = Relay(22)
 pool_heater = Relay(23)
 water_valve = Relay(24)
+water_level = WaterSensor()
 
 @sched.scheduled_job('interval', seconds=1)
 def update_sensors():
     global pool_data
 
     pool_data['pool-temp'] = str(water_temp.read()) + 'ºF'
+    pool_data['water-level'] = str(water_level.read()) + '%'
 
 def toggle_event(event: str):
     global pool_data, pool_pump

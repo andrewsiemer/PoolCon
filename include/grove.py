@@ -1,9 +1,10 @@
+import smbus
 import RPi.GPIO as GPIO
 import time
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
-GPIO.setup(23,GPIO.OUT)
+bus = smbus.SMBus(1)
 
 class Relay(object):
     def __init__(self, pin):
@@ -21,7 +22,51 @@ class Relay(object):
 
         return self.status
 
+class WaterSensor(object):
+    def __init__(self):
+        self.low_addr = 0x77
+        self.high_addr = 0x78
+
+        self.sensorvalue_min = 250 
+        self.sensorvalue_max = 255
+
+    def read(self):
+        touch_val = 0
+        trig_section = 0
+        low_count = 0
+        high_count = 0
+
+        low_data = bus.read_i2c_block_data(self.low_addr, 0, 8)
+        high_data = bus.read_i2c_block_data(self.high_addr, 0, 12)
+
+        for i in range(0,8):
+            if (low_data[i] >= self.sensorvalue_min and low_data[i] <= self.sensorvalue_max):
+                low_count += 1
+            if (low_count == 8):
+                print('Pass')
+        for i in range(0,12):
+            if (high_data[i] >= self.sensorvalue_min and high_data[i] <= self.sensorvalue_max):
+                low_count += 1
+            if (high_count == 12):
+                print('Pass')
+
+        for i in range(0,8):
+            if low_data[i] > 100:
+                touch_val |= 1 << i
+
+        for i in range(0,12):
+            if high_data[i] > 100:
+                touch_val |= 1 << (8+i)
+
+        while touch_val & 0x01:
+            trig_section += 1
+            touch_val >>= 1
+
+        return trig_section * 5
+
+
 if __name__ == '__main__':
+    GPIO.setup(23,GPIO.OUT)
     while(1):
         if flag:
             GPIO.output(23,GPIO.HIGH)
