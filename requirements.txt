@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+jinja2
+aiofiles
+requests
+websockets
+apscheduler
+sqlalchemy
+RPi.GPIO
+

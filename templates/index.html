@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>PoolCon 1 Dashboard</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="{{ url_for('static', path='vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="{{ url_for('static', path='css/sb-admin-2.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', path='css/custom.css') }}" rel="stylesheet">
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">        
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Begin Page Content -->
+                <br>
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4 ">
+                        <h1 class="h3 mb-0 system-label">PoolCon 1 Dashboard</h1>
+                        <h1 class="h5 mb-0 system-label2">Friday, February 28 8:01 PM</h1>
+                    </div>
+
+                    <!-- Content Row -->
+                    <div class="row">
+
+                        <!-- Filter Status Card -->
+                        <div class="col-xl-3 col-md-3 mb-4">
+                            <div class="card border-left-green shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col">
+                                            <div class="text-xs font-weight-bold system-green text-uppercase mb-1">Pump Status</div>
+                                            <div class="h5 mb-0 font-weight-bold system-label2"><span id="pool-pump">...</span></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-swimming-pool fa-2x system-label3"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Heater Status Card -->
+                        <div class="col-xl-3 col-md-3 mb-4">
+                            <div class="card border-left-red shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-1">
+                                            <div class="text-xs font-weight-bold system-red text-uppercase mb-1">Heater Status</div>
+                                            <div class="h5 mb-0 font-weight-bold system-label2"><span id="pool-heater">...</span></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-fire-alt fa-2x system-label3"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pool Temp Card -->
+                        <div class="col-xl-3 col-md-3 mb-4">
+                            <div class="card border-left-blue shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold system-blue text-uppercase mb-1">Pool Temp</div>
+                                            <div class="h5 mb-0 font-weight-bold system-label2"><span id="pool-temp">...</span></div> 
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-temperature-high fa-2x system-label3"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <!-- Air Temp Card -->
+                        <div class="col-xl-3 col-md-3 mb-4">
+                            <div class="card border-left-orange shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold system-orange text-uppercase mb-1">Air Temp</div>
+                                            <div class="h5 mb-0 font-weight-bold system-label2"><span id="air-temp">...</span></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-cloud-sun fa-2x system-label3"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- Content Row -->
+                    <div class="row">
+
+                        <!-- Pool Temp Card -->
+                        <div class="col-xl-3 col-md-3 mb-4">
+                            <div class="card border-left-purple shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold system-purple text-uppercase mb-1">Water Valve</div>
+                                            <div class="h5 mb-0 font-weight-bold system-label2"><span id="water-valve">...</span></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-faucet fa-2x system-label3"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <!-- Air Temp Card -->
+                        <div class="col-xl-3 col-md-3 mb-4">
+                            <div class="card border-left-teal shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-1">
+                                            <div class="text-xs font-weight-bold system-teal text-uppercase mb-1">Water Level</div>
+                                            <div class="h5 mb-0 font-weight-bold system-label2"><span id="water-level">...</span></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-water fa-2x system-label3"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- PH Level Card -->
+                        <div class="col-xl-3 col-md-3 mb-4">
+                            <div class="card border-left-yellow shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold system-yellow text-uppercase mb-1">PH Level</div>
+                                            <div class="h5 mb-0 font-weight-bold system-label2"><span id="ph-level">...</span></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-flask fa-2x system-label3"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Water Level Card -->
+                        <div class="col-xl-3 col-md-3 mb-4">
+                            <div class="card border-left-indigo shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-1">
+                                            <div class="text-xs font-weight-bold system-indigo text-uppercase mb-1">ORP Level</div>
+                                            <div class="h5 mb-0 font-weight-bold system-label2"><span id="orp-level">...</span></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-bolt fa-2x system-label3"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Content Row -->
+                    <div class="row">
+
+                        <div class="col-xl-4 col-lg-12 col-md-12">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header -->
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold system-blue">Control Panel</h6>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="h5 mb-0 font-weight-bold system-label2">Pool Pump</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <button class="d-sm-inline-block btn btn-sm shadow-sm" id="pool-pump-btn" onclick="sendMessage('toggle-pool-pump')"><i
+                                                class="fas fa-power-off fa-2x system-label3"></i></button>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="h5 mb-0 font-weight-bold system-label2">Pool Heater</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <button class="d-sm-inline-block btn btn-sm shadow-sm" id="pool-heater-btn" onclick="sendMessage('toggle-pool-heater')"><i
+                                                class="fas fa-power-off fa-2x system-label3"></i></button>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="h5 mb-0 font-weight-bold system-label2">Water Valve</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <button class="d-sm-inline-block btn btn-sm shadow-sm" id="water-valve-btn" onclick="sendMessage('toggle-water-valve')"><i
+                                                class="fas fa-power-off fa-2x system-label3"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Area Chart -->
+                        <div class="col-xl-4 col-lg-6 col-md-6">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header -->
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold system-blue">Filter Usage</h6>
+                                    <h6 class="m-0 font-weight-bold system-label2">Today: 6 hr 21 mins </h6>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-area">
+                                        <canvas id="filterusagechart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4 col-lg-6 col-md-6">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header -->
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold system-blue">Temperature</h6>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-area">
+                                        <canvas id="temperaturechart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Content Row -->
+                    <div class="row">
+                        
+                        <div class="col-xl-12 col-lg-12 col-md-12">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header -->
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold system-blue">Schedule</h6>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-auto">
+                                            <a href="#" class="d-sm-inline-block btn btn-sm shadow-sm" data-toggle="modal" data-target="#addModal">
+                                                <i class="fas fa-plus fa-2x system-label3"></i></a>
+                                        </div>
+                                        <div class="col-auto">
+                                            <a href="#" class="d-sm-inline-block btn btn-sm shadow-sm" data-toggle="modal" data-target="#removeModal">
+                                                <i class="fas fa-minus fa-2x system-label3"></i></a>
+                                        </div>
+                                        <div class="col-auto">
+                                            <a href="#" class="d-sm-inline-block btn btn-sm shadow-sm" data-toggle="modal" data-target="#deleteModal">
+                                                <i class="fas fa-trash fa-2x system-label3"></i></a>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="table-responsive">
+                                            <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                                                <br>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
+                                                            <thead>
+                                                                <tr role="row">
+                                                                    <th class="sorting_asc" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 300px;">Feature</th>
+                                                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 200px;">Start Time</th>
+                                                                    <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 200px;">End Time</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr role="row">
+                                                                    <td class="sorting_1">Pool Pump</td>
+                                                                    <td>5:00 AM</td>
+                                                                    <td>8:00 AM</td>
+                                                                </tr>
+                                                                <tr role="row">
+                                                                    <td class="sorting_1">Pool Heater</td>
+                                                                    <td>12:00 AM</td>
+                                                                    <td>5:00 AM</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Add Modal -->
+            <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Add Scheduled Event</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/add" method="post">
+                                <h6 class="m-1">Pool Feature</h6>
+                                <select name="dataTable_length" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm"><option value="pump">Pool Pump</option><option value="heater">Pool Heater</option><option value="water">Water Pump</option></select>
+                                <h6 class="m-1">Start Time:</h6>
+                                <select name="dataTable_length" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option></select>
+                                <h6 class="m-1">End Time:</h6>
+                                <select name="dataTable_length" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option></select>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn system-white" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-active system-white">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Remove Modal -->
+            <div class="modal fade" id="removeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Remove Scheduled Event</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/add" method="post">
+                                <h6 class="m-1">Pool Feature</h6>
+                                <select name="dataTable_length" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm"><option value="pump">Pool Pump, 5:00 AM - 8:00 AM</option><option value="heater">Pool Heater, 12:00 AM - 5:00 AM</option></select>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn system-white" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-active system-white">Remove</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Delete Modal -->
+            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Delete All Scheduled Events</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you would like to delete all scheduled events?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn system-white" data-dismiss="modal">No</button>
+                            <button type="button" class="btn btn-red system-white">Yes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-grey">
+                <div class="container my-auto text-center  mb-2">
+                    <h1 class="h6 mb-0 system-label2">Client: <span id="ws-id"></span><br><br></h1>
+                    <div class="copyright text-center my-auto">
+                        <span>&copy;2021 PoolCon 1</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="{{ url_for('static', path='vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', path='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="{{ url_for('static', path='vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="{{ url_for('static', path='js/sb-admin-2.min.js') }}"></script>
+
+    <!-- Page level plugins -->
+    <script src="{{ url_for('static', path='vendor/chart.js/Chart.min.js') }}"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="{{ url_for('static', path='js/poolcon.js') }}"></script>
+    <script src="{{ url_for('static', path='js/chart.js') }}"></script>
+</body>
+
+</html>

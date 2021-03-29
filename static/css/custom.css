@@ -1,0 +1,269 @@
+:root {
+    --blue: rgb(0,122,255);
+    --green: rgb(52,199,89);
+    --indigo: rgb(88,86,214);
+    --orange: rgb(255,149,0);
+    --pink: rgb(255,45,85);
+    --purple: rgb(175,82,222);
+    --red: rgb(255,59,48);
+    --teal: rgb(90,200,250);
+    --yellow: rgb(255,204,0);
+    --white: rgb(255,255,255);
+    --black: rgb(0,0,0);
+
+    --gray:rgb(142,142,147);
+    --gray2: rgb(174,174,178);
+    --gray3: rgb(199,199,204);
+    --gray4: rgb(209,209,214);
+    --gray5: rgb(229,229,234);
+    --gray6: rgb(242,242,247);
+
+    --primary: rgb(239,240,241);
+    --secondary: rgb(255,255,255);
+    --tertiary: rgb(199,199,204);
+
+    --label: rgb(58,58,60);
+    --label2: rgb(99,99,102);
+    --label3: rgb(199,199,204);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --blue: rgb(10,132,255);
+        --green: rgb(48,209,88);
+        --indigo: rgb(94,92,230);
+        --orange: rgb(255,159,10);
+        --pink: rgb(255,55,95);
+        --purple: rgb(191,90,242);
+        --red: rgb(255,69,58);
+        --teal: rgb(100,210,255);
+        --yellow: rgb(255,214,10);
+        --white: rgb(255,255,255);
+        --black: rgb(0,0,0);
+    
+        --gray:rgb(142,142,147);
+        --gray2: rgb(99,99,102);
+        --gray3: rgb(72,72,74);
+        --gray4: rgb(58,58,60);
+        --gray5: rgb(44,44,46);
+        --gray6: rgb(28,28,30);
+    
+        --primary: rgb(0,0,0);
+        --secondary: rgb(28,28,30);
+        --tertiary: rgb(58,58,60);
+    
+        --label: rgb(239,240,241);
+        --label2: rgba(235,235,245,0.6);
+        --label3: rgb(58,58,60);
+    }
+}
+
+body {
+    background-color: var(--primary);
+}
+
+#wrapper #content-wrapper {
+    background-color: var(--primary);
+}
+
+.card {
+    background-color: var(--secondary);
+    border: 1px solid var(--secondary);
+}
+
+.card-header {
+    background-color: var(--secondary);
+    border-bottom: 2px solid var(--tertiary);
+  }
+
+.system-label {
+    color: var(--label);
+}
+
+.system-label2 {
+    color: var(--label2);
+}
+
+.system-label3 {
+    color: var(--label3);
+}
+
+.system-gray{
+    color: var(--gray);
+}
+
+.system-gray2{
+    color: var(--gray2);
+}
+
+.system-gray3{
+    color: var(--gray3);
+}
+
+.system-gray4{
+    color: var(--gray4);
+}
+
+.system-gray5{
+    color: var(--gray5);
+}
+
+.system-gray6{
+    color: var(--gray6);
+}
+
+.system-blue{
+    color: var(--blue);
+}
+
+.system-green{
+    color: var(--green);
+}
+
+.system-indigo{
+    color: var(--indigo);
+}
+
+.system-orange{
+    color: var(--orange);
+}
+
+.system-pink{
+    color: var(--pink);
+}
+
+.system-purple{
+    color: var(--purple);
+}
+
+.system-red{
+    color: var(--red);
+}
+
+.system-teal{
+    color: var(--teal);
+}
+
+.system-yellow{
+    color: var(--yellow);
+}
+
+.system-black{
+    color: var(--black);
+}
+
+.system-white{
+    color: var(--white);
+}
+
+.border-left-blue {
+    border-left: 0.25rem solid var(--blue) !important;
+}
+
+.border-left-green {
+    border-left: 0.25rem solid var(--green) !important;
+}
+
+.border-left-indigo {
+    border-left: 0.25rem solid var(--indigo) !important;
+}
+
+.border-left-orange{
+    border-left: 0.25rem solid var(--orange) !important;
+}
+
+.border-left-pink{
+    border-left: 0.25rem solid var(--pink) !important;
+}
+
+.border-left-purple{
+    border-left: 0.25rem solid var(--purple) !important;
+}
+
+.border-left-red{
+    border-left: 0.25rem solid var(--red) !important;
+}
+
+.border-left-teal{
+    border-left: 0.25rem solid var(--teal) !important;
+}
+
+.border-left-yellow{
+    border-left: 0.25rem solid var(--yellow) !important;
+}
+
+.btn {
+    background-color: var(--gray);
+    border-color: var(--gray);
+}
+  
+.btn:hover {
+    background-color: var(--gray2);
+    border-color: var(--gray2);
+}
+
+.btn-active {
+    background-color: var(--blue);
+    border-color: var(--blue);
+}
+
+.btn-active:hover {
+    background-color: var(--teal);
+    border-color: var(--teal);
+}
+
+.btn-red {
+    background-color: var(--red);
+    border-color: var(--red);
+}
+
+.btn-red:hover {
+    background-color: var(--gray2);
+    border-color: var(--gray2);
+}
+
+.table-bordered {
+    border: 2px solid var(--tertiary);
+}
+
+.table-bordered th,
+.table-bordered td {
+    border: 2px solid var(--tertiary);
+}
+
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 3px solid var(--tertiary);
+}
+
+.modal-content {
+    background-color: var(--secondary);
+    border: 2px solid var(--tertiary);
+  }
+  
+.modal-header {
+    border-bottom: 2px solid var(--tertiary);
+}
+
+.modal-title {
+   color: var(--label);
+}
+
+.modal-footer {
+    border-top: 2px solid var(--tertiary);
+}
+
+.close {
+    float: right;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--label);
+    text-shadow: 0 0 0;
+    opacity: .5;
+}
+  
+.close:hover {
+    color: var(--label3);
+    text-decoration: none;
+}
