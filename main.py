@@ -114,8 +114,7 @@ def record_temp():
     db.refresh(hour)
 
     if db.query(Temperature).count() > 12:
-        print('Too many')
-        oldest = hour.time
+        oldest = datetime.now()
     
         times = db.query(Temperature.time).all()
         for time in times:
