@@ -84,7 +84,5 @@ class LineGraph(BaseChart):
             }
         }
 
-        Options.tooltips.callbacks.label = ''
-
     class pluginOptions:
         pass
