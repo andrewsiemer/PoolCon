@@ -1,4 +1,5 @@
 from typing import List
+from datetime import datetime, timedelta
 import time
 import json
 
@@ -9,7 +10,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from sqlalchemy.orm import Session
 
 from include.database import SessionLocal, engine
-import include.models as models
+from include.models import Temperature
 from include.DS18B20 import DS18B20
 from include.grove import Relay, WaterSensor
 
@@ -97,6 +98,33 @@ def update_sensors():
 
     pool_data['pool-temp'] = str(water_temp.read()) + 'ºF'
     pool_data['water-level'] = str(water_level.read()) + '%'
+
+@sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), hours=1)
+def record_temp():
+    db = SessionLocal()
+
+    hour = Temperature()
+    hour.time = datetime.now().replace(minutes=0, seconds=0, microsecond=0)
+    hour.pool_temp = int(pool_data['pool-temp'].replace('ºF', ''))
+    hour.air_temp = int(pool_data['air-temp'].replace('ºF', ''))
+
+    db.add(hour)
+    db.commit()
+    db.refresh(hour)
+
+    if db.query(Temperature).count() > 12:
+        oldest = hour.time
+    
+        times = db.query(Temperature.time).all()
+        for time in times:
+            if time < oldest:
+                oldest = time
+
+        db.delete(db.query(Temperature).filter(Temperature.time==oldest).first())
+        db.commit()
+
+    db.close()
+    return hour
 
 def toggle_event(event: str):
     global pool_data, pool_pump
