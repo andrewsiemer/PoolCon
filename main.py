@@ -15,17 +15,7 @@ import include.models as models
 from include.models import Temperature
 from include.DS18B20 import DS18B20
 from include.grove import Relay, WaterSensor
-
-
-from pychartjs import BaseChart, ChartType, Color                                     
-
-class LineGraph(BaseChart):
-
-    type = ChartType.Line
-
-    class data:
-        label = "Numbers"
-        data = ['12', '12', '10', '10', '10', '9', '9', '7', '9', '9', '10', '12', '12', '16', '16', '16', '16', '16', '14', '12', '10']
+from include.chartjs import LineGraph
 
 
 app = FastAPI()
@@ -115,12 +105,6 @@ def update_sensors():
     pool_data['pool-temp'] = str(water_temp.read()) + ' ºF'
     pool_data['water-level'] = str(water_level.read()) + ' %'
     pool_data['temp-chart'] = temp_chart.get()
-
-@sched.scheduled_job('interval', seconds=5)
-def test_poot():
-    global temp_chart
-
-    temp_chart.data.label = str(datetime.now())
 
 @sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), hours=1)
 def record_temp():
