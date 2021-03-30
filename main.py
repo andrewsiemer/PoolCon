@@ -115,8 +115,8 @@ def record_temp():
     db.refresh(hour)
 
     if db.query(Temperature).count() > 12:
-        obj, i = db.query(Temperature,func.min(Temperature.time))
-        print(i)
+        result = db.query(Temperature,func.min(Temperature.time))
+        print(result[1])
         #db.delete(result)
         #db.commit()
 
