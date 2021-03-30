@@ -16,6 +16,19 @@ from include.models import Temperature
 from include.DS18B20 import DS18B20
 from include.grove import Relay, WaterSensor
 
+
+from pychartjs import BaseChart, ChartType, Color                                     
+
+class MyBarGraph(BaseChart):
+
+    type = ChartType.Bar
+
+    class data:
+        label = "Numbers"
+        data = [12, 19, 3, 17, 10]
+        backgroundColor = Color.Green
+
+
 app = FastAPI()
 
 # location of web service static files and html templates
@@ -101,7 +114,7 @@ def update_sensors():
     pool_data['pool-temp'] = str(water_temp.read()) + ' ºF'
     pool_data['water-level'] = str(water_level.read()) + ' %'
 
-@sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), seconds=1)
+@sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), hours=1)
 def record_temp():
     db = SessionLocal()
 
@@ -114,13 +127,17 @@ def record_temp():
     db.commit()
     db.refresh(hour)
 
-    while db.query(Temperature).count() > 12:
+    while db.query(Temperature).count() > 24:
         result = db.query(Temperature,func.min(Temperature.time))
         db.delete(db.query(Temperature).filter(Temperature.time==result[0][1]).first())
         db.commit()
 
     db.close()
     return hour
+
+NewChart = MyBarGraph()
+NewChart.data.label = "temperaturechart"      # can change data after creation
+print(NewChart.get())
 
 def toggle_event(event: str):
     global pool_data, pool_pump

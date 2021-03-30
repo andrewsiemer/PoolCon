@@ -8,3 +8,4 @@ apscheduler
 sqlalchemy
 RPi.GPIO
 smbus
+pychart.js

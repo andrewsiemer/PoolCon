@@ -87,7 +87,7 @@ var myLineChart = new Chart(ctx, {
   }
 });
 
-var ctx = document.getElementById("temperaturechart");
+var ctx = document.getElementById("temperaturecharttt");
 var myLineChart = new Chart(ctx, {
   type: 'line',
   data: {
