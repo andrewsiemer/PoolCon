@@ -41,7 +41,7 @@ ws.onmessage = function(event) {
     Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
     Chart.defaults.global.defaultFontColor = '#858796';
 
-    var ctx = document.getElementById("filterusagechart");
+    var ctx = document.getElementById("temperaturechart");
     var myLineChart = new Chart(ctx, pool_data['temp-chart']);
 };
 
