@@ -11,7 +11,7 @@ Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,Bli
 Chart.defaults.global.defaultFontColor = '#858796';
 
 var ctx = document.getElementById("temperaturechart");
-
+var temp_chart_data = ''
 // on payload receive parse data
 ws.onmessage = function(event) {
     var pool_data = JSON.parse(event.data);
@@ -42,8 +42,10 @@ ws.onmessage = function(event) {
     document.querySelector("#water-level").textContent = pool_data['water-level'];
     document.querySelector("#ph-level").textContent = pool_data['ph-level'];
     document.querySelector("#orp-level").textContent = pool_data['orp-level'];
-
-    var myLineChart = new Chart(ctx, JSON.parse(pool_data['temp-chart']));
+    
+    if (JSON.parse(pool_data['temp-chart']) != temp_chart_data)
+        temp_chart_data = JSON.parse(pool_data['temp-chart']);
+        var myLineChart = new Chart(ctx, temp_chart_data);
 };
 
 // create interval to ask for sensor updates
