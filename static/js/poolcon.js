@@ -58,3 +58,8 @@ function sendMessage(event) {
     input.value = ''
     event.preventDefault()
 }
+
+function myJavascriptFunction(tooltipItem, chart) {
+    var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+    return datasetLabel + ': ' + tooltipItem.yLabel + 'º F';
+}
