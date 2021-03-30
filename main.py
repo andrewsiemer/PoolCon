@@ -116,7 +116,8 @@ def record_temp():
 
     if db.query(Temperature).count() > 12:
         result = db.query(Temperature,func.max(Temperature.time))
-        print(result)
+        for row,i in result:
+            print(row.time,row.pool_temp,row.air_temp,i)
         #db.delete(db.query(Temperature).filter(Temperature.time==oldest).first())
         #db.commit()
 
