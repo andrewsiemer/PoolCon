@@ -116,7 +116,7 @@ def record_temp():
 
     if db.query(Temperature).count() > 12:
         result = db.query(Temperature,func.min(Temperature.time))
-        print(result[1])
+        print(result)
         #db.delete(result)
         #db.commit()
 
