@@ -41,7 +41,7 @@ ws.onmessage = function(event) {
     }
     document.querySelector("#water-level").textContent = pool_data['water-level'];
     document.querySelector("#ph-level").textContent = pool_data['ph-level'];
-    document.querySelector("#orp-level").textContent = JSON.parse(pool_data['temp-chart']);
+    document.querySelector("#orp-level").textContent = pool_data['orp-level'];
 
     var myLineChart = new Chart(ctx, JSON.parse(pool_data['temp-chart']));
 };
