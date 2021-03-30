@@ -43,9 +43,10 @@ ws.onmessage = function(event) {
     document.querySelector("#ph-level").textContent = pool_data['ph-level'];
     document.querySelector("#orp-level").textContent = pool_data['orp-level'];
     
-    if (JSON.parse(pool_data['temp-chart']) != temp_chart_data)
+    if (JSON.parse(pool_data['temp-chart']) != temp_chart_data){
         temp_chart_data = JSON.parse(pool_data['temp-chart']);
         var myLineChart = new Chart(ctx, temp_chart_data);
+    }
 };
 
 // create interval to ask for sensor updates
