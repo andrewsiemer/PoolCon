@@ -124,8 +124,12 @@ def record_temp():
         db.delete(db.query(Temperature).filter(Temperature.time==result[0][1]).first())
         db.commit()
 
+    hours = list()
+    air_temp = list()
+    pool_temp = list()
+
     db.close()
-    return hour
+
 
 def toggle_event(event: str):
     global pool_data, pool_pump
