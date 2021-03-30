@@ -37,7 +37,12 @@ ws.onmessage = function(event) {
     document.querySelector("#ph-level").textContent = pool_data['ph-level'];
     document.querySelector("#orp-level").textContent = pool_data['orp-level'];
 
-    new Chart(document.getElementById("temperaturechart"), pool_data['temp-chart']);
+    // Set new default font family and font color to mimic Bootstrap's default styling
+    Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+    Chart.defaults.global.defaultFontColor = '#858796';
+
+    var ctx = document.getElementById("filterusagechart");
+    var myLineChart = new Chart(ctx, pool_data['temp-chart']);
 };
 
 // create interval to ask for sensor updates
