@@ -105,7 +105,7 @@ def record_temp():
     db = SessionLocal()
 
     hour = Temperature()
-    hour.time = datetime.now().replace(minutes=0, seconds=0, microsecond=0)
+    hour.time = datetime.now().replace(minute=0, second=0, microsecond=0)
     hour.pool_temp = int(pool_data['pool-temp'].replace('ºF', ''))
     hour.air_temp = int(pool_data['air-temp'].replace('ºF', ''))
 
