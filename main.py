@@ -120,7 +120,7 @@ def record_temp():
     
         times = db.query(Temperature.time).all()
         for time in times:
-            if datetime.strptime(time, '%Y-%m-%d %H:%M:%S.%f') < oldest:
+            if datetime.strptime(time[0], '%Y-%m-%d %H:%M:%S.%f') < oldest:
                 oldest = time
 
         db.delete(db.query(Temperature).filter(Temperature.time==oldest).first())
