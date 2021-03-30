@@ -27,72 +27,62 @@ class LineGraph(BaseChart):
         maintainAspectRatio = False
         
         layout = {
-                'padding': {
-                    'left': 10,
-                    'right': 25,
-                    'top': 0,
-                    'bottom': 0
-                }
+            'padding': {
+                'left': 10,
+                'right': 25,
+                'top': 0,
+                'bottom': 0
             }
+        }
 
-        """ layout = {
-            padding: {
-                left: 10,
-                right: 25,
-                top: 0,
-                bottom: 0
-            }
-        }
         scales = {
-            xAxes: [{
-                time: {
-                unit: 'hour'
+            'xAxes': [{
+                'time': {
+                'unit': 'hour'
                 },
-                gridLines: {
-                display: false,
-                drawBorder: false
+                'gridLines': {
+                'display': False,
+                'drawBorder': False
                 },
-                ticks: {
-                maxTicksLimit: 7
+                'ticks': {
+                'maxTicksLimit': 7
                 }
             }],
-            yAxes: [{
-                ticks: {
-                maxTicksLimit: 5,
-                padding: 10
+            'yAxes': [{
+                'ticks': {
+                'maxTicksLimit': 5,
+                'padding': 10
                 },
-                gridLines: {
-                color: "rgb(234, 236, 244)",
-                zeroLineColor: "rgb(234, 236, 244)",
-                drawBorder: false,
-                borderDash: [2],
-                zeroLineBorderDash: [2]
+                'gridLines': {
+                'color': "rgb(234, 236, 244)",
+                'zeroLineColor': "rgb(234, 236, 244)",
+                'drawBorder': False,
+                'borderDash': [2],
+                'zeroLineBorderDash': [2]
                 }
             }],
         }
-        legend = { display: true }
+
+        legend = { 'display': True }
+
         tooltips = {
-            backgroundColor: "rgb(255,255,255)",
-            bodyFontColor: "#858796",
-            titleMarginBottom: 10,
-            titleFontColor: '#6e707e',
-            titleFontSize: 14,
-            borderColor: '#dddfeb',
-            borderWidth: 1,
-            xPadding: 15,
-            yPadding: 15,
-            displayColors: false,
-            intersect: false,
-            mode: 'index',
-            caretPadding: 10,
-            callbacks: {
-                label: function(tooltipItem, chart) {
-                var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-                    return datasetLabel + ': ' + tooltipItem.yLabel + 'º F';
-                }
+            'backgroundColor': "rgb(255,255,255)",
+            'bodyFontColor': "#858796",
+            'titleMarginBottom': 10,
+            'titleFontColor': '#6e707e',
+            'titleFontSize': 14,
+            'borderColor': '#dddfeb',
+            'borderWidth': 1,
+            'xPadding': 15,
+            'yPadding': 15,
+            'displayColors': False,
+            'intersect': False,
+            'mode': 'index',
+            'caretPadding': 10,
+            'callbacks': {
+                'label': "function(tooltipItem, chart) { var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || ''; return datasetLabel + ': ' + tooltipItem.yLabel + 'º F';"
             }
         }
-        } """
 
     class pluginOptions:
         pass
