@@ -79,9 +79,6 @@ class LineGraph(BaseChart):
             'intersect': False,
             'mode': 'index',
             'caretPadding': 10,
-            'callbacks': {
-                'label': "function(tooltipItem, chart) { var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || ''; return datasetLabel + ': ' + tooltipItem.yLabel + 'º F';}"
-            }
         }
 
     class pluginOptions:
