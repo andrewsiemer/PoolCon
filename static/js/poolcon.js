@@ -45,7 +45,7 @@ ws.onmessage = function(event) {
     
     if (pool_data['temp-chart'] != temp_chart_data){
         temp_chart_data = pool_data['temp-chart'];
-        var myLineChart = new Chart(ctx, JSON.parse(temp_chart_data));
+        var myLineChart = new Chart(ctx, temp_chart_data);
     }
 };
 
