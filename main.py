@@ -10,6 +10,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from sqlalchemy.orm import Session
 
 from include.database import SessionLocal, engine
+import include.models as models
 from include.models import Temperature
 from include.DS18B20 import DS18B20
 from include.grove import Relay, WaterSensor
@@ -20,7 +21,7 @@ app = FastAPI()
 app.mount('/static', StaticFiles(directory='static'), name='static')
 templates = Jinja2Templates(directory='templates')
 
-include.models.Base.metadata.create_all(bind=engine)
+models.Base.metadata.create_all(bind=engine)
 
 def get_db():
     '''
