@@ -6,6 +6,13 @@ document.querySelector("#ws-id").textContent = client_id;
 // establish unique websocket
 var ws = new WebSocket(`ws://poolcon1.local:8000/ws/${client_id}`);
 
+// Set new default font family and font color to mimic Bootstrap's default styling
+Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+Chart.defaults.global.defaultFontColor = '#858796';
+
+var ctx = document.getElementById("temperaturechart");
+var myLineChart = new Chart(ctx, {"type": "line", "data": {"labels": ["Data0", "Data1", "Data2", "Data3", "Data4", "Data5", "Data6", "Data7", "Data8", "Data9", "Data10", "Data11", "Data12", "Data13", "Data14", "Data15", "Data16", "Data17", "Data18", "Data19", "Data20"], "datasets": [{"label": "Numbers", "data": ["12", "12", "10", "10", "10", "9", "9", "7", "9", "9", "10", "12", "12", "16", "16", "16", "16", "16", "14", "12", "10"]}]}, "options": {"plugins": {}}});
+
 // on payload receive parse data
 ws.onmessage = function(event) {
     var pool_data = JSON.parse(event.data);
@@ -36,13 +43,6 @@ ws.onmessage = function(event) {
     document.querySelector("#water-level").textContent = pool_data['water-level'];
     document.querySelector("#ph-level").textContent = pool_data['ph-level'];
     document.querySelector("#orp-level").textContent = pool_data['orp-level'];
-
-    // Set new default font family and font color to mimic Bootstrap's default styling
-    Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-    Chart.defaults.global.defaultFontColor = '#858796';
-
-    var ctx = document.getElementById("temperaturechart");
-    var myLineChart = new Chart(ctx, pool_data['temp-chart']);
 };
 
 // create interval to ask for sensor updates
