@@ -79,7 +79,8 @@ pool_data = {
     'water-valve': 'OFF',
     'water-level': '100%',
     'ph-level': '7',
-    'orp-level': '650 mv'
+    'orp-level': '650 mv',
+    'temp-chart': ''
 }
 
 @app.websocket("/ws/{client_id}")
@@ -106,6 +107,7 @@ pool_pump = Relay(22)
 pool_heater = Relay(23)
 water_valve = Relay(24)
 water_level = WaterSensor()
+NewChart = MyBarGraph()
 
 @sched.scheduled_job('interval', seconds=1)
 def update_sensors():
@@ -113,6 +115,7 @@ def update_sensors():
 
     pool_data['pool-temp'] = str(water_temp.read()) + ' ºF'
     pool_data['water-level'] = str(water_level.read()) + ' %'
+    pool_data['temp-chart'] = NewChart.get()
 
 @sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), hours=1)
 def record_temp():
@@ -134,10 +137,6 @@ def record_temp():
 
     db.close()
     return hour
-
-NewChart = MyBarGraph()
-NewChart.data.label = "temperaturechart"      # can change data after creation
-print(NewChart.get())
 
 def toggle_event(event: str):
     global pool_data, pool_pump

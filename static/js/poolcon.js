@@ -36,6 +36,8 @@ ws.onmessage = function(event) {
     document.querySelector("#water-level").textContent = pool_data['water-level'];
     document.querySelector("#ph-level").textContent = pool_data['ph-level'];
     document.querySelector("#orp-level").textContent = pool_data['orp-level'];
+
+    var myLineChart = new Chart(document.getElementById("temperaturechart"), pool_data['temp-chart'] );
 };
 
 // create interval to ask for sensor updates
