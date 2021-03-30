@@ -100,7 +100,7 @@ def update_sensors():
     pool_data['pool-temp'] = str(water_temp.read()) + ' ºF'
     pool_data['water-level'] = str(water_level.read()) + ' %'
 
-@sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), seconds=5)
+@sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), seconds=1)
 def record_temp():
     db = SessionLocal()
     now = datetime.now()
@@ -120,7 +120,7 @@ def record_temp():
     
         times = db.query(Temperature.time).all()
         for time in times:
-            if time < oldest:
+            if datetime.datetime.strptime(time, '%Y-%m-%d %H:%M:%S.%f') < oldest:
                 oldest = time
 
         db.delete(db.query(Temperature).filter(Temperature.time==oldest).first())
