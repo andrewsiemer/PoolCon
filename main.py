@@ -103,9 +103,10 @@ def update_sensors():
 @sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), seconds=5)
 def record_temp():
     db = SessionLocal()
+    now = datetime.now()
 
     hour = Temperature()
-    hour.time = datetime.now()
+    hour.time = now
     hour.pool_temp = int(pool_data['pool-temp'].replace(' ºF', ''))
     hour.air_temp = int(pool_data['air-temp'].replace(' ºF', ''))
 
@@ -115,13 +116,13 @@ def record_temp():
 
     if db.query(Temperature).count() > 12:
         print('Too many')
-        oldest = hour.time
+        oldest = now
     
         times = db.query(Temperature.time).all()
         for time in times:
             if time < oldest:
                 oldest = time
-        
+
         db.delete(db.query(Temperature).filter(Temperature.time==oldest).first())
         db.commit()
 
