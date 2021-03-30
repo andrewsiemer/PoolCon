@@ -19,14 +19,13 @@ from include.grove import Relay, WaterSensor
 
 from pychartjs import BaseChart, ChartType, Color                                     
 
-class MyBarGraph(BaseChart):
+class LineGraph(BaseChart):
 
-    type = ChartType.Bar
+    type = ChartType.LineGraph
 
     class data:
         label = "Numbers"
-        data = [12, 19, 3, 17, 10]
-        backgroundColor = Color.Green
+        data = ['12', '12', '10', '10', '10', '9', '9', '7', '9', '9', '10', '12', '12', '16', '16', '16', '16', '16', '14', '12', '10']
 
 
 app = FastAPI()
