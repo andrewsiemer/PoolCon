@@ -100,7 +100,7 @@ def update_sensors():
     pool_data['pool-temp'] = str(water_temp.read()) + 'ºF'
     pool_data['water-level'] = str(water_level.read()) + '%'
 
-@sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), hours=1)
+@sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), seconds=5)
 def record_temp():
     db = SessionLocal()
 
