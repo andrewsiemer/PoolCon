@@ -113,16 +113,11 @@ def record_temp():
     db.commit()
     db.refresh(hour)
 
-    if db.query(Temperature).count() > 12:
-        oldest = hour.time
-    
-        times = db.query(Temperature.time).all()
-        for time in times:
-            if time[0] < oldest:
-                oldest = time
-
-        db.delete(db.query(Temperature).filter(Temperature.time==oldest).first())
-        db.commit()
+    if db.query(Temperature).count() > 12:    
+        result = db.query(Temperature,func.max(Temperature.time))
+        print(result)
+        #db.delete(db.query(Temperature).filter(Temperature.time==oldest).first())
+        #db.commit()
 
     db.close()
     return hour
