@@ -1,4 +1,4 @@
-from pychartjs import BaseChart, ChartType, Color                                     
+from pychartjs import BaseChart, ChartType, Color, Options                                
 
 class LineGraph(BaseChart):
 
@@ -83,6 +83,8 @@ class LineGraph(BaseChart):
                 'label': 'function(tooltipItem, chart) { var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || \'\'; return datasetLabel + \': \' + tooltipItem.yLabel + \'º F\';'
             }
         }
+
+        Options.tooltips.callbacks.label = ''
 
     class pluginOptions:
         pass
