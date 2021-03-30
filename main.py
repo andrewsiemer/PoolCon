@@ -21,7 +21,7 @@ from pychartjs import BaseChart, ChartType, Color
 
 class LineGraph(BaseChart):
 
-    type = ChartType.LineGraph
+    type = ChartType.Line
 
     class data:
         label = "Numbers"
