@@ -118,9 +118,8 @@ def record_temp():
     
         times = db.query(Temperature.time).all()
         for time in times:
-            print(type(time[0]))
-            #if datetime.strptime(strtime[0], '%Y-%m-%d %H:%M:%S.%f') < oldest:
-            #    oldest = time
+            if time[0] < oldest:
+                oldest = time
 
         db.delete(db.query(Temperature).filter(Temperature.time==oldest).first())
         db.commit()
