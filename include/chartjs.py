@@ -80,7 +80,7 @@ class LineGraph(BaseChart):
             'mode': 'index',
             'caretPadding': 10,
             'callbacks': {
-                'label': "myJavascriptFunction(tooltipItem, chart)"
+                'label': "function(tooltipItem, chart) { var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || ''; return datasetLabel + ': ' + tooltipItem.yLabel + 'º F';}"
             }
         }
 
