@@ -20,7 +20,7 @@ app = FastAPI()
 app.mount('/static', StaticFiles(directory='static'), name='static')
 templates = Jinja2Templates(directory='templates')
 
-models.Base.metadata.create_all(bind=engine)
+include.models.Base.metadata.create_all(bind=engine)
 
 def get_db():
     '''
