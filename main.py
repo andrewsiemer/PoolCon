@@ -115,8 +115,10 @@ def record_temp():
     db.refresh(hour)
 
     if db.query(Temperature).count() > 12:
-        db.delete(db.query(Temperature,func.max(Temperature.time)))
-        db.commit()
+        result = db.query(Temperature,func.max(Temperature.time))
+        print(result[0])s
+        #db.delete(result)
+        #db.commit()
 
     db.close()
     return hour
