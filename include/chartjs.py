@@ -80,7 +80,7 @@ class LineGraph(BaseChart):
             'mode': 'index',
             'caretPadding': 10,
             'callbacks': {
-                'label': "<<<myJavascriptFunction(tooltipItem, chart)>>"
+                'label': "<<myJavascriptFunction(tooltipItem, chart)>>"
             }
         }
 
