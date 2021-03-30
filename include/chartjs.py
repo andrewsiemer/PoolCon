@@ -21,7 +21,7 @@ class LineGraph(BaseChart):
             pointHoverBorderColor = "rgba(133, 135, 150, 1)"
             pointHitRadius = 10
             pointBorderWidth = 2
-            data = ['12', '12', '10', '10', '10', '9', '9', '7', '9', '9', '10', '12', '12', '16', '16', '16', '16', '16', '14', '12', '10']
+            data = [12,12,12,12,12,12,12,12,12]
         
     class options:
         maintainAspectRatio = False
