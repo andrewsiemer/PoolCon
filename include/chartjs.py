@@ -26,6 +26,15 @@ class LineGraph(BaseChart):
     class options:
         maintainAspectRatio = False
         
+        layout = {
+                'padding': {
+                    'left': 10,
+                    'right': 25,
+                    'top': 0,
+                    'bottom': 0
+                }
+            }
+
         """ layout = {
             padding: {
                 left: 10,
