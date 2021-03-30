@@ -97,8 +97,8 @@ water_level = WaterSensor()
 def update_sensors():
     global pool_data
 
-    pool_data['pool-temp'] = str(water_temp.read()) + 'ºF'
-    pool_data['water-level'] = str(water_level.read()) + '%'
+    pool_data['pool-temp'] = str(water_temp.read()) + ' ºF'
+    pool_data['water-level'] = str(water_level.read()) + ' %'
 
 @sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), seconds=5)
 def record_temp():
@@ -106,8 +106,8 @@ def record_temp():
 
     hour = Temperature()
     hour.time = datetime.now().replace(minute=0, second=0, microsecond=0)
-    hour.pool_temp = int(pool_data['pool-temp'].replace('ºF', ''))
-    hour.air_temp = int(pool_data['air-temp'].replace('ºF', ''))
+    hour.pool_temp = int(pool_data['pool-temp'].replace(' ºF', ''))
+    hour.air_temp = int(pool_data['air-temp'].replace(' ºF', ''))
 
     db.add(hour)
     db.commit()
