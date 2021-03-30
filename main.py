@@ -97,6 +97,8 @@ pool_heater = Relay(23)
 water_valve = Relay(24)
 water_level = WaterSensor()
 temp_chart = LineGraph()
+temp = temp_chart.data.AirTemperature()
+temp2 = temp_chart.data.AirTemperature()
 
 @sched.scheduled_job('interval', seconds=1)
 def update_sensors():
