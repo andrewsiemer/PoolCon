@@ -8,6 +8,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from apscheduler.schedulers.background import BackgroundScheduler
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 
 from include.database import SessionLocal, engine
 import include.models as models
@@ -113,7 +114,7 @@ def record_temp():
     db.commit()
     db.refresh(hour)
 
-    if db.query(Temperature).count() > 12:    
+    if db.query(Temperature).count() > 12:
         result = db.query(Temperature,func.max(Temperature.time))
         print(result)
         #db.delete(db.query(Temperature).filter(Temperature.time==oldest).first())
