@@ -14,7 +14,7 @@ class Relay(object):
         self.status = 'OFF'
 
     def toggle(self):
-        global relay_state)
+        global relay_state
 
         if self.status == 'OFF':
             self.status = 'ON'
