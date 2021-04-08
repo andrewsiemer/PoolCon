@@ -92,10 +92,10 @@ sched = BackgroundScheduler(daemon=True)
 sched.start()
 
 water_temp = DS18B20()
-pool_pump = Relay(22)
-pool_heater = Relay(23)
-water_valve = Relay(24)
-water_level = WaterSensor()
+#pool_pump = Relay(22)
+#pool_heater = Relay(23)
+#water_valve = Relay(24)
+#water_level = WaterSensor()
 temp_chart = LineGraph()
 
 @sched.scheduled_job('interval', seconds=1)
@@ -111,7 +111,7 @@ def record_temp():
     db = SessionLocal()
 
     hour = Temperature()
-    hour.time = datetime.now()
+    hour.time = datetime.now().replace(minute=0, second=0, microsecond=0)
     hour.pool_temp = int(pool_data['pool-temp'].replace(' ºF', ''))
     hour.air_temp = int(pool_data['air-temp'].replace(' ºF', ''))
 
@@ -128,8 +128,13 @@ def record_temp():
     air_temp = list()
     pool_temp = list()
 
-    db.close()
+    log = db.query(Temperature).order_by(Temperature.time).all()
+    for temp in log:
+        hours.append(temp[0])
+        pool_temp.append(temp[1])
+        air_temp.append(temp[2])
 
+    db.close()
 
 def toggle_event(event: str):
     global pool_data, pool_pump

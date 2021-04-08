@@ -2,23 +2,31 @@ import smbus
 import RPi.GPIO as GPIO
 import time
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)
+#GPIO.setmode(GPIO.BCM)
+#GPIO.setwarnings(False)
 bus = smbus.SMBus(1)
+relay_state = 0
 
 class Relay(object):
-    def __init__(self, pin):
-        self.pin = pin
-        GPIO.setup(self.pin,GPIO.OUT)
+    def __init__(self, channel):
+        self.addr = 0x11
+        self.channel = channel
         self.status = 'OFF'
-    
+
     def toggle(self):
+        global relay_state)
+
         if self.status == 'OFF':
             self.status = 'ON'
-            GPIO.output(self.pin,GPIO.HIGH)
+            relay_state |= (1 << (self.channel - 1))
+            bus.write_byte_data(self.addr, 0, 0x10)
+            bus.write_byte_data(self.addr, 0, relay_state)
+
         else:
             self.status = 'OFF'
-            GPIO.output(self.pin,GPIO.LOW)
+            relay_state &= ~(1 << (channel - 1))
+            bus.write_byte_data(self.addr, 0, 0x10)
+            bus.write_byte_data(self.addr, 0, relay_state)
 
         return self.status
 
