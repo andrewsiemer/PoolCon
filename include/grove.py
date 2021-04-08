@@ -24,7 +24,7 @@ class Relay(object):
 
         else:
             self.status = 'OFF'
-            relay_state &= ~(1 << (channel - 1))
+            relay_state &= ~(1 << (self.channel - 1))
             bus.write_byte_data(self.addr, 0, 0x10)
             bus.write_byte_data(self.addr, 0, relay_state)
 
