@@ -127,14 +127,14 @@ class Relay(object):
             self.status = 'ON'
             relay_state |= (1 << (self.channel - 1))
             write_i2c_block([10] + [self.addr, relay_state, unused])
-	        read_i2c_block(no_bytes = 1)
+            read_i2c_block(no_bytes=1)
             #bus.write_i2c_block_data(self.addr, 0, [1, 0, 1, 1, 1, 1, 1, 1])
 
         else:
             self.status = 'OFF'
             relay_state &= ~(1 << (self.channel - 1))
             write_i2c_block([10] + [self.addr, relay_state, unused])
-	        read_i2c_block(no_bytes = 1)
+            read_i2c_block(no_bytes=1)
             #bus.write_i2c_block_data(self.addr, 0, [1, 0, 1, 1, 1, 1, 1, 1])
 
         return self.status
