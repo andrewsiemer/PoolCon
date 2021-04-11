@@ -2,22 +2,114 @@ import smbus
 import RPi.GPIO as GPIO
 import time
 import include.GrovePi.Software.Python.grovepi
+import include.di_i2c
 import math
+import sys
+import struct
+import numpy
 
 #GPIO.setmode(GPIO.BCM)
 #GPIO.setwarnings(False)
 bus = smbus.SMBus(1)
 relay_state = 0
 
+address = 0x04
+max_recv_size = 10
+set_bus("RPI_1SW")
+unused = 0
+retries = 10
+additional_waiting = 0
+dht_temp_cmd = [40]
+data_not_available_cmd = [23]
+
+if sys.version_info<(3,0):
+	p_version = 2
+else:
+	p_version = 3
+
+def set_bus(bus):
+	global i2c
+	i2c = di_i2c.DI_I2C(bus = bus, address = address)
+
+def write_i2c_block(block, custom_timing = None):
+	'''
+	Now catches and raises Keyboard Interrupt that the user is responsible to catch.
+	'''
+	counter = 0
+	reg = block[0]
+	data = block[1:]
+	while counter < 3:
+		try:
+			i2c.write_reg_list(reg, data)
+			time.sleep(0.002 + additional_waiting)
+			return
+		except KeyboardInterrupt:
+			raise KeyboardInterrupt
+		except:
+			counter += 1
+			time.sleep(0.003)
+			continue
+
+def read_identified_i2c_block(read_command_id, no_bytes):
+
+	data = [-1]
+	while data[0] != read_command_id[0]:
+		data = read_i2c_block(no_bytes + 1)
+
+	return data[1:]
+
+def read_i2c_block(no_bytes = max_recv_size):
+	'''
+	Now catches and raises Keyboard Interrupt that the user is responsible to catch.
+	'''
+	data = data_not_available_cmd
+	counter = 0
+	while data[0] in [data_not_available_cmd[0], 255] and counter < 3:
+		try:
+			data = i2c.read_list(reg = None, len = no_bytes)
+			time.sleep(0.002 + additional_waiting)
+			if counter > 0:
+				counter = 0
+		except KeyboardInterrupt:
+			raise KeyboardInterrupt
+		except:
+			counter += 1
+			time.sleep(0.003)
+			
+	return data
+
 class DHT11(obect):
     def __init__(self, sensor):
         self.sensor = 4
-        self.blue = 0
+        self.module_type = 0
     
     def get_temp(self):
-        [temp,humidity] = grovepi.dht(self.sensor,self.blue)  
-        if math.isnan(temp) == False and math.isnan(humidity) == False:
-            print("temp = %.02f C humidity =%.02f%%"%(temp, humidity))
+        write_i2c_block(dht_temp_cmd + [self.sensor, self.module_type, unused])
+        number = read_identified_i2c_block(dht_temp_cmd, no_bytes = 8)
+
+        if p_version==2:
+            h=''
+            for element in (number[0:4]):
+                h+=chr(element)
+
+            t_val=struct.unpack('f', h)
+            t = round(t_val[0], 2)
+
+            h = ''
+            for element in (number[4:8]):
+                h+=chr(element)
+
+            hum_val=struct.unpack('f',h)
+            hum = round(hum_val[0], 2)
+        else:
+            t_val=bytearray(number[0:4])
+            h_val=bytearray(number[4:8])
+            t=round(struct.unpack('f',t_val)[0],2)
+            hum=round(struct.unpack('f',h_val)[0],2)
+        if t > -100.0 and t <150.0 and hum >= 0.0 and hum<=100.0:
+            return [t, hum]
+        else:
+            return [float('nan'),float('nan')]
 
 class Relay(object):
     def __init__(self, channel):
