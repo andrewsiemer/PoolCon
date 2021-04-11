@@ -18,6 +18,7 @@ unused = 0
 retries = 10
 additional_waiting = 0
 dht_temp_cmd = [40]
+relay_cmd = [10]
 data_not_available_cmd = [23]
 
 if sys.version_info<(3,0):
@@ -126,14 +127,12 @@ class Relay(object):
         if self.status == 'OFF':
             self.status = 'ON'
             relay_state |= (1 << (self.channel - 1))
-            bus.write_byte_data(self.addr, 0, 0x10)
-            bus.write_byte_data(self.addr, 0, relay_state)
+            write_i2c_block(relay_cmd + [self.relay_state, unused, unused])
 
         else:
             self.status = 'OFF'
             relay_state &= ~(1 << (self.channel - 1))
-            bus.write_byte_data(self.addr, 0, 0x10)
-            bus.write_byte_data(self.addr, 0, relay_state)
+            write_i2c_block(relay_cmd + [self.relay_state, unused, unused])
 
         return self.status
 
