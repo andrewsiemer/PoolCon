@@ -14,7 +14,7 @@ from include.database import SessionLocal, engine
 import include.models as models
 from include.models import Temperature
 from include.DS18B20 import DS18B20
-from include.grove import Relay, WaterSensor
+from include.grove import Relay, WaterSensor, DHT11
 from include.chartjs import LineGraph
 
 
@@ -91,6 +91,7 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
 sched = BackgroundScheduler(daemon=True)
 sched.start()
 
+air_temp = DHT11(4)
 water_temp = DS18B20()
 pool_pump = Relay(1)
 pool_heater = Relay(2)
@@ -105,6 +106,7 @@ def update_sensors():
     pool_data['pool-temp'] = str(water_temp.read()) + ' ºF'
     pool_data['water-level'] = str(water_level.read()) + ' %'
     pool_data['temp-chart'] = temp_chart.get()
+    pool_data['air-temp'] = air_temp.get_temp()
 
 @sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), hours=1)
 def record_temp():

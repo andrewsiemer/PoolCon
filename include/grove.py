@@ -1,11 +1,23 @@
 import smbus
 import RPi.GPIO as GPIO
 import time
+import grovepi
+import math
 
 #GPIO.setmode(GPIO.BCM)
 #GPIO.setwarnings(False)
 bus = smbus.SMBus(1)
 relay_state = 0
+
+class DHT11(obect):
+    def __init__(self, sensor):
+        self.sensor = 4
+        self.blue = 0
+    
+    def get_temp(self):
+        [temp,humidity] = grovepi.dht(self.sensor,self.blue)  
+        if math.isnan(temp) == False and math.isnan(humidity) == False:
+            print("temp = %.02f C humidity =%.02f%%"%(temp, humidity))
 
 class Relay(object):
     def __init__(self, channel):
