@@ -40,7 +40,7 @@ class DI_Mutex(object):
             try:
                 self.Handle = open(self.Filename, 'w')
                 # lock
-                fcntl.fcntl.lockf(self.Handle, fcntl.fcntl.LOCK_EX | fcntl.fcntl.LOCK_NB)
+                #fcntl.lockf(self.Handle, fcntl.LOCK_EX | fcntl.LOCK_NB)
                 return
             except IOError: # already locked by a different process
                 time.sleep(self.LoopTime)
