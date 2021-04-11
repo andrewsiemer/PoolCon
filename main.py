@@ -108,7 +108,7 @@ def update_sensors():
     pool_data['temp-chart'] = temp_chart.get()
     pool_data['air-temp'] = str(round(air_temp.read_temp())) + ' ºF'
 
-@sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), hours=1)
+@sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), seconds=1)
 def record_temp():
     db = SessionLocal()
 
@@ -125,16 +125,6 @@ def record_temp():
         result = db.query(Temperature,func.min(Temperature.time))
         db.delete(db.query(Temperature).filter(Temperature.time==result[0][1]).first())
         db.commit()
-
-    hours = list()
-    air_temp = list()
-    pool_temp = list()
-
-    log = db.query(Temperature).order_by(Temperature.time).all()
-    for temp in log:
-        hours.append(temp[0])
-        pool_temp.append(temp[1])
-        air_temp.append(temp[2])
 
     db.close()
 
