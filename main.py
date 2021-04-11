@@ -108,7 +108,7 @@ def update_sensors():
     pool_data['temp-chart'] = temp_chart.get()
     pool_data['air-temp'] = str(round(air_temp.read_temp())) + ' ºF'
 
-@sched.scheduled_job('interval', start_date=str(datetime.now(), seconds=1) #.replace(hour=0, minute=0, second=0, microsecond=0)
+@sched.scheduled_job('interval', start_date=str(datetime.now()), seconds=1) #.replace(hour=0, minute=0, second=0, microsecond=0)
 def record_temp():
     db = SessionLocal()
 
