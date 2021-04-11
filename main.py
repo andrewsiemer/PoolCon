@@ -113,7 +113,7 @@ def record_temp():
     db = SessionLocal()
 
     hour = Temperature()
-    hour.time = datetime.now().replace(minute=0, second=0, microsecond=0)
+    hour.timestamp = datetime.now().replace(minute=0, second=0, microsecond=0)
     hour.pool_temp = int(pool_data['pool-temp'].replace(' ºF', ''))
     hour.air_temp = int(pool_data['air-temp'].replace(' ºF', ''))
 
@@ -122,8 +122,8 @@ def record_temp():
     db.refresh(hour)
 
     while db.query(Temperature).count() > 24:
-        result = db.query(Temperature,func.min(Temperature.time))
-        db.delete(db.query(Temperature).filter(Temperature.time==result[0][1]).first())
+        result = db.query(Temperature,func.min(Temperature.timestamp))
+        db.delete(db.query(Temperature).filter(Temperature.timestamp==result[0][1]).first())
         db.commit()
 
     db.close()
