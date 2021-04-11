@@ -96,15 +96,23 @@ class DHT11(object):
             t_val=struct.unpack('f', h)
             t = round(t_val[0], 2)
 
+            h = ''
+            for element in (number[4:8]):
+                h+=chr(element)
+
+            hum_val=struct.unpack('f',h)
+            hum = round(hum_val[0], 2)
         else:
             t_val=bytearray(number[0:4])
+            h_val=bytearray(number[4:8])
             t=round(struct.unpack('f',t_val)[0],2)
-        if t > -100.0 and t < 150.0:
+            hum=round(struct.unpack('f',h_val)[0],2)
+        if t > -100.0 and t < 150.0 and hum >= 0.0 and hum <= 100.0:
             temp_f = t * 9.0 / 5.0 + 32.0
             self.last = temp_f
-            return str(temp_f)
+            return temp_f
         else:
-            return str(self.last)
+            return self.last
 
 class Relay(object):
     def __init__(self, channel):

@@ -22,7 +22,7 @@ class DS18B20(object):
             temp_string = lines[1][equals_pos+2:]
             temp_c = float(temp_string) / 1000.0
             temp_f = temp_c * 9.0 / 5.0 + 32.0
-            return round(temp_f)
+            return temp_f
 
 if __name__ == '__main__': 
     sensor = DS18B20()
