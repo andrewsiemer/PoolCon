@@ -32,7 +32,7 @@ def set_bus(bus):
 
 set_bus("RPI_1SW")
 
-def write_i2c_block(block, i2c):
+def write_i2c_block(block, i2c = i2c):
 	'''
 	Now catches and raises Keyboard Interrupt that the user is responsible to catch.
 	'''
@@ -51,11 +51,11 @@ def write_i2c_block(block, i2c):
 			time.sleep(0.003)
 			continue
 
-def read_identified_i2c_block(read_command_id, no_bytes, i2c):
+def read_identified_i2c_block(read_command_id, no_bytes, i2c = i2c):
 
 	data = [-1]
 	while data[0] != read_command_id[0]:
-		data = read_i2c_block(no_bytes + 1, i2c)
+		data = read_i2c_block(no_bytes + 1)
 
 	return data[1:]
 
@@ -86,8 +86,8 @@ class DHT11(object):
         self.last = 0
     
     def read_temp(self):
-        write_i2c_block(dht_temp_cmd + [self.sensor, self.module_type, unused], i2c)
-        number = read_identified_i2c_block(dht_temp_cmd, no_bytes=8, i2c=i2c)
+        write_i2c_block(dht_temp_cmd + [self.sensor, self.module_type, unused])
+        number = read_identified_i2c_block(dht_temp_cmd, no_bytes=8)
 
         if p_version==2:
             h=''
