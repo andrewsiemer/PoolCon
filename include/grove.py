@@ -82,6 +82,7 @@ class DHT11(object):
     def __init__(self, sensor):
         self.sensor = 4
         self.module_type = 0
+        self.last = 0
     
     def get_temp(self):
         write_i2c_block(dht_temp_cmd + [self.sensor, self.module_type, unused])
@@ -106,10 +107,11 @@ class DHT11(object):
             h_val=bytearray(number[4:8])
             t=round(struct.unpack('f',t_val)[0],2)
             hum=round(struct.unpack('f',h_val)[0],2)
-        if t > -100.0 and t <150.0 and hum >= 0.0 and hum<=100.0:
+        if t > -100.0 and t < 150.0 and hum >= 0.0 and hum<=100.0:
+            self.last = t
             return str(t)
         else:
-            return 'err'
+            return str(self.last)
 
 class Relay(object):
     def __init__(self, channel):
