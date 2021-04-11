@@ -78,7 +78,7 @@ def read_i2c_block(no_bytes = max_recv_size):
 			
 	return data
 
-class DHT11(obect):
+class DHT11(object):
     def __init__(self, sensor):
         self.sensor = 4
         self.module_type = 0
