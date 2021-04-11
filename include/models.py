@@ -9,6 +9,6 @@ from include.database import Base
 class Temperature(Base):
     __tablename__ = "temperature"
 
-    time = Column(DateTime, primary_key=True, index=True) 
+    timestamp = Column(DateTime, primary_key=True, index=True) 
     pool_temp = Column(Integer)
     air_temp = Column(Integer)
