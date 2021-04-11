@@ -128,7 +128,7 @@ class Relay(object):
         if self.status == 'OFF':
             self.status = 'ON'
             relay_state |= (1 << (self.channel - 1))
-            write_i2c_block(relay_cmd + [relay_state, unused, unused], self.i2c)
+            write_i2c_block(relay_cmd + [0x11, 0x11, 0x11], self.i2c)
 
         else:
             self.status = 'OFF'
