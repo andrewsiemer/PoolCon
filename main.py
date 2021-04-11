@@ -105,9 +105,8 @@ def update_sensors():
 
     pool_data['pool-temp'] = str(round(water_temp.read())) + ' ºF'
     pool_data['water-level'] = str(water_level.read()) + ' %'
-    pool_data['air-temp'] = str(round(air_temp.read_temp())) + ' ºF'
-
     pool_data['temp-chart'] = temp_chart.get()
+    pool_data['air-temp'] = str(round(air_temp.read_temp())) + ' ºF'
 
 @sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), hours=1)
 def record_temp():
