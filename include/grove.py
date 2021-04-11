@@ -18,7 +18,6 @@ unused = 0
 retries = 10
 additional_waiting = 0
 dht_temp_cmd = [40]
-relay_cmd = [10]
 data_not_available_cmd = [23]
 
 if sys.version_info<(3,0):
@@ -26,9 +25,11 @@ if sys.version_info<(3,0):
 else:
 	p_version = 3
 
-def set_bus(address):
+def set_bus(bus):
 	global i2c
-	i2c = DI_I2C('RPI_1SW', address = address)
+	i2c = DI_I2C(bus = bus, address = address)
+
+set_bus("RPI_1SW")
 
 def write_i2c_block(block, custom_timing = None):
 	'''
@@ -84,7 +85,6 @@ class DHT11(object):
         self.last = 0
     
     def read_temp(self):
-        set_bus(0x04)
         write_i2c_block(dht_temp_cmd + [self.sensor, self.module_type, unused])
         number = read_identified_i2c_block(dht_temp_cmd, no_bytes = 8)
 
@@ -121,18 +121,17 @@ class Relay(object):
         self.status = 'OFF'
 
     def toggle(self):
-        set_bus(0x11)
         global relay_state
 
         if self.status == 'OFF':
             self.status = 'ON'
             relay_state |= (1 << (self.channel - 1))
-            write_i2c_block(relay_cmd + [relay_state, unused, unused])
+            bus.write_i2c_block_data(self.addr, 0, [1, 0, 1, 1, 1, 1, 1, 1])
 
         else:
             self.status = 'OFF'
             relay_state &= ~(1 << (self.channel - 1))
-            write_i2c_block(relay_cmd + [relay_state, unused, unused])
+            bus.write_i2c_block_data(self.addr, 0, [1, 0, 1, 0, 0, 0, 0, 0])
 
         return self.status
 
