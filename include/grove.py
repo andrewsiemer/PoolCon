@@ -1,7 +1,6 @@
 import smbus
 import RPi.GPIO as GPIO
 import time
-import include.GrovePi.Software.Python.grovepi
 import include.di_i2c
 import math
 import sys
