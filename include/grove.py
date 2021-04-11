@@ -107,9 +107,9 @@ class DHT11(object):
             t=round(struct.unpack('f',t_val)[0],2)
             hum=round(struct.unpack('f',h_val)[0],2)
         if t > -100.0 and t <150.0 and hum >= 0.0 and hum<=100.0:
-            return [t, hum]
+            return str(t)
         else:
-            return [float('nan'),float('nan')]
+            return 'err'
 
 class Relay(object):
     def __init__(self, channel):
