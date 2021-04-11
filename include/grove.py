@@ -59,7 +59,7 @@ def read_identified_i2c_block(read_command_id, no_bytes, i2c):
 
 	return data[1:]
 
-def read_i2c_block(no_bytes = max_recv_size, i2c):
+def read_i2c_block(no_bytes = max_recv_size, i2c = i2c):
 	'''
 	Now catches and raises Keyboard Interrupt that the user is responsible to catch.
 	'''
