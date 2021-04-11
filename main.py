@@ -146,3 +146,8 @@ def toggle_event(event: str):
         pool_data['pool-heater'] = pool_heater.toggle()
     if 'water-valve' in event:
         pool_data['water-valve'] = water_valve.toggle()
+
+@app.on_event("shutdown")
+def shutdown_event():
+    global sched
+    sched.shutdown()
