@@ -14,7 +14,6 @@ relay_state = 0
 
 address = 0x04
 max_recv_size = 10
-set_bus("RPI_1SW")
 unused = 0
 retries = 10
 additional_waiting = 0
@@ -29,6 +28,8 @@ else:
 def set_bus(bus):
 	global i2c
 	i2c = di_i2c.DI_I2C(bus = bus, address = address)
+
+set_bus("RPI_1SW")
 
 def write_i2c_block(block, custom_timing = None):
 	'''
