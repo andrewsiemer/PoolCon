@@ -8,7 +8,6 @@
 
 import time
 
-
 class DI_Mutex(object):
     """ Dexter Industries mutex """
 
