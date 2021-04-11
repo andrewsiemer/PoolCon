@@ -1,7 +1,7 @@
 import smbus
 import RPi.GPIO as GPIO
 import time
-import include.di_i2c
+from include.di_i2c import DI_I2C
 import math
 import sys
 import struct
@@ -27,7 +27,7 @@ else:
 
 def set_bus(bus):
 	global i2c
-	i2c = di_i2c.DI_I2C(bus = bus, address = address)
+	i2c = DI_I2C(bus = bus, address = address)
 
 set_bus("RPI_1SW")
 
