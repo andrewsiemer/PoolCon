@@ -86,7 +86,7 @@ class DHT11(object):
     
     def read_temp(self):
         write_i2c_block(dht_temp_cmd + [self.sensor, self.module_type, unused])
-        number = read_identified_i2c_block(dht_temp_cmd, no_bytes = 8)
+        number = read_identified_i2c_block(dht_temp_cmd, no_bytes=8)
 
         if p_version==2:
             h=''
@@ -126,12 +126,16 @@ class Relay(object):
         if self.status == 'OFF':
             self.status = 'ON'
             relay_state |= (1 << (self.channel - 1))
-            bus.write_i2c_block_data(self.addr, 0, [1, 0, 1, 1, 1, 1, 1, 1])
+            write_i2c_block([10] + [self.addr, relay_state, unused])
+	        read_i2c_block(no_bytes = 1)
+            #bus.write_i2c_block_data(self.addr, 0, [1, 0, 1, 1, 1, 1, 1, 1])
 
         else:
             self.status = 'OFF'
             relay_state &= ~(1 << (self.channel - 1))
-            bus.write_i2c_block_data(self.addr, 0, [1, 0, 1, 1, 1, 1, 1, 1])
+            write_i2c_block([10] + [self.addr, relay_state, unused])
+	        read_i2c_block(no_bytes = 1)
+            #bus.write_i2c_block_data(self.addr, 0, [1, 0, 1, 1, 1, 1, 1, 1])
 
         return self.status
 
