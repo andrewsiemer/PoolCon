@@ -112,7 +112,7 @@ class DHT11(object):
             temp_f = t * 9.0 / 5.0 + 32.0
             return str(temp_f)
         else:
-            return str(self.last)
+            return str(t)
 
 class Relay(object):
     def __init__(self, channel):
