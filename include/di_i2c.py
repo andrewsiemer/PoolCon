@@ -6,7 +6,7 @@
 #
 # Python I2C drivers
 
-import time
+import time, fcntl
 
 class DI_Mutex(object):
     """ Dexter Industries mutex """
@@ -40,7 +40,7 @@ class DI_Mutex(object):
             try:
                 self.Handle = open(self.Filename, 'w')
                 # lock
-                #fcntl.lockf(self.Handle, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                fcntl.lockf(self.Handle, fcntl.LOCK_EX | fcntl.LOCK_NB)
                 return
             except IOError: # already locked by a different process
                 time.sleep(self.LoopTime)
