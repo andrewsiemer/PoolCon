@@ -9,3 +9,4 @@ sqlalchemy
 RPi.GPIO
 smbus
 pychart.js
+seeed-python-dht
