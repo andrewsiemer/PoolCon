@@ -17,6 +17,7 @@ max_recv_size = 10
 unused = 0
 retries = 10
 additional_waiting = 0
+relay_cmd = [10]
 dht_temp_cmd = [40]
 data_not_available_cmd = [23]
 
@@ -31,7 +32,7 @@ def set_bus(bus):
 
 set_bus("RPI_1SW")
 
-def write_i2c_block(block, custom_timing = None):
+def write_i2c_block(block, i2c):
 	'''
 	Now catches and raises Keyboard Interrupt that the user is responsible to catch.
 	'''
@@ -50,15 +51,15 @@ def write_i2c_block(block, custom_timing = None):
 			time.sleep(0.003)
 			continue
 
-def read_identified_i2c_block(read_command_id, no_bytes):
+def read_identified_i2c_block(read_command_id, no_bytes, i2c):
 
 	data = [-1]
 	while data[0] != read_command_id[0]:
-		data = read_i2c_block(no_bytes + 1)
+		data = read_i2c_block(no_bytes + 1, i2c)
 
 	return data[1:]
 
-def read_i2c_block(no_bytes = max_recv_size):
+def read_i2c_block(no_bytes = max_recv_size, i2c):
 	'''
 	Now catches and raises Keyboard Interrupt that the user is responsible to catch.
 	'''
@@ -85,8 +86,8 @@ class DHT11(object):
         self.last = 0
     
     def read_temp(self):
-        write_i2c_block(dht_temp_cmd + [self.sensor, self.module_type, unused])
-        number = read_identified_i2c_block(dht_temp_cmd, no_bytes=8)
+        write_i2c_block(dht_temp_cmd + [self.sensor, self.module_type, unused], i2c)
+        number = read_identified_i2c_block(dht_temp_cmd, no_bytes=8, i2c=i2c)
 
         if p_version==2:
             h=''
@@ -119,6 +120,7 @@ class Relay(object):
         self.addr = 0x11
         self.channel = channel
         self.status = 'OFF'
+        self.i2c = DI_I2C(bus = "RPI_1SW", address = 0x11)
 
     def toggle(self):
         global relay_state
@@ -126,16 +128,14 @@ class Relay(object):
         if self.status == 'OFF':
             self.status = 'ON'
             relay_state |= (1 << (self.channel - 1))
-            write_i2c_block([10] + [self.addr, relay_state, unused])
+            write_i2c_block(relay_cmd + [self.addr, relay_state, unused])
             read_i2c_block(no_bytes=1)
-            #bus.write_i2c_block_data(self.addr, 0, [1, 0, 1, 1, 1, 1, 1, 1])
 
         else:
             self.status = 'OFF'
             relay_state &= ~(1 << (self.channel - 1))
-            write_i2c_block([10] + [self.addr, relay_state, unused])
+            write_i2c_block(relay_cmd + [self.addr, relay_state, unused])
             read_i2c_block(no_bytes=1)
-            #bus.write_i2c_block_data(self.addr, 0, [1, 0, 1, 1, 1, 1, 1, 1])
 
         return self.status
 
