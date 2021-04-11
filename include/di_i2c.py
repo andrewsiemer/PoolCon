@@ -60,7 +60,7 @@ class DI_Mutex(object):
 # If Periphery doesn't work for you, uncomment either pigpio or smbus
 #RPI_1_Module = "pigpio"
 #RPI_1_Module = "smbus"
-RPI_1_Module = "periphery"
+RPI_1_Module = "smbus"
 
 if RPI_1_Module == "pigpio":
     import pigpio
