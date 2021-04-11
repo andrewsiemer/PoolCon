@@ -1,7 +1,7 @@
 import smbus
 import RPi.GPIO as GPIO
 import time
-import grovepi
+import include.GrovePi.Software.Python.grovepi
 import math
 
 #GPIO.setmode(GPIO.BCM)
