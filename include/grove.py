@@ -1,26 +1,27 @@
-import smbus
+import smbus, time, math, sys, struct, numpy, serial, glob
 import RPi.GPIO as GPIO
-import time
 from include.di_i2c import DI_I2C
-import math
-import sys
-import struct
-import numpy
+ 
+# Relay
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
 
-#GPIO.setmode(GPIO.BCM)
-#GPIO.setwarnings(False)
+# Water Sensor
 bus = smbus.SMBus(1)
-relay_state = 0
 
+# DS18B20
+base_dir = '/sys/bus/w1/devices/'
+device_folder = glob.glob(base_dir + '28*')[0]
+device_file = device_folder + '/w1_slave'
+
+# GrovePi+
 address = 0x04
 max_recv_size = 10
 unused = 0
 retries = 10
 additional_waiting = 0
-relay_cmd = [10]
 dht_temp_cmd = [40]
 data_not_available_cmd = [23]
-
 if sys.version_info<(3,0):
 	p_version = 2
 else:
@@ -31,6 +32,17 @@ def set_bus(bus):
 	i2c = DI_I2C(bus = bus, address = address)
 
 set_bus("RPI_1SW")
+
+def setup_serial():
+    global ser
+    ser = serial.Serial(
+        port='/dev/ttyS0',
+        baudrate = 9600,
+        parity=serial.PARITY_NONE,
+        stopbits=serial.STOPBITS_ONE,
+        bytesize=serial.EIGHTBITS,
+        timeout=0.01
+    )
 
 def write_i2c_block(block, i2c = i2c):
 	'''
@@ -52,7 +64,6 @@ def write_i2c_block(block, i2c = i2c):
 			continue
 
 def read_identified_i2c_block(read_command_id, no_bytes, i2c = i2c):
-
 	data = [-1]
 	while data[0] != read_command_id[0]:
 		data = read_i2c_block(no_bytes + 1)
@@ -78,6 +89,46 @@ def read_i2c_block(no_bytes = max_recv_size, i2c = i2c):
 			time.sleep(0.003)
 			
 	return data
+
+class Relay(object):
+    def __init__(self, pin):
+        self.pin = pin
+        self.status = 'OFF'
+
+        GPIO.setup(self.pin, GPIO.OUT)
+        GPIO.output(self.pin, GPIO.LOW)
+
+    def toggle(self):
+        if self.status == 'OFF':
+            self.status = 'ON'
+            GPIO.output(self.pin, GPIO.HIGH)
+        else:
+            self.status = 'OFF'
+            GPIO.output(self.pin, GPIO.LOW)
+
+        return self.status
+
+class DS18B20(object):
+    def __init__(self):
+        pass
+
+    def read_temp_raw(self):
+        f = open(device_file, 'r')
+        lines = f.readlines()
+        f.close()
+        return lines
+    
+    def read(self):
+        lines = self.read_temp_raw()
+        while lines[0].strip()[-3:] != 'YES':
+            time.sleep(0.2)
+            lines = self.read_temp_raw()
+        equals_pos = lines[1].find('t=')
+        if equals_pos != -1:
+            temp_string = lines[1][equals_pos+2:]
+            temp_c = float(temp_string) / 1000.0
+            temp_f = temp_c * 9.0 / 5.0 + 32.0
+            return temp_f
 
 class DHT11(object):
     def __init__(self, sensor):
@@ -114,29 +165,6 @@ class DHT11(object):
             return temp_f
         else:
             return self.last
-
-class Relay(object):
-    def __init__(self, channel):
-        self.addr = 0x11
-        self.channel = channel
-        self.status = 'OFF'
-
-    def toggle(self):
-        global relay_state
-
-        if self.status == 'OFF':
-            self.status = 'ON'
-            relay_state |= (1 << (self.channel - 1))
-            bus.write_byte_data(self.addr, 0, 10)
-            bus.write_byte_data(self.addr, 0, relay_state)
-
-        else:
-            self.status = 'OFF'
-            relay_state &= ~(1 << (self.channel - 1))
-            bus.write_byte_data(self.addr, 0, 10)
-            bus.write_byte_data(self.addr, 0, relay_state)
-
-        return self.status
 
 class WaterSensor(object):
     def __init__(self):
@@ -180,15 +208,68 @@ class WaterSensor(object):
 
         return trig_section * 5
 
-
-if __name__ == '__main__':
-    GPIO.setup(23,GPIO.OUT)
-    while(1):
-        if flag:
-            GPIO.output(23,GPIO.HIGH)
-            flag = False
+class PHsensor(object):
+    def __init__(self, pin):
+        self.pin = pin
+        self.offset = 41.02740741
+        self.samplingInterval = 20
+        self.printInterval = 20
+        self.arrayLenth = 40
+        
+        self.pHArray = [0] * self.arrayLenth
+        self.pHArrayIndex = 0
+    
+    def read(self):
+        samplingTime = time.time()
+        printTime = time.time()
+        if (time.time() - samplingTime > self.samplingInterval):
+            self.pHArrayIndex += 1
+            self.pHArray[self.pHArrayIndex] = ser.readline()
+            if (self.pHArrayIndex == self.arrayLenth):
+                self.pHArrayIndex = 0
+                voltage = self.avergearray(self.pHArray, self.arrayLenth) * 5.0 / 1024
+                pHValue = -19.18518519 * voltage + self.offset
+                samplingTime = time.time()
+        if (time.time() - printTime > self.printInterval):  #Every 800 milliseconds, print a numerical, convert the state of the LED indicator
+            print("Voltage:")
+            print(voltage, 2)
+            print("    pH value: ")
+            print(pHValue, 2)
+            printTime = time.time()
+        
+    def avergearray(self, arr, number):
+        amount = 0
+        if (number <= 0):
+            print("Error number for the array to avraging!/n")
+            return 0
+        if (number < 5): #less than 5, calculated directly statistics
+            for i in range(0,number):
+                amount += arr[i]
+            avg = amount / number
+            return avg
         else:
-            GPIO.output(23,GPIO.LOW)
-            flag = True
+            if (arr[0] < arr[1]):
+                min = arr[0]
+                max = arr[1]
+            else:
+                min = arr[1]
+                max = arr[0]
+            for i in range(2,number):
+                if (arr[i] < min):
+                    amount += min # arr<min
+                    min = arr[i]
+                else:
+                    if (arr[i] > max):
+                        amount += max # arr>max
+                        max = arr[i]
+                    else:
+                        amount += arr[i] # min<=arr<=max
+            avg = amount / (number - 2)
+        return avg
 
-        time.sleep(1)
+class ORPsensor(object):
+    def __init__(self, pin):
+        pass
+    
+    def read(self):
+        pass

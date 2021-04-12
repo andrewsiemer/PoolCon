@@ -13,8 +13,7 @@ from sqlalchemy import func
 from include.database import SessionLocal, engine
 import include.models as models
 from include.models import Temperature
-from include.DS18B20 import DS18B20
-from include.grove import Relay, WaterSensor, DHT11
+from include.grove import Relay, WaterSensor, DS18B20, DHT11
 from include.chartjs import LineGraph
 
 
