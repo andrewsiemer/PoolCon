@@ -120,7 +120,6 @@ class Relay(object):
         self.addr = 0x11
         self.channel = channel
         self.status = 'OFF'
-        self.i2c = DI_I2C(bus = "RPI_1SW", address = 0x11)
 
     def toggle(self):
         global relay_state
@@ -128,12 +127,14 @@ class Relay(object):
         if self.status == 'OFF':
             self.status = 'ON'
             relay_state |= (1 << (self.channel - 1))
-            write_i2c_block([1, 0, 1, 1, 1, 1, 1, 1], self.i2c)
+            bus.write_byte_data(self.addr, 0, 10)
+            bus.write_byte_data(self.addr, 0, relay_state)
 
         else:
             self.status = 'OFF'
             relay_state &= ~(1 << (self.channel - 1))
-            write_i2c_block([1, 0, 0, 0, 0, 0, 0, 0], self.i2c)
+            bus.write_byte_data(self.addr, 0, 10)
+            bus.write_byte_data(self.addr, 0, relay_state)
 
         return self.status
 
