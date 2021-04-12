@@ -16,7 +16,6 @@ from include.models import Temperature
 from include.grove import Relay, WaterSensor, DS18B20, DHT11
 from include.chartjs import LineGraph
 
-
 app = FastAPI()
 
 # location of web service static files and html templates
@@ -24,6 +23,29 @@ app.mount('/static', StaticFiles(directory='static'), name='static')
 templates = Jinja2Templates(directory='templates')
 
 models.Base.metadata.create_all(bind=engine)
+
+sched = BackgroundScheduler(daemon=True)
+sched.start()
+
+air_temp = DHT11(4)
+water_temp = DS18B20()
+pool_pump = Relay(1)
+pool_heater = Relay(2)
+water_valve = Relay(3)
+water_level = WaterSensor()
+temp_chart = LineGraph()
+
+pool_data = {
+    'pool-pump': 'OFF',
+    'pool-heater': 'OFF',
+    'pool-temp': '40 ºF',
+    'air-temp': '12 ºF',
+    'water-valve': 'OFF',
+    'water-level': '100%',
+    'ph-level': '7',
+    'orp-level': '650 mv',
+    'temp-chart': ''
+}
 
 def get_db():
     '''
@@ -59,18 +81,6 @@ manager = ConnectionManager()
 def home(request: Request):
     return templates.TemplateResponse('index.html', { 'request': request })
 
-pool_data = {
-    'pool-pump': 'OFF',
-    'pool-heater': 'OFF',
-    'pool-temp': '40 ºF',
-    'air-temp': '12 ºF',
-    'water-valve': 'OFF',
-    'water-level': '100%',
-    'ph-level': '7',
-    'orp-level': '650 mv',
-    'temp-chart': ''
-}
-
 @app.websocket("/ws/{client_id}")
 async def websocket_endpoint(websocket: WebSocket, client_id: int):
     global pool_data
@@ -86,17 +96,6 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
     except WebSocketDisconnect:
         manager.disconnect(websocket)
         await manager.broadcast(f"Client #{client_id} exited.")
-
-sched = BackgroundScheduler(daemon=True)
-sched.start()
-
-air_temp = DHT11(4)
-water_temp = DS18B20()
-pool_pump = Relay(1)
-pool_heater = Relay(2)
-water_valve = Relay(3)
-water_level = WaterSensor()
-temp_chart = LineGraph()
 
 @sched.scheduled_job('interval', seconds=1)
 def update_sensors():
