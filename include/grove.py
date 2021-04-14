@@ -239,9 +239,9 @@ class PHsensor(object):
                 self.samplingTime = time.time()
         if (time.time() - self.printTime > self.printInterval):  #Every 800 milliseconds, print a numerical, convert the state of the LED indicator
             print("Voltage:")
-            print(voltage, 2)
-            print("    pH value: ")
-            print(pHValue, 2)
+            print(voltage)
+            print("pH value: ")
+            print(pHValue)
             self.printTime = time.time()
 
             return pHValue
