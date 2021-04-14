@@ -33,7 +33,7 @@ pool_pump = Relay(1)
 pool_heater = Relay(2)
 water_valve = Relay(3)
 water_level = WaterSensor()
-ph_sensor = PHsensor(0)
+ph_sensor = PHsensor()
 temp_chart = LineGraph()
 
 pool_data = {
