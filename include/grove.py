@@ -238,6 +238,9 @@ class PHsensor(object):
             print("    pH value: ")
             print(pHValue, 2)
             printTime = time.time()
+
+            return pHValue
+        
         
     def avergearray(self, arr, number):
         amount = 0
