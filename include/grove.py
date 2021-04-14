@@ -223,6 +223,7 @@ class PHsensor(object):
         self.printTime = time.time()
     
     def read(self):
+        global ser
         if (time.time() - self.samplingTime > self.samplingInterval):
             print('asd')
             self.pHArrayIndex += 1
