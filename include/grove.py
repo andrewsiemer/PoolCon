@@ -225,6 +225,7 @@ class PHsensor(object):
         if (time.time() - samplingTime > self.samplingInterval):
             self.pHArrayIndex += 1
             self.pHArray[self.pHArrayIndex] = ser.readline()
+            print(self.pHArray[self.pHArrayIndex])
             if (self.pHArrayIndex == self.arrayLenth):
                 self.pHArrayIndex = 0
                 voltage = self.avergearray(self.pHArray, self.arrayLenth) * 5.0 / 1024
