@@ -13,7 +13,7 @@ from sqlalchemy import func
 from include.database import SessionLocal, engine
 import include.models as models
 from include.models import Temperature
-from include.grove import Relay, WaterSensor, DS18B20, DHT11
+from include.grove import Relay, WaterSensor, DS18B20, DHT11, PHsensor
 from include.chartjs import LineGraph
 
 app = FastAPI()
@@ -33,6 +33,7 @@ pool_pump = Relay(1)
 pool_heater = Relay(2)
 water_valve = Relay(3)
 water_level = WaterSensor()
+ph_sensor = PHsensor(0)
 temp_chart = LineGraph()
 
 pool_data = {
@@ -102,9 +103,10 @@ def update_sensors():
     global pool_data
 
     pool_data['pool-temp'] = str(round(water_temp.read())) + ' ºF'
-    pool_data['water-level'] = str(water_level.read()) + ' %'
-    pool_data['temp-chart'] = temp_chart.get()
     pool_data['air-temp'] = str(round(air_temp.read_temp())) + ' ºF'
+    pool_data['water-level'] = str(water_level.read()) + ' %'
+    pool_data['ph-level'] = str(ph_sensor.read())
+    pool_data['temp-chart'] = temp_chart.get()
 
 @sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), seconds=1)
 def record_temp():
