@@ -27,6 +27,9 @@ if sys.version_info<(3,0):
 else:
 	p_version = 3
 
+# PHsensor
+ser = None
+
 def set_bus(bus):
 	global i2c
 	i2c = DI_I2C(bus = bus, address = address)
