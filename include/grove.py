@@ -218,12 +218,13 @@ class PHsensor(object):
         
         self.pHArray = [0] * self.arrayLenth
         self.pHArrayIndex = 0
+
+        self.samplingTime = time.time()
+        self.printTime = time.time()
     
     def read(self):
-        samplingTime = time.time()
-        printTime = time.time()
-        print('asd')
-        if (time.time() - samplingTime > self.samplingInterval):
+        if (time.time() - self.samplingTime > self.samplingInterval):
+            print('asd')
             self.pHArrayIndex += 1
             self.pHArray[self.pHArrayIndex] = ser.readline()
             print(self.pHArray[self.pHArrayIndex])
@@ -231,13 +232,13 @@ class PHsensor(object):
                 self.pHArrayIndex = 0
                 voltage = self.avergearray(self.pHArray, self.arrayLenth) * 5.0 / 1024
                 pHValue = -19.18518519 * voltage + self.offset
-                samplingTime = time.time()
-        if (time.time() - printTime > self.printInterval):  #Every 800 milliseconds, print a numerical, convert the state of the LED indicator
+                self.samplingTime = time.time()
+        if (time.time() - self.printTime > self.printInterval):  #Every 800 milliseconds, print a numerical, convert the state of the LED indicator
             print("Voltage:")
             print(voltage, 2)
             print("    pH value: ")
             print(pHValue, 2)
-            printTime = time.time()
+            self.printTime = time.time()
 
             return pHValue
         
