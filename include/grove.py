@@ -47,6 +47,8 @@ def setup_serial():
         timeout=0.01
     )
 
+setup_serial()
+
 def write_i2c_block(block, i2c = i2c):
 	'''
 	Now catches and raises Keyboard Interrupt that the user is responsible to catch.
