@@ -214,8 +214,7 @@ class WaterSensor(object):
         return trig_section * 5
 
 class PHsensor(object):
-    def __init__(self, pin):
-        self.pin = pin
+    def __init__(self):
         self.offset = 41.02740741
         self.samplingInterval = 20
         self.printInterval = 20
@@ -230,7 +229,6 @@ class PHsensor(object):
     def read(self):
         global ser
         if (time.time() - self.samplingTime > self.samplingInterval):
-            print('asd')
             self.pHArrayIndex += 1
             self.pHArray[self.pHArrayIndex] = ser.readline()
             print(self.pHArray[self.pHArrayIndex])
