@@ -19,15 +19,14 @@ class Relay(object):
     def toggle(self):
         if self.status == 'OFF':
             self.status = 'ON'
-            print(grovepi.digitalRead(self.pin))
-            while grovepi.digitalRead(self.pin) > 150:  
-                grovepi.digitalWrite(self.pin, 1)
-                time.sleep(0.5)
+            print('ON' + grovepi.digitalRead(self.pin))
+            grovepi.digitalWrite(self.pin, 1)
+            
         else:
             self.status = 'OFF'
-            while grovepi.digitalRead(self.pin) <= 150: 
-                grovepi.digitalWrite(self.pin, 0)
-                time.sleep(0.5)
+            print(grovepi.digitalRead(self.pin))
+            grovepi.digitalWrite(self.pin, 0)
+            
 
         return self.status
 
