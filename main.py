@@ -107,7 +107,7 @@ def update_sensors():
     pool_data['pool-temp'] = str(round(water_temp.read())) + ' ºF'
     pool_data['air-temp'] = str(round(air_temp.read_temp())) + ' ºF'
     pool_data['water-level'] = str(water_level.read()) + ' %'
-    pool_data['ph-level'] = str(ph_sensor.read())
+    pool_data['ph-level'] = str(round(ph_sensor.read()))
     
     temp_chart.labels.grouped = ['12', '13']
     temp_chart.data.PoolTemperature.data = [2, 3]
