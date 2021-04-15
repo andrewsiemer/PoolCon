@@ -21,14 +21,11 @@ class Relay(object):
             self.status = 'ON'
             while(grovepi.digitalRead(self.pin) == 0):
                 grovepi.digitalWrite(self.pin, 1)
-                time.sleep(0.5)
 
         else:
             self.status = 'OFF'
             while(grovepi.digitalRead(self.pin) == 1):
                 grovepi.digitalWrite(self.pin, 0)
-                time.sleep(0.5)
-            
 
         return self.status
 
