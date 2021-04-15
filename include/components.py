@@ -112,28 +112,39 @@ class PHsensor(object):
     def __init__(self, pin):
         self.pin = pin
         self.offset = 41.02740741
-        self.samplingInterval = 20
-        self.printInterval = 20
         self.arrayLenth = 40
-        self.pHValue = 00
+        self.pHValue = 0
         
         self.pHArray = [0] * self.arrayLenth
-        self.pHArrayIndex = 0
-
-        self.samplingTime = time.time()
-        self.printTime = time.time()
     
     def read(self):
-        self.pHArrayIndex += 1
         for i in range(0,self.arrayLenth):
             self.pHArray[i] = grovepi.analogRead(self.pin)
 
-        voltage = self.avergearray(self.pHArray, self.arrayLenth) * 5.0 / 1024
+        voltage = avergearray(self.pHArray, self.arrayLenth) * 5.0 / 1024
         self.pHValue = -19.18518519 * voltage + self.offset
         
         return self.pHValue
+
+class ORPsensor(object):
+    def __init__(self, pin):
+        self.pin = pin
+        self.offset = 0
+        self.arrayLenth = 40
+        self.orpValue = 0
+        self.voltage = 5
         
-    def avergearray(self, arr, number):
+        self.orpArray = [0] * self.arrayLenth
+    
+    def read(self):
+        for i in range(0, self.arrayLenth):
+            self.orpArray[i] = grovepi.analogRead(self.pin)
+
+        self.orpValue = ((30 * self.voltage * 1000) - (75 * avergearray(self.orpArray, self.arrayLenth) * self.voltage * 1000/1024))/75 - self.offset
+
+        return self.orpValue
+
+def avergearray(arr, number):
         amount = 0
         if (number <= 0):
             print("Error number for the array to avraging!/n")
@@ -162,10 +173,3 @@ class PHsensor(object):
                         amount += arr[i] # min<=arr<=max
             avg = amount / (number - 2)
         return avg
-
-class ORPsensor(object):
-    def __init__(self, pin):
-        pass
-    
-    def read(self):
-        pass
