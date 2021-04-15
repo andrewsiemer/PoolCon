@@ -109,10 +109,12 @@ def update_sensors():
     pool_data['water-level'] = str(water_level.read()) + ' %'
     pool_data['ph-level'] = str(round(ph_sensor.read()))
     
+    db = SessionLocal()
     grouped = []
     entries = db.query(Temperature.timestamp).all()
     for i in entries:
         grouped.append(i[0][1].strptime('%-H: %p'))
+     db.close()
     
     temp_chart.labels.grouped = grouped
     temp_chart.data.PoolTemperature.data = [2, 3]
