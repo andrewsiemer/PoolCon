@@ -123,22 +123,15 @@ class PHsensor(object):
         self.printTime = time.time()
     
     def read(self):
-        if (time.time() - self.samplingTime > self.samplingInterval):
-            self.pHArrayIndex += 1
-            self.pHArray[self.pHArrayIndex] = grovepi.analogRead(self.pin)
-            print(self.pHArray[self.pHArrayIndex])
-            if (self.pHArrayIndex == self.arrayLenth):
-                self.pHArrayIndex = 0
-                voltage = self.avergearray(self.pHArray, self.arrayLenth) * 5.0 / 1024
-                pHValue = -19.18518519 * voltage + self.offset
-                self.samplingTime = time.time()
-        if (time.time() - self.printTime > self.printInterval):  #Every 800 milliseconds, print a numerical, convert the state of the LED indicator
-            print("Voltage:")
-            print(voltage)
-            print("pH value: ")
+        self.pHArrayIndex += 1
+        self.pHArray[self.pHArrayIndex] = grovepi.analogRead(self.pin)
+        print(self.pHArray[self.pHArrayIndex])
+        if (self.pHArrayIndex == self.arrayLenth):
+            self.pHArrayIndex = 0
+            voltage = self.avergearray(self.pHArray, self.arrayLenth) * 5.0 / 1024
+            pHValue = -19.18518519 * voltage + self.offset
+            self.samplingTime = time.time()
             print(pHValue)
-            self.printTime = time.time()
-
         return 7
         
         
