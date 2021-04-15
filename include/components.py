@@ -20,9 +20,11 @@ class Relay(object):
         if self.status == 'OFF':
             self.status = 'ON'
             grovepi.digitalWrite(self.pin, 1)
+            time.sleep(0.5)
         else:
             self.status = 'OFF'
             grovepi.digitalWrite(self.pin, 0)
+            time.sleep(0.5)
 
         return self.status
 
@@ -50,7 +52,7 @@ class DS18B20(object):
 
 class DHT11(object):
     def __init__(self, pin):
-        self.pin = 4
+        self.pin = pin
         self.module_type = 0
     
     def read_temp(self):
