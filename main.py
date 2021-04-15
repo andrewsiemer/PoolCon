@@ -34,6 +34,7 @@ pool_heater = Relay(3)
 water_valve = Relay(4)
 water_level = WaterSensor()
 ph_sensor = PHsensor(0)
+orp_sensor = ORPsensor(1)
 temp_chart = LineGraph()
 
 pool_data = {
@@ -108,7 +109,8 @@ def update_sensors():
     pool_data['air-temp'] = str(round(air_temp.read_temp())) + ' ºF'
     pool_data['water-level'] = str(water_level.read()) + ' %'
     pool_data['ph-level'] = str(round(ph_sensor.read()))
-    
+    pool_data['orp-level'] = str(round(orp_sensor.read())) + ' mV'
+
     db = SessionLocal()
     grouped = []
     pool = []
