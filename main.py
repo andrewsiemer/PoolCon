@@ -24,7 +24,7 @@ templates = Jinja2Templates(directory='templates')
 
 models.Base.metadata.create_all(bind=engine)
 
-sched = BackgroundScheduler(daemon=True)
+sched = BackgroundScheduler(daemon=True,max_instances=3)
 sched.start()
 
 air_temp = DHT11(8)
