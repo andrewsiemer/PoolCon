@@ -113,7 +113,7 @@ def update_sensors():
     grouped = []
     entries = db.query(Temperature.timestamp).all()
     for i in entries:
-        grouped.append(i[0].strptime('%-H: %p'))
+        grouped.append(i[0].strftime('%-H: %p'))
     db.close()
     
     temp_chart.labels.grouped = grouped
