@@ -99,17 +99,22 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
         manager.disconnect(websocket)
         await manager.broadcast(f"Client #{client_id} exited.")
 
-@sched.scheduled_job('interval', seconds=1)
+@sched.scheduled_job('interval', seconds=3)
 def update_sensors():
     global pool_data
 
-    pool_data['time'] = str(datetime.now().strftime("%A, %B %-d, %-H:%M %p"))
+    pool_data['time'] = str(datetime.now().strftime('%A, %B %-d, %-H:%M %p'))
     pool_data['pool-temp'] = str(round(water_temp.read())) + ' ºF'
     pool_data['air-temp'] = str(round(air_temp.read_temp())) + ' ºF'
     pool_data['water-level'] = str(water_level.read()) + ' %'
     pool_data['ph-level'] = str(round(ph_sensor.read()))
     
-    temp_chart.labels.grouped = ['12', '13']
+    grouped = []
+    entries = db.query(Temperature.timestamp).all()
+    for i in entries:
+        grouped.append(i[0][1].strptime('%-H: %p'))
+    
+    temp_chart.labels.grouped = grouped
     temp_chart.data.PoolTemperature.data = [2, 3]
     temp_chart.data.AirTemperature.data = [1, 4]
     
