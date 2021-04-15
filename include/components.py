@@ -20,13 +20,14 @@ class Relay(object):
         if self.status == 'OFF':
             self.status = 'ON'
             print(grovepi.digitalRead(self.pin))
-            while grovepi.digitalRead(self.pin):  
+            while grovepi.digitalRead(self.pin) > 150:  
                 grovepi.digitalWrite(self.pin, 1)
-                time.sleep(0)
+                time.sleep(0.5)
         else:
             self.status = 'OFF'
-            while not grovepi.digitalRead(self.pin): 
+            while grovepi.digitalRead(self.pin) <= 150: 
                 grovepi.digitalWrite(self.pin, 0)
+                time.sleep(0.5)
 
         return self.status
 
