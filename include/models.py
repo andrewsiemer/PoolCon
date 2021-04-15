@@ -12,3 +12,10 @@ class Temperature(Base):
     timestamp = Column(DateTime, primary_key=True, index=True) 
     pool_temp = Column(Integer)
     air_temp = Column(Integer)
+
+class Status(Base):
+    __tablename__ = "status"
+
+    timestamp = Column(DateTime, primary_key=True, index=True) 
+    equipment = Column(String)
+    status = Column(String)

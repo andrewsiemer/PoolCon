@@ -12,8 +12,8 @@ from sqlalchemy import func
 
 from include.database import SessionLocal, engine
 import include.models as models
-from include.models import Temperature
-from include.grove import Relay, WaterSensor, DS18B20, DHT11, PHsensor
+from include.models import Temperature, Status
+from include.components import Relay, WaterSensor, DS18B20, DHT11, PHsensor
 from include.chartjs import LineGraph
 
 app = FastAPI()
@@ -33,10 +33,11 @@ pool_pump = Relay(1)
 pool_heater = Relay(2)
 water_valve = Relay(3)
 water_level = WaterSensor()
-ph_sensor = PHsensor()
+ph_sensor = PHsensor(0)
 temp_chart = LineGraph()
 
 pool_data = {
+    'time': '',
     'pool-pump': 'OFF',
     'pool-heater': 'OFF',
     'pool-temp': '40 ºF',
@@ -102,24 +103,30 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
 def update_sensors():
     global pool_data
 
+    pool_data['time'] = str(datetime.now().strftime("%A, %B %-d, %-H:%M %p"))
     pool_data['pool-temp'] = str(round(water_temp.read())) + ' ºF'
     pool_data['air-temp'] = str(round(air_temp.read_temp())) + ' ºF'
     pool_data['water-level'] = str(water_level.read()) + ' %'
-    pool_data['ph-level'] = str(ph_sensor.read())
+    # pool_data['ph-level'] = str(ph_sensor.read())
+    
+    temp_chart.labels.grouped = ['12', '13']
+    temp_chart.data.PoolTemperature.data = [2, 3]
+    temp_chart.data.AirTemperature.data = [1, 4]
+    
     pool_data['temp-chart'] = temp_chart.get()
 
 @sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), seconds=1)
 def record_temp():
     db = SessionLocal()
 
-    hour = Temperature()
-    hour.timestamp = datetime.now()#.replace(minute=0, second=0, microsecond=0)
-    hour.pool_temp = int(pool_data['pool-temp'].replace(' ºF', ''))
-    hour.air_temp = int(pool_data['air-temp'].replace(' ºF', ''))
+    entry = Temperature()
+    entry.timestamp = datetime.now()#.replace(minute=0, second=0, microsecond=0)
+    entry.pool_temp = int(pool_data['pool-temp'].replace(' ºF', ''))
+    entry.air_temp = int(pool_data['air-temp'].replace(' ºF', ''))
 
-    db.add(hour)
+    db.add(entry)
     db.commit()
-    db.refresh(hour)
+    db.refresh(entry)
 
     while db.query(Temperature).count() > 24:
         result = db.query(Temperature,func.min(Temperature.timestamp))
@@ -128,10 +135,33 @@ def record_temp():
 
     db.close()
 
+def log_status(equipment, status):
+    db = SessionLocal()
+    now = datetime.now()
+
+    entry = Status()
+    entry.timestamp = now
+    entry.equipment = equipment
+    entry.status = status
+
+    db.add(entry)
+    db.commit()
+    db.refresh(entry)
+
+    entries = db.query(Status.timestamp).all()
+    for i in entries:
+        if i[0][1] < now + timedelta(days=1):
+            db.delete(db.query(Status).filter(Status.timestamp==i[0][1]).first())
+    db.commit()
+
+    db.close()
+
 def toggle_event(event: str):
     global pool_data, pool_pump
     if 'pool-pump' in event:
-        pool_data['pool-pump'] = pool_pump.toggle()
+        status = pool_pump.toggle()
+        pool_data['pool-pump'] = status
+        log_status('pool-pump', status)
     if 'pool-heater' in event:
         pool_data['pool-heater'] = pool_heater.toggle()
     if 'water-valve' in event:

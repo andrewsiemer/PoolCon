@@ -16,6 +16,7 @@ var temp_chart_data = ''
 ws.onmessage = function(event) {
     var pool_data = JSON.parse(event.data);
     
+    document.querySelector("#time").textContent = pool_data['time'];
     document.querySelector("#pool-pump").textContent = pool_data['pool-pump'];
     if (pool_data['pool-pump'] == 'ON'){
         document.getElementById("pool-pump-btn").className = 'd-sm-inline-block btn btn-sm shadow-sm btn-active';

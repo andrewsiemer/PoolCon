@@ -5,9 +5,24 @@ class LineGraph(BaseChart):
     type = ChartType.Line
 
     class labels:
-        grouped = ["12 AM", "1 AM", "2 AM", "3 AM", "4 AM", "5 AM", "6 AM", "7 AM", "8 AM", "9 AM", "10 AM", "11 AM", "12 PM", "1 PM", "2 PM", "3 PM", "4 PM", "5 PM", "6 PM", "7 PM", "8 PM", "9 PM", "10 PM", "11 PM"]
+        grouped = []
 
     class data:
+        class PoolTemperature:
+            label = 'Pool Temperature'
+            lineTension = 0.3
+            backgroundColor = "rgba(28, 200, 138, 0.05)"
+            borderColor = "rgba(28, 200, 138, 1)"
+            pointRadius = 3
+            pointBackgroundColor = "rgba(28, 200, 138, 1)"
+            pointBorderColor = "rgba(28, 200, 138, 1)"
+            pointHoverRadius = 3
+            pointHoverBackgroundColor = "rgba(28, 200, 138, 1)"
+            pointHoverBorderColor = "rgba(28, 200, 138, 1)"
+            pointHitRadius = 10
+            pointBorderWidth = 2
+            data = []
+
         class AirTemperature:
             label = 'Air Temperature'
             lineTension = 0.3
