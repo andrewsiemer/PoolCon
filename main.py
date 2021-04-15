@@ -161,7 +161,7 @@ def toggle_event(event: str):
     if 'pool-pump' in event:
         status = pool_pump.toggle()
         pool_data['pool-pump'] = status
-        #log_status('pool-pump', status)
+        # log_status('pool-pump', status)
     if 'pool-heater' in event:
         pool_data['pool-heater'] = pool_heater.toggle()
     if 'water-valve' in event:
