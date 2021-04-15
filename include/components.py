@@ -14,6 +14,7 @@ class Relay(object):
         self.status = 'OFF'
         
         grovepi.pinMode(self.pin, 'OUTPUT')
+        grovepi.digitalWrite(self.pin, 0)
 
     def toggle(self):
         if self.status == 'OFF':
