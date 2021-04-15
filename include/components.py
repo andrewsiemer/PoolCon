@@ -27,7 +27,7 @@ class Relay(object):
                 self.status = 'OFF'
                 while(grovepi.digitalRead(self.pin) == 1):
                     grovepi.digitalWrite(self.pin, 0)
-        except KeyboardInterrupt:
+        except:
             grovepi.digitalWrite(self.pin, 0)
         return self.status
 
