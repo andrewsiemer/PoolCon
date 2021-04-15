@@ -54,9 +54,14 @@ class DHT11(object):
     def __init__(self, pin):
         self.pin = pin
         self.module_type = 0
+        self.temp_f = 0
     
     def read_temp(self):
-        return grovepi.dht(self.pin, self.module_type)[0]
+        temp = grovepi.dht(self.pin, self.module_type)[0]
+        if temp:
+            self.temp_f = temp * 9.0 / 5.0 + 32.0
+        
+        return self.temp_f
 
 class WaterSensor(object):
     def __init__(self):
