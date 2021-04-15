@@ -1,3 +1,0 @@
-[submodule "include/GrovePi"]
-	path = include/GrovePi
-	url = https://github.com/DexterInd/GrovePi
