@@ -115,6 +115,7 @@ class PHsensor(object):
         self.samplingInterval = 20
         self.printInterval = 20
         self.arrayLenth = 40
+        self.pHValue = 7
         
         self.pHArray = [0] * self.arrayLenth
         self.pHArrayIndex = 0
@@ -125,15 +126,16 @@ class PHsensor(object):
     def read(self):
         self.pHArrayIndex += 1
         self.pHArray[self.pHArrayIndex] = grovepi.analogRead(self.pin)
-        print(self.pHArray[self.pHArrayIndex])
         if (self.pHArrayIndex >= self.arrayLenth):
             self.pHArrayIndex = 0
             voltage = self.avergearray(self.pHArray, self.arrayLenth) * 5.0 / 1024
-            pHValue = -19.18518519 * voltage + self.offset
+            print (voltage)
+            self.pHValue = -19.18518519 * voltage + self.offset
             self.samplingTime = time.time()
-            print(pHValue)
-        return 7
-        
+            
+        return self.pHValue
+    
+    def get_PH(self, analog)
         
     def avergearray(self, arr, number):
         amount = 0
