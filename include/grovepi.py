@@ -357,7 +357,7 @@ def dht(pin, module_type):
 	if t > -100.0 and t <150.0 and hum >= 0.0 and hum<=100.0:
 		return [t, hum]
 	else:
-		return None
+		return [None, None]
 
 # Grove - Infrared Receiver - get the commands received from the Grove IR sensor
 def ir_read_signal():
