@@ -13,7 +13,7 @@ from sqlalchemy import func
 from include.database import SessionLocal, engine
 import include.models as models
 from include.models import Temperature, Status
-from include.components import Relay, WaterSensor, DS18B20, DHT11, PHsensor
+from include.components import Relay, WaterSensor, DS18B20, DHT11, PHsensor, ORPsensor
 from include.chartjs import LineGraph
 
 app = FastAPI()
