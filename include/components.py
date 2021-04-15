@@ -110,7 +110,7 @@ class WaterSensor(object):
 
 class PHsensor(object):
     def __init__(self, pin):
-        self.pin = 0
+        self.pin = pin
         self.offset = 41.02740741
         self.samplingInterval = 20
         self.printInterval = 20
@@ -139,7 +139,7 @@ class PHsensor(object):
             print(pHValue)
             self.printTime = time.time()
 
-            return pHValue
+        return 7
         
         
     def avergearray(self, arr, number):
