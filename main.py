@@ -118,7 +118,7 @@ def update_sensors():
         grouped.append(i[0].strftime('%-H %p'))
         entry = db.query(Temperature).filter(Temperature.timestamp==i[0]).first()
         pool.append(entry.pool_temp)
-        air.append(entry.pool_temp)
+        air.append(entry.air_temp)
     db.close()
     
     temp_chart.labels.grouped = grouped
