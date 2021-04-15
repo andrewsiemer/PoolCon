@@ -114,7 +114,7 @@ def update_sensors():
     entries = db.query(Temperature.timestamp).all()
     for i in entries:
         grouped.append(i[0][1].strptime('%-H: %p'))
-     db.close()
+    db.close()
     
     temp_chart.labels.grouped = grouped
     temp_chart.data.PoolTemperature.data = [2, 3]
