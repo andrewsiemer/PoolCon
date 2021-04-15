@@ -131,7 +131,8 @@ class PHsensor(object):
             voltage = self.avergearray(self.pHArray, self.arrayLenth) * 5.0 / 1024
             self.pHValue = -19.18518519 * voltage + self.offset
             self.samplingTime = time.time()
-            
+        
+        print(self.pHValue)
         return self.pHValue
         
     def avergearray(self, arr, number):
