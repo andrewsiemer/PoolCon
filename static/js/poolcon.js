@@ -10,8 +10,11 @@ var ws = new WebSocket(`ws://poolcon1.local:8000/ws/${client_id}`);
 Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#858796';
 
-var ctx = document.getElementById("temperaturechart");
+var ctx = document.getElementById("temp-chart");
 var temp_chart_data = ''
+
+var ctx = document.getElementById("pump-chart");
+var pump_chart_data = ''
 // on payload receive parse data
 ws.onmessage = function(event) {
     var pool_data = JSON.parse(event.data);
@@ -44,9 +47,14 @@ ws.onmessage = function(event) {
     document.querySelector("#ph-level").textContent = pool_data['ph-level'];
     document.querySelector("#orp-level").textContent = pool_data['orp-level'];
     
+    if (pool_data['pump-chart'] != pump_chart_data){
+        temp_chart_data = pool_data['pump-chart'];
+        var pumpChart = new Chart(ctx, JSON.parse(pump_chart_data));
+    }
+
     if (pool_data['temp-chart'] != temp_chart_data){
         temp_chart_data = pool_data['temp-chart'];
-        var myLineChart = new Chart(ctx, JSON.parse(temp_chart_data));
+        var tempChart = new Chart(ctx, JSON.parse(temp_chart_data));
     }
 };
 
