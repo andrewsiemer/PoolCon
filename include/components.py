@@ -134,8 +134,6 @@ class PHsensor(object):
             self.samplingTime = time.time()
             
         return self.pHValue
-    
-    def get_PH(self, analog)
         
     def avergearray(self, arr, number):
         amount = 0
