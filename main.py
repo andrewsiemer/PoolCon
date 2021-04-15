@@ -29,9 +29,9 @@ sched.start()
 
 air_temp = DHT11(8)
 water_temp = DS18B20()
-pool_pump = Relay(1)
-pool_heater = Relay(2)
-water_valve = Relay(3)
+pool_pump = Relay(2)
+pool_heater = Relay(3)
+water_valve = Relay(4)
 water_level = WaterSensor()
 ph_sensor = PHsensor(0)
 temp_chart = LineGraph()
@@ -161,7 +161,7 @@ def toggle_event(event: str):
     if 'pool-pump' in event:
         status = pool_pump.toggle()
         pool_data['pool-pump'] = status
-        log_status('pool-pump', status)
+        #log_status('pool-pump', status)
     if 'pool-heater' in event:
         pool_data['pool-heater'] = pool_heater.toggle()
     if 'water-valve' in event:
