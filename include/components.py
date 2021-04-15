@@ -17,16 +17,18 @@ class Relay(object):
         grovepi.digitalWrite(self.pin, 0)
 
     def toggle(self):
-        if self.status == 'OFF':
-            self.status = 'ON'
-            while(grovepi.digitalRead(self.pin) == 0):
-                grovepi.digitalWrite(self.pin, 1)
+        try:
+            if self.status == 'OFF':
+                self.status = 'ON'
+                while(grovepi.digitalRead(self.pin) == 0):
+                    grovepi.digitalWrite(self.pin, 1)
 
-        else:
-            self.status = 'OFF'
-            while(grovepi.digitalRead(self.pin) == 1):
-                grovepi.digitalWrite(self.pin, 0)
-
+            else:
+                self.status = 'OFF'
+                while(grovepi.digitalRead(self.pin) == 1):
+                    grovepi.digitalWrite(self.pin, 0)
+        except KeyboardInterrupt:
+            grovepi.digitalWrite(self.pin, 0)
         return self.status
 
 class DS18B20(object):
