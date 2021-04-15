@@ -246,7 +246,7 @@ def read_identified_i2c_block(read_command_id, no_bytes):
 # Arduino Digital Read
 def digitalRead(pin):
 	write_i2c_block(dRead_cmd + [pin, unused, unused])
-	data = read_identified_i2c_block( dRead_cmd, no_bytes = 1)[0]
+	data = read_identified_i2c_block(dRead_cmd, no_bytes = 1)[0]
 	return data
 
 # Arduino Digital Write
