@@ -27,7 +27,7 @@ models.Base.metadata.create_all(bind=engine)
 sched = BackgroundScheduler(daemon=True)
 sched.start()
 
-air_temp = DHT11(4)
+air_temp = DHT11(8)
 water_temp = DS18B20()
 pool_pump = Relay(1)
 pool_heater = Relay(2)
