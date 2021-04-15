@@ -129,7 +129,6 @@ class PHsensor(object):
         if (self.pHArrayIndex >= self.arrayLenth):
             self.pHArrayIndex = 0
             voltage = self.avergearray(self.pHArray, self.arrayLenth) * 5.0 / 1024
-            print (voltage)
             self.pHValue = -19.18518519 * voltage + self.offset
             self.samplingTime = time.time()
             
