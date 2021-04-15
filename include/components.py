@@ -115,7 +115,7 @@ class PHsensor(object):
         self.samplingInterval = 20
         self.printInterval = 20
         self.arrayLenth = 40
-        self.pHValue = 7
+        self.pHValue = 00
         
         self.pHArray = [0] * self.arrayLenth
         self.pHArrayIndex = 0
