@@ -132,12 +132,12 @@ def toggle_event(event: str):
     if 'pool-pump' in event:
         status = pool_pump.toggle()
         pool_data['pool-pump'] = status
-        #crud.add_status('pool-pump', status)
+        crud.add_status('pool-pump', status)
     if 'pool-heater' in event:
         status = pool_heater.toggle()
         if status == 'ON' and pool_data['pool-pump'] == 'OFF':
             pool_data['pool-pump'] = pool_pump.toggle()
-            #crud.add_status('pool-pump', status)
+            crud.add_status('pool-pump', status)
         pool_data['pool-heater'] = status
     if 'water-valve' in event:
         pool_data['water-valve'] = water_valve.toggle()
