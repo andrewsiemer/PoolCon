@@ -33,11 +33,11 @@ def get_pump_chart_data():
     labels = []
     pump = []
 
-    for hour in range(0,24):
-        events = db.query(Status).filter(Status.equipment=='pool-pump', int(Status.timestamp.strftime('%-H'))==hour).all()
-        for event in events:
-            print(event.timestamp)
-            print(event.status)
+    # for hour in range(0,24):
+    #     events = db.query(Status).filter(Status.equipment=='pool-pump', int(Status.timestamp.strftime('%-H'))==hour).all()
+    #     for event in events:
+    #         print(event.timestamp)
+    #         print(event.status)
     
     db.close()
 
