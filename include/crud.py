@@ -19,7 +19,6 @@ def get_temp_chart_data():
 
     entries = db.query(Temperature.timestamp).all()
     for i in entries:
-        print(type(i[0]))
         labels.append(i[0].strftime('%-H %p'))
         entry = db.query(Temperature).filter(Temperature.timestamp==i[0]).first()
         pool.append(entry.pool_temp)
