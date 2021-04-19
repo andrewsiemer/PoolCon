@@ -12,9 +12,6 @@ Chart.defaults.global.defaultFontColor = '#858796';
 
 var ctx = document.getElementById("tempchart");
 var temp_chart_data = ''
-
-var ctx2 = document.getElementById("pumpchart");
-var pump_chart_data = ''
 // on payload receive parse data
 ws.onmessage = function(event) {
     var pool_data = JSON.parse(event.data);
@@ -46,15 +43,10 @@ ws.onmessage = function(event) {
     document.querySelector("#water-level").textContent = pool_data['water-level'];
     document.querySelector("#ph-level").textContent = pool_data['ph-level'];
     document.querySelector("#orp-level").textContent = pool_data['orp-level'];
-    
-    if (pool_data['pumpchart'] != pump_chart_data){
-        temp_chart_data = pool_data['pumpchart'];
-        var pumpChart = new Chart(ctx, JSON.parse(pump_chart_data));
-    }
 
     if (pool_data['temp-chart'] != temp_chart_data){
         temp_chart_data = pool_data['temp-chart'];
-        var tempChart = new Chart(ctx2, JSON.parse(temp_chart_data));
+        var tempChart = new Chart(ctx, JSON.parse(temp_chart_data));
     }
 };
 
