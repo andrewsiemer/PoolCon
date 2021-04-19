@@ -22,8 +22,10 @@ class Relay(object):
                 self.status = 'ON'
                 grovepi.digitalWrite(self.pin, 1)
                 grovepi.digitalWrite(self.pin, 1)
+                grovepi.digitalWrite(self.pin, 1)
             else:
                 self.status = 'OFF'
+                grovepi.digitalWrite(self.pin, 0)
                 grovepi.digitalWrite(self.pin, 0)
                 grovepi.digitalWrite(self.pin, 0)
         except:
