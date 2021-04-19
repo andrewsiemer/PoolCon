@@ -52,7 +52,7 @@ pool_data = {
     'water-level': str(water_level.read()) + ' %',
     'ph-level': str(round(ph_sensor.read())),
     'orp-level': str(round(orp_sensor.read())) + ' mV',
-    'pump-chart': '' #pump_chart.get(),
+    'pump-chart': '', #pump_chart.get(),
     'temp-chart': temp_chart.get()
 }
 
@@ -116,7 +116,7 @@ def update_sensors():
     pool_data['water-level'] = str(water_level.read()) + ' %'
     pool_data['ph-level'] = str(round(ph_sensor.read()))
     pool_data['orp-level'] = str(round(orp_sensor.read())) + ' mV'
-    pool_data['pump-chart'] = '' #pump_chart.get()
+    pool_data['pump-chart'] = '', #pump_chart.get()
     pool_data['temp-chart'] = temp_chart.get()
 
 @sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), minutes=1)
