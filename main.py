@@ -43,7 +43,7 @@ temp_chart.labels.grouped, temp_chart.data.PoolTemperature.data, temp_chart.data
 
 # data structure
 pool_data = {
-    'time': str(datetime.now().strftime('%A, %B %-d, %-H:%M %p') - timedelta(seconds=30)),
+    'time': str(datetime.now().strftime('%A, %B %-d, %-H:%M %p')),
     'pool-pump': 'OFF',
     'pool-heater': 'OFF',
     'pool-temp': str(round(water_temp.read())) + ' ºF',
