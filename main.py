@@ -40,6 +40,7 @@ pump_chart = LineGraph()
 pump_chart.labels.grouped, pump_chart.data.PumpUsage.data = crud.get_pump_chart_data()
 temp_chart = LineGraph()
 temp_chart.labels.grouped, temp_chart.data.PoolTemperature.data, temp_chart.data.AirTemperature.data = crud.get_temp_chart_data()
+print(temp_chart.get())
 
 # data structure
 pool_data = {
