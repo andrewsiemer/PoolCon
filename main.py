@@ -118,7 +118,6 @@ def update_sensors():
     pool_data['orp-level'] = str(round(orp_sensor.read())) + ' mV'
     pool_data['pump-chart'] = pump_chart.get()
     pool_data['temp-chart'] = temp_chart.get()
-    print(temp_chart.get())
 
 @sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), minutes=1)
 def record_temp():
