@@ -110,7 +110,7 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
 def update_sensors():
     global pool_data
 
-    pool_data['time'] = str(datetime.now().strftime('%A, %B %-d, %-H:%M %p') - timedelta(seconds=30))
+    pool_data['time'] = str(datetime.now().strftime('%A, %B %-d, %-H:%M %p'))
     pool_data['pool-temp'] = str(round(water_temp.read())) + ' ºF'
     pool_data['air-temp'] = str(round(air_temp.read_temp())) + ' ºF'
     pool_data['water-level'] = str(water_level.read()) + ' %'
