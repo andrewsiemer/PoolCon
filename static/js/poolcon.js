@@ -13,7 +13,7 @@ Chart.defaults.global.defaultFontColor = '#858796';
 var ctx = document.getElementById("temp-chart");
 var temp_chart_data = ''
 
-var ctx = document.getElementById("pump-chart");
+var ctx2 = document.getElementById("pump-chart");
 var pump_chart_data = ''
 // on payload receive parse data
 ws.onmessage = function(event) {
@@ -54,7 +54,7 @@ ws.onmessage = function(event) {
 
     if (pool_data['temp-chart'] != temp_chart_data){
         temp_chart_data = pool_data['temp-chart'];
-        var tempChart = new Chart(ctx, JSON.parse(temp_chart_data));
+        var tempChart = new Chart(ctx2, JSON.parse(temp_chart_data));
     }
 };
 
