@@ -92,7 +92,9 @@ def home(request: Request):
     return templates.TemplateResponse('index.html', { 'request': request })
 
 @app.post("/add")
-def add(request: Request, equipment: str = Form(...), start_time: str = Form(...), end_time: str = Form(...)):
+def add(request: Request):
+    print(request)
+    
     start_datetime = datetime.strptime(start_time, '%I:%M %p')
     end_datetime = datetime.strptime(end_time, '%I:%M %p')
 
