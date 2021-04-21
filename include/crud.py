@@ -9,7 +9,7 @@ from sqlalchemy import func
 
 from include.database import SessionLocal
 import include.models as models
-from include.models import Temperature, Status
+from include.models import Temperature, Status, Schedule
 
 def get_temp_chart_data():
     db = SessionLocal()
