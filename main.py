@@ -93,7 +93,7 @@ def home(request: Request):
 
 @app.post("/add")
 def add(request: Request, body: dict):
-    print(str(body))
+    print(request.form)
     
     # start_datetime = datetime.strptime(start_time, '%I:%M %p')
     # end_datetime = datetime.strptime(end_time, '%I:%M %p')
