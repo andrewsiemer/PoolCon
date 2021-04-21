@@ -82,3 +82,71 @@ def add_status(equipment, status):
     
     db.commit()
     db.close()
+
+def get_schedule_table():
+    db = SessionLocal()
+    table = ''
+
+    entries = db.query(Schedule.id).all()
+    for entry in entries:
+        table += '<tr role="row"><td class="sorting_1">' + entry.equipment + '</td><td>' + entry.start_time.strftime('%-I:%M %p') + '</td><td>' + entry.end_time.strftime('%-I:%M %p') + '</td></tr>'
+
+    db.close()
+
+    return table
+
+def get_schedule_options():
+    db = SessionLocal()
+    index = 0
+    options = ''
+
+    entries = db.query(Schedule.id).all()
+    for entry in entries:
+        options += '<option value=' + index + '>' + entry.equipment + ', ' + entry.start_time.strftime('%-I:%M %p') + ' - ' + entry.end_time.strftime('%-I:%M %p') + '</option>'
+        index += 1
+
+    db.close()
+
+    return options
+
+def get_event_id(equipment, start_time, end_time):
+    return db.query(Schedule).filter(Schedule.equipment==equipment,Schedule.start_time==start_time,Schedule.end_time==end_time).first()
+
+def get_event_list():
+    ids = []
+    
+    entries = db.query(Schedule.id).all()
+    for entry in entries:
+        ids.append(entry.id)
+
+    return ids
+
+def add_event(equipment, start_time, end_time):
+    db = SessionLocal()
+
+    entry = Schedule()
+    entry.equipment = equipment
+    entry.start_time = start_time
+    entry.end_time = end_time
+
+    db.add(entry)
+    db.commit()
+    db.close()
+
+def remove_event(event_id):
+    db = SessionLocal()
+
+    db.delete(db.query(Schedule).filter(Schedule.id==entry_id).first())
+    
+    db.commit()
+    db.close()
+
+def delete_schedule():
+    db = SessionLocal()
+
+    entries = db.query(Schedule.id).all()
+    for entry in entries:
+        db.delete(db.query(Schedule).filter(Schedule.id==entry.id).first())
+    
+    db.commit()
+    db.close()
