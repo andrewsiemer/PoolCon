@@ -265,7 +265,6 @@
 
                     <!-- Content Row -->
                     <div class="row">
-                        
                         <div class="col-xl-12 col-lg-12 col-md-12">
                             <div class="card shadow mb-4">
                                 <!-- Card Header -->
@@ -276,16 +275,16 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-auto">
-                                            <a href="#" class="d-sm-inline-block btn btn-sm shadow-sm" data-toggle="modal" data-target="#addModal">
-                                                <i class="fas fa-plus fa-2x system-label3"></i></a>
+                                            <button class="d-sm-inline-block btn btn-sm shadow-sm" data-toggle="modal" data-target="#addModal">
+                                                <i class="fas fa-plus fa-2x system-label3"></i></button>
                                         </div>
                                         <div class="col-auto">
-                                            <a href="#" class="d-sm-inline-block btn btn-sm shadow-sm" data-toggle="modal" data-target="#removeModal">
-                                                <i class="fas fa-minus fa-2x system-label3"></i></a>
+                                            <button class="d-sm-inline-block btn btn-sm shadow-sm" data-toggle="modal" data-target="#removeModal" onclick="sendMessage('load-schedule')">
+                                                <i class="fas fa-minus fa-2x system-label3"></i></button>
                                         </div>
                                         <div class="col-auto">
-                                            <a href="#" class="d-sm-inline-block btn btn-sm shadow-sm" data-toggle="modal" data-target="#deleteModal">
-                                                <i class="fas fa-trash fa-2x system-label3"></i></a>
+                                            <button class="d-sm-inline-block btn btn-sm shadow-sm" data-toggle="modal" data-target="#deleteModal">
+                                                <i class="fas fa-trash fa-2x system-label3"></i></button>
                                         </div>
                                     </div>
 
@@ -304,16 +303,7 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <tr role="row">
-                                                                    <td class="sorting_1">Pool Pump</td>
-                                                                    <td>5:00 AM</td>
-                                                                    <td>8:00 AM</td>
-                                                                </tr>
-                                                                <tr role="row">
-                                                                    <td class="sorting_1">Pool Heater</td>
-                                                                    <td>12:00 AM</td>
-                                                                    <td>5:00 AM</td>
-                                                                </tr>
+                                                                <span id="schedule-table"></span>
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -340,18 +330,72 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="/add" method="post">
+                            <form action="/add" form="add" method="post">
                                 <h6 class="m-1">Pool Feature</h6>
-                                <select name="dataTable_length" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm"><option value="pump">Pool Pump</option><option value="heater">Pool Heater</option><option value="water">Water Pump</option></select>
+                                <select id="equipment" name="dataTable_length" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm">
+                                    <option value="pump">Pool Pump</option>
+                                    <option value="heater">Pool Heater</option>
+                                    <option value="water">Water Pump</option>
+                                </select>
                                 <h6 class="m-1">Start Time:</h6>
-                                <select name="dataTable_length" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option></select>
+                                <select id="start_time" name="dataTable_length" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm">
+                                    <option value="0">12:00 AM</option>
+                                    <option value="1">1:00 AM</option>
+                                    <option value="2">2:00 AM</option>
+                                    <option value="3">3:00 AM</option>
+                                    <option value="4">4:00 AM</option>
+                                    <option value="5">5:00 AM</option>
+                                    <option value="6">6:00 AM</option>
+                                    <option value="7">7:00 AM</option>
+                                    <option value="8">8:00 AM</option>
+                                    <option value="9">9:00 AM</option>
+                                    <option value="10">10:00 AM</option>
+                                    <option value="11">11:00 AM</option>
+                                    <option value="12">12:00 PM</option>
+                                    <option value="13">1:00 PM</option>
+                                    <option value="14">2:00 PM</option>
+                                    <option value="15">3:00 PM</option>
+                                    <option value="16">4:00 PM</option>
+                                    <option value="17">5:00 PM</option>
+                                    <option value="18">6:00 PM</option>
+                                    <option value="19">7:00 PM</option>
+                                    <option value="20">8:00 PM</option>
+                                    <option value="21">9:00 PM</option>
+                                    <option value="22">10:00 PM</option>
+                                    <option value="23">11:00 PM</option>
+                                </select>
                                 <h6 class="m-1">End Time:</h6>
-                                <select name="dataTable_length" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option></select>
+                                <select id="end_time" name="dataTable_length" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm">
+                                    <option value="1">1:00 AM</option>
+                                    <option value="2">2:00 AM</option>
+                                    <option value="3">3:00 AM</option>
+                                    <option value="4">4:00 AM</option>
+                                    <option value="5">5:00 AM</option>
+                                    <option value="6">6:00 AM</option>
+                                    <option value="7">7:00 AM</option>
+                                    <option value="8">8:00 AM</option>
+                                    <option value="9">9:00 AM</option>
+                                    <option value="10">10:00 AM</option>
+                                    <option value="11">11:00 AM</option>
+                                    <option value="12">12:00 PM</option>
+                                    <option value="13">1:00 PM</option>
+                                    <option value="14">2:00 PM</option>
+                                    <option value="15">3:00 PM</option>
+                                    <option value="16">4:00 PM</option>
+                                    <option value="17">5:00 PM</option>
+                                    <option value="18">6:00 PM</option>
+                                    <option value="19">7:00 PM</option>
+                                    <option value="20">8:00 PM</option>
+                                    <option value="21">9:00 PM</option>
+                                    <option value="22">10:00 PM</option>
+                                    <option value="23">11:00 PM</option>
+                                    <option value="24">12:00 PM</option>
+                                </select>
                             </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn system-white" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-active system-white">Add</button>
+                            <button type="submit" form="add" class="btn btn-active system-white">Add</button>
                         </div>
                     </div>
                 </div>
@@ -368,14 +412,16 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="/add" method="post">
+                            <form action="/remove" form="remove" method="delete">
                                 <h6 class="m-1">Pool Feature</h6>
-                                <select name="dataTable_length" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm"><option value="pump">Pool Pump, 5:00 AM - 8:00 AM</option><option value="heater">Pool Heater, 12:00 AM - 5:00 AM</option></select>
+                                <select id='job' name="dataTable_length" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm">
+                                    <span id="schedule-opt"></span>
+                                </select>
                             </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn system-white" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-active system-white">Remove</button>
+                            <button type="submit" form="remove" class="btn btn-active system-white">Remove</button>
                         </div>
                     </div>
                 </div>
@@ -392,11 +438,13 @@
                             </button>
                         </div>
                         <div class="modal-body">
+                            <form action="/delete" form="delete" method="delete"></form>
                             Are you sure you would like to delete all scheduled events?
+                            </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn system-white" data-dismiss="modal">No</button>
-                            <button type="button" class="btn btn-red system-white">Yes</button>
+                            <button type="submit" form="delete" class="btn btn-red system-white">Yes</button>
                         </div>
                     </div>
                 </div>
