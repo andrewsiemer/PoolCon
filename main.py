@@ -2,7 +2,7 @@ import time, json
 from typing import List
 from datetime import datetime, timedelta
 
-from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect, Form
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -53,7 +53,9 @@ pool_data = {
     'ph-level': str(round(ph_sensor.read())),
     'orp-level': str(round(orp_sensor.read())) + ' mV',
     'pump-chart': '', #pump_chart.get(),
-    'temp-chart': temp_chart.get()
+    'temp-chart': temp_chart.get(),
+    'schedule-table': '',
+    'schedule-opt': ''
 }
 
 def get_db():
@@ -90,6 +92,75 @@ manager = ConnectionManager()
 def home(request: Request):
     return templates.TemplateResponse('index.html', { 'request': request })
 
+@app.post("/add")
+def add(request: Request, equipment: str = Form(...), start_time: str = Form(...), end_time: str = Form(...)):
+    start_datetime = datetime.strptime(start_time, '%I:%M %p')
+    end_datetime = datetime.strptime(end_time, '%I:%M %p')
+
+    if start_datetime < end_datetime:
+        crud.add_event(equipment, start_datetime, end_datetime)
+        event_id = crud.get_event_id(equipment, start_datetime, end_datetime)
+        
+        sched.add_job(control_relay, 'cron', hour=start_datetime.strftime('%-H'), minute=start_datetime.strftime('%-M'), args=[equipment,'ON'], id=str(event_id)+'_ON')
+        sched.add_job(control_relay, 'cron', hour=end_datetime.strftime('%-H'), minute=end_datetime.strftime('%-M'), args=[equipment,'OFF'], id=str(event_id)+'_OFF')
+    else:
+        print('Invalid time range.')
+
+def control_relay(equipment, state):
+    if 'Pool Pump' in equipment:
+        if state == 'ON':
+            pool_pump.on()
+            pool_data['pool-pump'] = state
+            crud.add_status('pool-pump', state)
+        else:
+            pool_pump.off()
+            pool_data['pool-pump'] = state
+            crud.add_status('pool-pump', state)
+    elif 'Pool Heater' in equipment:
+        if state == 'ON':
+            pool_heater.on()
+            pool_data['pool-heater'] = state
+            if pool_data['pool-pump'] == 'OFF':
+                pool_pump.on()
+                pool_data['pool-pump'] = state
+                crud.add_status('pool-pump', state)
+        else:
+            pool_heater.off()
+            pool_data['pool-heater'] = state
+    elif 'Water Valve' in equipment:
+        if state == 'ON':
+            water_valve.on()
+            pool_data['pool-pump'] = state
+            crud.add_status('pool-pump', state)
+        else:
+            water_valve.off()
+            pool_data['pool-pump'] = state
+            crud.add_status('pool-pump', state)
+
+@app.delete("/remove")
+def remove(request: Request, job: str = Form(...)):
+    parse = job.partition(', ')
+    print(parse)
+    equipment = parse[0]
+    start_time, sep, end_time = parse[2].partition(' - ')
+
+    start_datetime = datetime.strptime(start_time, '%I:%M %p')
+    end_datetime = datetime.strptime(end_time, '%I:%M %p')
+
+    event_id = crud.get_event_id(equipment, start_datetime, end_datetime)
+    crud.remove_event(event_id)
+
+    sched.remove_job(str(event_id)+'_ON')
+    sched.remove_job(str(event_id)+'_OFF')
+
+@app.delete("/delete")
+def delete(request: Request):
+    jobs = crud.get_event_list()
+
+    for event_id in jobs:
+        sched.remove_job(str(event_id)+'_ON')
+        sched.remove_job(str(event_id)+'_OFF')
+
 @app.websocket("/ws/{client_id}")
 async def websocket_endpoint(websocket: WebSocket, client_id: int):
     global pool_data
@@ -99,14 +170,17 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
             data = await websocket.receive_text()
             client, event = data.split(' ')
             print('Client: ' + client + '\tEvent: ' + event)
-            if 'toggle' in event:
+            if 'status-update' in event:
+                update_sensors()
+            elif 'toggle' in event:
                 toggle_event(event)
+            elif 'load-schedule' in event:
+                pool_data['schedule-opt'] = crud.get_schedule_options()
             await manager.broadcast(json.dumps(pool_data))
     except WebSocketDisconnect:
         manager.disconnect(websocket)
         await manager.broadcast(f"Client #{client_id} exited.")
 
-@sched.scheduled_job('interval', seconds=5)
 def update_sensors():
     global pool_data
 
@@ -118,14 +192,7 @@ def update_sensors():
     pool_data['orp-level'] = str(round(orp_sensor.read())) + ' mV'
     pool_data['pump-chart'] = '', #pump_chart.get()
     pool_data['temp-chart'] = temp_chart.get()
-
-@sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), minutes=1)
-def record_temp():
-    pool_temp = int(pool_data['pool-temp'].replace(' ºF', ''))
-    air_temp = int(pool_data['air-temp'].replace(' ºF', ''))
-    crud.add_temp(pool_temp, air_temp)
-
-    temp_chart.labels.grouped, temp_chart.data.PoolTemperature.data, temp_chart.data.AirTemperature.data = crud.get_temp_chart_data()
+    pool_data['schedule-table'] = crud.get_schedule_table()
 
 def toggle_event(event: str):
     global pool_data, pool_pump
@@ -141,6 +208,16 @@ def toggle_event(event: str):
         pool_data['pool-heater'] = status
     if 'water-valve' in event:
         pool_data['water-valve'] = water_valve.toggle()
+
+@sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), minutes=1)
+def record_temp():
+    update_sensors()
+    
+    pool_temp = int(pool_data['pool-temp'].replace(' ºF', ''))
+    air_temp = int(pool_data['air-temp'].replace(' ºF', ''))
+    crud.add_temp(pool_temp, air_temp)
+
+    temp_chart.labels.grouped, temp_chart.data.PoolTemperature.data, temp_chart.data.AirTemperature.data = crud.get_temp_chart_data()
 
 @app.on_event("shutdown")
 def shutdown_event():
