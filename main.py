@@ -92,8 +92,9 @@ def home(request: Request):
     return templates.TemplateResponse('index.html', { 'request': request })
 
 @app.post("/add")
-def add(request: Request):
-    print(request.json())
+async def add(request: Request):
+    json_param = await request.json()
+    print(json_param)
 
     # start_datetime = datetime.strptime(start_time, '%I:%M %p')
     # end_datetime = datetime.strptime(end_time, '%I:%M %p')
