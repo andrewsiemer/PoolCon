@@ -91,7 +91,7 @@ manager = ConnectionManager()
 def home(request: Request):
     return templates.TemplateResponse('index.html', { 'request': request })
 
-@app.post("/add")
+@app.get("/add")
 async def add(request: Request):
     json_param = await request.json()
     print(json_param)
