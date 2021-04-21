@@ -330,7 +330,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="/add" form="add" method="post">
+                            <form action="/add" id="add" method="post">
                                 <h6 class="m-1">Pool Feature</h6>
                                 <select id="equipment" name="dataTable_length" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm">
                                     <option value="pump">Pool Pump</option>
@@ -395,7 +395,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn system-white" data-dismiss="modal">Close</button>
-                            <button type="submit" form="add" class="btn btn-active system-white">Add</button>
+                            <button type="submit" form="add-form" class="btn btn-active system-white">Add</button>
                         </div>
                     </div>
                 </div>
@@ -412,7 +412,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="/remove" form="remove" method="delete">
+                            <form action="/remove" id="remove" method="delete">
                                 <h6 class="m-1">Pool Feature</h6>
                                 <select id='job' name="dataTable_length" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm">
                                     <span id="schedule-opt"></span>
@@ -438,7 +438,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="/delete" form="delete" method="delete"></form>
+                            <form action="/delete" id="delete" method="delete"></form>
                             Are you sure you would like to delete all scheduled events?
                             </form>
                         </div>
