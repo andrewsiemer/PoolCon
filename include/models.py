@@ -19,3 +19,11 @@ class Status(Base):
     timestamp = Column(DateTime, primary_key=True, index=True) 
     equipment = Column(String)
     status = Column(String)
+
+class Schedule(Base):
+    __tablename__ = "schedule"
+
+    id = Column(Integer, primary_key=True, index=True) 
+    equipment = Column(String)
+    start_time = Column(DateTime)
+    end_time = Column(DateTime)
