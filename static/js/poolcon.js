@@ -48,10 +48,12 @@ ws.onmessage = function(event) {
         temp_chart_data = pool_data['temp-chart'];
         var tempChart = new Chart(ctx, JSON.parse(temp_chart_data));
     }
+
+    document.querySelector("#schedule").textContent = pool_data['schedule'];
 };
 
 // create interval to ask for sensor updates
-var update_interval = window.setInterval(sendMessage, 1000, 'status-update');
+var update_interval = window.setInterval(sendMessage, 5000, 'status-update');
 
 // send event payload
 function sendMessage(event) {
