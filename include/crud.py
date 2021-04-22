@@ -85,13 +85,13 @@ def add_status(equipment, status):
 
 def get_schedule_table():
     db = SessionLocal()
-    table = ''
+    table = '</tr>'
 
     entries = db.query(Schedule.id).all()
     for id in entries:
         entry = db.query(Schedule).filter(Schedule.id==id[0]).first()
         table += '<tr role="row"><td class="sorting_1">' + entry.equipment + '</td><td>' + entry.start_time.strftime('%-I:%M %p') + '</td><td>' + entry.end_time.strftime('%-I:%M %p') + '</td></tr>'
-
+    table += '<tr role="row">'
     db.close()
 
     return table
