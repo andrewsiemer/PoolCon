@@ -55,7 +55,7 @@ def add_temp(pool_temp, air_temp):
     db.commit()
     db.refresh(entry)
 
-    while db.query(Temperature).count() > 12:
+    while db.query(Temperature).count() >= 24:
         result = db.query(Temperature,func.min(Temperature.timestamp))
         db.delete(db.query(Temperature).filter(Temperature.timestamp==result[0][1]).first())
     
