@@ -227,7 +227,7 @@ def record_temp():
     crud.add_temp(pool_temp, air_temp)
 
     temp_chart.labels.grouped, temp_chart.data.PoolTemperature.data, temp_chart.data.AirTemperature.data = crud.get_temp_chart_data()
-    sched.add_job(record_temp, 'date', run_date=str(datetime.now() + timedelta(seconds=3)))
+    #sched.add_job(record_temp, 'date', run_date=str(datetime.now() + timedelta(seconds=3)))
 record_temp()
 
 @app.on_event("shutdown")
