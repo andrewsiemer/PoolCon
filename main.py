@@ -214,7 +214,11 @@ def update_schedule():
     pool_data['schedule-tbl'] = crud.get_schedule_table()
 
 def toggle_event(event: str):
-    global pool_data, pool_pump, stopwatch
+    global pool_data, pool_pump, stopwatch, updating
+    while updating:
+        time.sleep(0.1)
+    
+    updating = True
     if 'pool-pump' in event:
         status = pool_pump.toggle()
         pool_data['pool-pump'] = status
@@ -235,6 +239,7 @@ def toggle_event(event: str):
         pool_data['pool-heater'] = status
     if 'water-valve' in event:
         pool_data['water-valve'] = water_valve.toggle()
+    updating = False
 
 @sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), minutes=5, max_instances=10)
 def record_temp():
