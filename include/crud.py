@@ -50,15 +50,15 @@ def add_temp(pool_temp, air_temp):
     entry.timestamp = datetime.now()
     entry.pool_temp = pool_temp
     entry.air_temp = air_temp
-
+    print('4')
     db.add(entry)
     db.commit()
     db.refresh(entry)
-
+    print('5')
     while db.query(Temperature).count() >= 24:
         result = db.query(Temperature,func.min(Temperature.timestamp))
         db.delete(db.query(Temperature).filter(Temperature.timestamp==result[0][1]).first())
-    
+    print('6')
     db.close()
 
 def add_status(equipment, status):
