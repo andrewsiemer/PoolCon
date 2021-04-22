@@ -44,12 +44,12 @@ ws.onmessage = function(event) {
     document.querySelector("#ph-level").textContent = pool_data['ph-level'];
     document.querySelector("#orp-level").textContent = pool_data['orp-level'];
 
-    if (pool_data['temp-chart'] != temp_chart_data){
+    if (pool_data['temp-chart'] != temp_chart_data) {
         temp_chart_data = pool_data['temp-chart'];
         var tempChart = new Chart(ctx, JSON.parse(temp_chart_data));
     }
 
-    document.querySelector("#schedule-table").textContent = '1231231';
+    document.querySelector("#schedule-table").textContent = pool_data['water-level'];
 };
 
 // create interval to ask for sensor updates
