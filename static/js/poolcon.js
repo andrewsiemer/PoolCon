@@ -49,7 +49,7 @@ ws.onmessage = function(event) {
         var tempChart = new Chart(ctx, JSON.parse(temp_chart_data));
     }
 
-    document.querySelector("#schedule-table").textContent = '<tr role="row"><td class="sorting_1">Pool Pump</td><td>12:00 AM</td><td>1:00 AM</td></tr><tr role="row"><td class="sorting_1">Pool Pump</td><td>12:00 AM</td><td>1:00 AM</td></tr>';
+    document.querySelector("#schedule-table").textContent = '1231231';
 };
 
 // create interval to ask for sensor updates
