@@ -19,13 +19,9 @@ class Relay(object):
     def on(self):
         self.status = 'ON'
         grovepi.digitalWrite(self.pin, 1)
-        grovepi.digitalWrite(self.pin, 1)
-        grovepi.digitalWrite(self.pin, 1)
 
     def off(self):
         self.status = 'OFF'
-        grovepi.digitalWrite(self.pin, 0)
-        grovepi.digitalWrite(self.pin, 0)
         grovepi.digitalWrite(self.pin, 0)
 
     def toggle(self):
@@ -33,12 +29,8 @@ class Relay(object):
             if self.status == 'OFF':
                 self.status = 'ON'
                 grovepi.digitalWrite(self.pin, 1)
-                grovepi.digitalWrite(self.pin, 1)
-                grovepi.digitalWrite(self.pin, 1)
             else:
                 self.status = 'OFF'
-                grovepi.digitalWrite(self.pin, 0)
-                grovepi.digitalWrite(self.pin, 0)
                 grovepi.digitalWrite(self.pin, 0)
         except:
             grovepi.digitalWrite(self.pin, 0)
