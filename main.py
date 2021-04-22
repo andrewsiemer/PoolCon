@@ -97,7 +97,7 @@ async def add(request: Request, equipment: str, start_time: str, end_time: str):
     start_datetime = datetime.strptime(start_time, '%I:%M %p')
     end_datetime = datetime.strptime(end_time, '%I:%M %p')
 
-    if start_datetime < end_datetime:
+    if start_datetime < end_datetime and not crud.get_event_id(equipment, start_datetime, end_datetime):
         crud.add_event(equipment, start_datetime, end_datetime)
         event_id = crud.get_event_id(equipment, start_datetime, end_datetime)
         
@@ -148,6 +148,8 @@ def remove(request: Request, event_id: str):
     sched.remove_job(str(event_id)+'_ON')
     sched.remove_job(str(event_id)+'_OFF')
 
+    return templates.TemplateResponse('index.html', { 'request': request })
+
 @app.get("/delete")
 def delete(request: Request):
     global sched
@@ -156,6 +158,8 @@ def delete(request: Request):
     for event_id in jobs:
         sched.remove_job(str(event_id)+'_ON')
         sched.remove_job(str(event_id)+'_OFF')
+
+        return templates.TemplateResponse('index.html', { 'request': request })
 
 @app.websocket("/ws/{client_id}")
 async def websocket_endpoint(websocket: WebSocket, client_id: int):
