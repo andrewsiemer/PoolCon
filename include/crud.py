@@ -117,6 +117,18 @@ def get_event_id(equipment, start_time, end_time):
     db.close()
     return ret
 
+def get_next_id():
+    db = SessionLocal()
+        
+    result = db.query(Schedule,func.max(Schedule.id))
+    if result:
+        result += 1
+    else:
+        result = 1
+
+    print(result)
+    return result
+
 def get_event_list():
     db = SessionLocal()
     ids = []
@@ -124,7 +136,7 @@ def get_event_list():
     entries = db.query(Schedule.id).all()
     for entry in entries:
         ids.append(entry[0])
-    print(ids)
+
     db.close()
     return ids
 
@@ -132,6 +144,7 @@ def add_event(equipment, start_time, end_time):
     db = SessionLocal()
 
     entry = Schedule()
+    entry.id = crud.get_next_id()
     entry.equipment = equipment
     entry.start_time = start_time
     entry.end_time = end_time
