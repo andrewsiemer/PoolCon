@@ -193,7 +193,7 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
 @sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)),seconds=5)
 def update_sensors():
     global pool_data, stopwatch
-
+    print(str(stopwatch))
     pool_data['time'] = str(datetime.now().strftime('%A, %B %-d, %-I:%M %p'))
     pool_data['pool-temp'] = str(round(water_temp.read())) + ' ºF'
     pool_data['air-temp'] = str(round(air_temp.read_temp())) + ' ºF'
