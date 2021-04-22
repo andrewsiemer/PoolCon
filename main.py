@@ -7,6 +7,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from apscheduler.schedulers.background import BackgroundScheduler
 from sqlalchemy.orm import Session
+from stopwatch import Stopwatch
 
 from include.database import SessionLocal, engine
 import include.models as models
@@ -39,6 +40,8 @@ pump_chart = PumpGraph()
 pump_chart.labels.grouped, pump_chart.data.PumpUsage.data = crud.get_pump_chart_data()
 temp_chart = TempGraph()
 temp_chart.labels.grouped, temp_chart.data.PoolTemperature.data, temp_chart.data.AirTemperature.data = crud.get_temp_chart_data()
+stopwatch = Stopwatch()
+stopwatch.reset()
 
 # data structure
 pool_data = {
@@ -54,7 +57,8 @@ pool_data = {
     'pump-chart': '', #pump_chart.get(),
     'temp-chart': temp_chart.get(),
     'schedule-tbl': '',
-    'schedule-opt': ''
+    'schedule-opt': '',
+    'pump-time': ''
 }
 
 def get_db():
@@ -110,15 +114,18 @@ async def add(request: Request, equipment: str, start_time: str, end_time: str):
     return templates.TemplateResponse('index.html', { 'request': request })
 
 def control_relay(equipment, state):
+    global stopwatch
     if 'Pool Pump' in equipment:
         if state == 'ON':
             pool_pump.on()
             pool_data['pool-pump'] = state
             crud.add_status('pool-pump', state)
+            stopwatch.start()
         else:
             pool_pump.off()
             pool_data['pool-pump'] = state
             crud.add_status('pool-pump', state)
+            stopwatch.stop()
     elif 'Pool Heater' in equipment:
         if state == 'ON':
             pool_heater.on()
@@ -196,30 +203,37 @@ def update_sensors():
     #pool_data['pump-chart'] = pump_chart.get()
     pool_data['temp-chart'] = temp_chart.get()
     pool_data['schedule-tbl'] = crud.get_schedule_table()
+    pool_data['pump-time'] = str(stopwatch)
 
 def update_schedule():
     global pool_data
     pool_data['schedule-tbl'] = crud.get_schedule_table()
 
 def toggle_event(event: str):
-    global pool_data, pool_pump
+    global pool_data, pool_pump, stopwatch
     if 'pool-pump' in event:
         status = pool_pump.toggle()
         pool_data['pool-pump'] = status
         crud.add_status('pool-pump', status)
+        if status == 'ON':
+            stopwatch.start()
+        else:
+            stopwatch.stop()
     if 'pool-heater' in event:
         status = pool_heater.toggle()
         if status == 'ON' and pool_data['pool-pump'] == 'OFF':
             pool_data['pool-pump'] = pool_pump.toggle()
             crud.add_status('pool-pump', status)
+            if status == 'ON':
+                stopwatch.start()
+            else:
+                stopwatch.stop()
         pool_data['pool-heater'] = status
     if 'water-valve' in event:
         pool_data['water-valve'] = water_valve.toggle()
 
-@sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), seconds=3)
+@sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), minutes=5)
 def record_temp():
-    global sched
-
     pool_temp = int(pool_data['pool-temp'].replace(' ºF', ''))
     air_temp = int(pool_data['air-temp'].replace(' ºF', ''))
 
