@@ -50,7 +50,7 @@ ws.onmessage = function(event) {
         var tempChart = new Chart(ctx, JSON.parse(temp_chart_data));
     }
 
-    document.querySelector("#schedule-tbl").textContent = pool_data['schedule-tbl'];
+    document.getElementById('schedule-tbl').innerHTML = pool_data['schedule-tbl'];
 };
 
 // create interval to ask for sensor updates
