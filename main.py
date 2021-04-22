@@ -171,6 +171,7 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
     await manager.connect(websocket)
     try:
         while True:
+            update_sensors()
             data = await websocket.receive_text()
             client, event = data.split(' ')
             print('Client: ' + client + '\tEvent: ' + event)
@@ -183,7 +184,8 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
         manager.disconnect(websocket)
         await manager.broadcast(f"Client #{client_id} exited.")
 
-@sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)),seconds=5)
+# @sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)),seconds=5)
+# sched.add_job(update_sensors, 'cron', hour=event.start_time.strftime('%-H'), minute=event.start_time.strftime('%-M'), id='SENSORS')
 def update_sensors():
     global pool_data
 
