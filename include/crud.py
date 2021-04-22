@@ -19,7 +19,7 @@ def get_temp_chart_data():
 
     entries = db.query(Temperature.timestamp).all()
     for i in entries:
-        labels.append(i[0].strftime('%-H:%M %p'))
+        labels.append(i[0].strftime('%-I:%M %p'))
         entry = db.query(Temperature).filter(Temperature.timestamp==i[0]).first()
         pool.append(entry.pool_temp)
         air.append(entry.air_temp)
@@ -55,7 +55,7 @@ def add_temp(pool_temp, air_temp):
     db.commit()
     db.refresh(entry)
 
-    while db.query(Temperature).count() > 24:
+    while db.query(Temperature).count() > 12:
         result = db.query(Temperature,func.min(Temperature.timestamp))
         db.delete(db.query(Temperature).filter(Temperature.timestamp==result[0][1]).first())
     
