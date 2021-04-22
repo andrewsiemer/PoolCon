@@ -185,7 +185,7 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
 
 @sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)),seconds=5)
 def update_sensors():
-    global pool_data, sched
+    global pool_data
 
     pool_data['time'] = str(datetime.now().strftime('%A, %B %-d, %-I:%M %p'))
     pool_data['pool-temp'] = str(round(water_temp.read())) + ' ºF'
@@ -196,9 +196,6 @@ def update_sensors():
     #pool_data['pump-chart'] = pump_chart.get()
     pool_data['temp-chart'] = temp_chart.get()
     pool_data['schedule-tbl'] = crud.get_schedule_table()
-
-    sched.add_job(update_sensors, 'date', run_date=str(datetime.now() + timedelta(seconds=3)))
-update_sensors()
 
 def update_schedule():
     global pool_data
@@ -229,9 +226,6 @@ def record_temp():
     crud.add_temp(pool_temp, air_temp)
 
     temp_chart.labels.grouped, temp_chart.data.PoolTemperature.data, temp_chart.data.AirTemperature.data = crud.get_temp_chart_data()
-    
-    sched.add_job(record_temp, 'date', run_date=str(datetime.now() + timedelta(seconds=5)))
-record_temp()
 
 @app.on_event("shutdown")
 def shutdown_event():
