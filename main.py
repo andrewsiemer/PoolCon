@@ -136,7 +136,7 @@ def control_relay(equipment, state):
             pool_data['pool-pump'] = state
             crud.add_status('pool-pump', state)
 
-@app.delete("/remove")
+@app.get("/remove")
 def remove(request: Request, event_id: str):
     parse = event_id.partition(', ')
     print(parse)
@@ -152,7 +152,7 @@ def remove(request: Request, event_id: str):
     sched.remove_job(str(event_id)+'_ON')
     sched.remove_job(str(event_id)+'_OFF')
 
-@app.delete("/delete")
+@app.get("/delete")
 def delete(request: Request):
     jobs = crud.get_event_list()
 
