@@ -43,6 +43,8 @@ temp_chart.labels.grouped, temp_chart.data.PoolTemperature.data, temp_chart.data
 stopwatch = Stopwatch()
 stopwatch.reset()
 
+updating = False
+
 # data structure
 pool_data = {
     'time': str(datetime.now().strftime('%A, %B %-d, %-H:%M %p')),
@@ -192,17 +194,20 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
 
 @sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)),seconds=5, max_instances=10)
 def update_sensors():
-    global pool_data
-    pool_data['time'] = str(datetime.now().strftime('%A, %B %-d, %-I:%M %p'))
-    pool_data['pool-temp'] = str(round(water_temp.read())) + ' ºF'
-    pool_data['air-temp'] = str(round(air_temp.read_temp())) + ' ºF'
-    pool_data['water-level'] = str(water_level.read()) + ' %'
-    pool_data['ph-level'] = str(round(ph_sensor.read()))
-    pool_data['orp-level'] = str(round(orp_sensor.read())) + ' mV'
-    #pool_data['pump-chart'] = pump_chart.get()
-    pool_data['temp-chart'] = temp_chart.get()
-    pool_data['schedule-tbl'] = crud.get_schedule_table()
-    pool_data['pump-time'] = str(stopwatch) # str(datetime.strptime(str(round(stopwatch.duration)),'%S').strftime('%-I hr %M mins'))
+    global pool_data, updating
+    if not updating:
+        updating = True
+        pool_data['time'] = str(datetime.now().strftime('%A, %B %-d, %-I:%M %p'))
+        pool_data['pool-temp'] = str(round(water_temp.read())) + ' ºF'
+        pool_data['air-temp'] = str(round(air_temp.read_temp())) + ' ºF'
+        pool_data['water-level'] = str(water_level.read()) + ' %'
+        pool_data['ph-level'] = str(round(ph_sensor.read()))
+        pool_data['orp-level'] = str(round(orp_sensor.read())) + ' mV'
+        #pool_data['pump-chart'] = pump_chart.get()
+        pool_data['temp-chart'] = temp_chart.get()
+        pool_data['schedule-tbl'] = crud.get_schedule_table()
+        pool_data['pump-time'] = str(stopwatch) # str(datetime.strptime(str(round(stopwatch.duration)),'%S').strftime('%-I hr %M mins'))
+        updating = False
 
 def update_schedule():
     global pool_data
@@ -233,12 +238,17 @@ def toggle_event(event: str):
 
 @sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), minutes=5, max_instances=10)
 def record_temp():
-    pool_temp = int(pool_data['pool-temp'].replace(' ºF', ''))
-    air_temp = int(pool_data['air-temp'].replace(' ºF', ''))
+    global updating
+    if not updating:
+        updating = True
+        pool_temp = int(pool_data['pool-temp'].replace(' ºF', ''))
+        air_temp = int(pool_data['air-temp'].replace(' ºF', ''))
 
-    crud.add_temp(pool_temp, air_temp)
+        crud.add_temp(pool_temp, air_temp)
 
-    temp_chart.labels.grouped, temp_chart.data.PoolTemperature.data, temp_chart.data.AirTemperature.data = crud.get_temp_chart_data()
+        temp_chart.labels.grouped, temp_chart.data.PoolTemperature.data, temp_chart.data.AirTemperature.data = crud.get_temp_chart_data()
+        updating = False
+
 
 @app.on_event("shutdown")
 def shutdown_event():
