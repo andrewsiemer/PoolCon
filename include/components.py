@@ -30,14 +30,11 @@ class Relay(object):
 
     def toggle(self):
         try:
-            try:
-                status = int(grovepi.digitalRead(self.pin))
-            except:
-                print('CANNOT GET RELAY STATUS')
             status = -1
             while(status not in [0, 1]):
                 try:
                     status = int(grovepi.digitalRead(self.pin))
+                    print('RELAY STATUS')
                 except:
                     print('CANNOT GET RELAY STATUS')
                     time.sleep(0.1)
