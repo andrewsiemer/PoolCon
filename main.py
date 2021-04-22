@@ -218,7 +218,8 @@ def toggle_event(event: str):
     while updating:
         time.sleep(0.1)
     
-    updating = True
+    if not updating:
+        updating = True
     if 'pool-pump' in event:
         status = pool_pump.toggle()
         pool_data['pool-pump'] = status
