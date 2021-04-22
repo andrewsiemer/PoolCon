@@ -156,6 +156,8 @@ def delete(request: Request):
     jobs = crud.get_event_list()
 
     for event_id in jobs:
+        crud.remove_event(event_id)
+        
         sched.remove_job(str(event_id)+'_ON')
         sched.remove_job(str(event_id)+'_OFF')
 
