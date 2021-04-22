@@ -184,7 +184,6 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
         await manager.broadcast(f"Client #{client_id} exited.")
 
 # @sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)),seconds=5)
-# sched.add_job(update_sensors, 'cron', hour=event.start_time.strftime('%-H'), minute=event.start_time.strftime('%-M'), id='SENSORS')
 def update_sensors():
     global pool_data
 
@@ -217,7 +216,7 @@ def toggle_event(event: str):
     if 'water-valve' in event:
         pool_data['water-valve'] = water_valve.toggle()
 
-@sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), minutes=1)
+@sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), seconds=3)
 def record_temp():
     pool_temp = int(pool_data['pool-temp'].replace(' ºF', ''))
     air_temp = int(pool_data['air-temp'].replace(' ºF', ''))
