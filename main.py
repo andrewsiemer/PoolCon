@@ -241,7 +241,7 @@ def toggle_event(event: str):
         pool_data['water-valve'] = water_valve.toggle()
     updating = False
 
-@sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), minutes=5, max_instances=10)
+@sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), seconds=5, max_instances=10)
 def record_temp():
     global updating
     if not updating:
