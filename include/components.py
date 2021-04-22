@@ -100,12 +100,12 @@ class WaterSensor(object):
             if (low_data[i] >= self.sensorvalue_min and low_data[i] <= self.sensorvalue_max):
                 low_count += 1
             if (low_count == 8):
-                print('Pass')
+                pass
         for i in range(0,12):
             if (high_data[i] >= self.sensorvalue_min and high_data[i] <= self.sensorvalue_max):
                 low_count += 1
             if (high_count == 12):
-                print('Pass')
+                pass
 
         for i in range(0,8):
             if low_data[i] > 100:
