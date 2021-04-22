@@ -135,7 +135,7 @@ def get_event_list():
     entries = db.query(Schedule.id).all()
     for entry in entries:
         ids.append(entry[0])
-    print(ids)
+
     db.close()
     return ids
 
