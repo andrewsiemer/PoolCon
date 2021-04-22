@@ -101,7 +101,6 @@ async def add(request: Request, equipment: str, start_time: str, end_time: str):
         crud.add_event(equipment, start_datetime, end_datetime)
         event_id = crud.get_event_id(equipment, start_datetime, end_datetime)
         
-        print(str(event_id)+'_ON')
         sched.add_job(control_relay, 'cron', hour=start_datetime.strftime('%-H'), minute=start_datetime.strftime('%-M'), args=[equipment,'ON'], id=str(event_id)+'_ON')
         sched.add_job(control_relay, 'cron', hour=end_datetime.strftime('%-H'), minute=end_datetime.strftime('%-M'), args=[equipment,'OFF'], id=str(event_id)+'_OFF')
     else:
