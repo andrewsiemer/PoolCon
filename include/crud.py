@@ -121,8 +121,8 @@ def get_next_id():
     db = SessionLocal()
         
     last = db.query(Schedule,func.max(Schedule.id))
-    if last:
-        result = last[0] + 1
+    if last[0][1]:
+        result = last[0][1] + 1
     else:
         result = 1
 
