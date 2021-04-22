@@ -51,6 +51,7 @@ ws.onmessage = function(event) {
     }
 
     document.getElementById('schedule-tbl').innerHTML = pool_data['schedule-tbl'];
+    document.getElementById('schedule-opt').innerHTML = pool_data['schedule-opt'];
 };
 
 // create interval to ask for sensor updates
