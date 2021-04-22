@@ -50,12 +50,12 @@ pool_data = {
     'time': str(datetime.now().strftime('%A, %B %-d, %-H:%M %p')),
     'pool-pump': 'OFF',
     'pool-heater': 'OFF',
-    'pool-temp': '',
-    'air-temp': '',
+    'pool-temp': str(round(water_temp.read())) + ' ºF',
+    'air-temp': str(round(air_temp.read_temp())) + ' ºF',
     'water-valve': 'OFF',
-    'water-level': '',
-    'ph-level': '',
-    'orp-level': '',
+    'water-level': str(water_level.read()) + ' %',
+    'ph-level': str(round(ph_sensor.read())),
+    'orp-level': str(round(orp_sensor.read())) + ' mV',
     'pump-chart': '', #pump_chart.get(),
     'temp-chart': temp_chart.get(),
     'schedule-tbl': '',
@@ -245,7 +245,7 @@ def toggle_event(event: str):
 @sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), seconds=5, max_instances=10)
 def record_temp():
     global updating
-    print('HERE ' + str(updating))
+    print('HERE' + str(updating))
     if not updating:
         updating = True
         pool_temp = int(pool_data['pool-temp'].replace(' ºF', ''))
