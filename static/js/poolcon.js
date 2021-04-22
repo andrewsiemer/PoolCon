@@ -53,7 +53,7 @@ ws.onmessage = function(event) {
 };
 
 // create interval to ask for sensor updates
-var update_interval = window.setInterval(sendMessage, 5000, 'status-update');
+var update_interval = window.setInterval(sendMessage, 3000, 'status-update');
 
 // send event payload
 function sendMessage(event) {
