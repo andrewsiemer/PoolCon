@@ -409,10 +409,9 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="/remove" id="remove" method="delete">
+                            <form action="/remove" id="remove" method="get">
                                 <h6 class="m-1">Pool Feature</h6>
-                                <select id="schedule-opt" name="dataTable_length" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm">
-                                </select>
+                                <select id="schedule-opt" name="event_id" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm"></select>
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -434,7 +433,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="/delete" id="delete" method="delete"></form>
+                            <form action="/delete" id="delete" method="get"></form>
                             Are you sure you would like to delete all scheduled events?
                             </form>
                         </div>
