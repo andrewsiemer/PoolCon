@@ -105,6 +105,8 @@ async def add(request: Request, equipment: str, start_time: str, end_time: str):
         sched.add_job(control_relay, 'cron', hour=end_datetime.strftime('%-H'), minute=end_datetime.strftime('%-M'), args=[equipment,'OFF'], id=str(event_id)+'_OFF')
     else:
         print('Invalid time range.')
+    
+    return templates.TemplateResponse('index.html', { 'request': request })
 
 def control_relay(equipment, state):
     if 'Pool Pump' in equipment:
