@@ -184,7 +184,6 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
         await manager.broadcast(f"Client #{client_id} exited.")
 
 # @sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)),seconds=5)
-update_sensors()
 def update_sensors(background_tasks: BackgroundTasks):
     global pool_data
 
@@ -199,6 +198,7 @@ def update_sensors(background_tasks: BackgroundTasks):
     pool_data['schedule-tbl'] = crud.get_schedule_table()
 
     background_tasks.add_task(update_sensors)
+update_sensors()
 
 def update_schedule():
     global pool_data
