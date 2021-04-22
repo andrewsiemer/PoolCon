@@ -141,7 +141,7 @@ def add_event(equipment, start_time, end_time):
 def remove_event(event_id):
     db = SessionLocal()
 
-    db.delete(db.query(Schedule).filter(Schedule.id==entry_id).first())
+    db.delete(db.query(Schedule).filter(Schedule.id==event_id).first())
     
     db.commit()
     db.close()
