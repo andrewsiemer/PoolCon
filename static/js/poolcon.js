@@ -18,6 +18,8 @@ ws.onmessage = function(event) {
     
     document.querySelector("#time").textContent = pool_data['time'];
     document.querySelector("#pool-pump").textContent = pool_data['pool-pump'];
+    document.querySelector("#schedule-tbl").textContent = pool_data['pool-pump'];
+
     if (pool_data['pool-pump'] == 'ON'){
         document.getElementById("pool-pump-btn").className = 'd-sm-inline-block btn btn-sm shadow-sm btn-active';
     }
@@ -43,7 +45,6 @@ ws.onmessage = function(event) {
     document.querySelector("#water-level").textContent = pool_data['water-level'];
     document.querySelector("#ph-level").textContent = pool_data['ph-level'];
     document.querySelector("#orp-level").textContent = pool_data['orp-level'];
-    document.querySelector("#schedule-tbl").textContent = pool_data['water-level'];
 
     if (pool_data['temp-chart'] != temp_chart_data) {
         temp_chart_data = pool_data['temp-chart'];
@@ -52,7 +53,7 @@ ws.onmessage = function(event) {
 };
 
 // create interval to ask for sensor updates
-var update_interval = window.setInterval(sendMessage, 3000, 'status-update');
+var update_interval = window.setInterval(sendMessage, 1000, 'status-update');
 
 // send event payload
 function sendMessage(event) {
