@@ -144,7 +144,7 @@ def add_event(equipment, start_time, end_time):
     db = SessionLocal()
 
     entry = Schedule()
-    entry.id = crud.get_next_id()
+    entry.id = get_next_id()
     entry.equipment = equipment
     entry.start_time = start_time
     entry.end_time = end_time
