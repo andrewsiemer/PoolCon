@@ -112,12 +112,14 @@ def get_event_id(equipment, start_time, end_time):
     return db.query(Schedule).filter(Schedule.equipment==equipment,Schedule.start_time==start_time,Schedule.end_time==end_time).first()
 
 def get_event_list():
+    db = SessionLocal()
     ids = []
     
     entries = db.query(Schedule.id).all()
     for entry in entries:
         ids.append(entry.id)
 
+    db.close()
     return ids
 
 def add_event(equipment, start_time, end_time):
