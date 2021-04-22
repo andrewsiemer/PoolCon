@@ -243,12 +243,10 @@ def toggle_event(event: str):
         pool_data['water-valve'] = water_valve.toggle()
     updating = False
 
-@sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), seconds=3, max_instances=3)
+@sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), seconds=5, max_instances=3)
 def record_temp():
     global updating
-    print('WAITING - RECORD TEMP')
     if not updating:
-        print('RECORD TEMP')
         updating = True
         pool_temp = int(pool_data['pool-temp'].replace(' ºF', ''))
         air_temp = int(pool_data['air-temp'].replace(' ºF', ''))
