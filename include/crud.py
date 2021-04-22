@@ -109,6 +109,12 @@ def get_schedule_options():
 
     return options
 
+def get_event(event_id):
+    db = SessionLocal()
+    event = db.query(Schedule).filter(Schedule.id==event_id).first()
+    db.close()
+    return event
+
 def get_event_id(equipment, start_time, end_time):
     db = SessionLocal()
     ret = db.query(Schedule).filter(Schedule.equipment==equipment,Schedule.start_time==start_time,Schedule.end_time==end_time).first()
