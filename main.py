@@ -202,7 +202,7 @@ def update_sensors():
     #pool_data['pump-chart'] = pump_chart.get()
     pool_data['temp-chart'] = temp_chart.get()
     pool_data['schedule-tbl'] = crud.get_schedule_table()
-    pool_data['pump-time'] = str(stopwatch)
+    pool_data['pump-time'] = str(stopwatch.duration)
 
 def update_schedule():
     global pool_data
