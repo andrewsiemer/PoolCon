@@ -93,6 +93,7 @@ def home(request: Request):
 
 @app.get("/add")
 async def add(request: Request, equipment: str, start_time: str, end_time: str):
+    global sched
     start_datetime = datetime.strptime(start_time, '%I:%M %p')
     end_datetime = datetime.strptime(end_time, '%I:%M %p')
 
@@ -138,6 +139,7 @@ def control_relay(equipment, state):
 
 @app.get("/remove")
 def remove(request: Request, event_id: str):
+    global sched
     crud.remove_event(event_id)
 
     sched.remove_job(str(event_id)+'_ON')
@@ -145,6 +147,7 @@ def remove(request: Request, event_id: str):
 
 @app.get("/delete")
 def delete(request: Request):
+    global sched
     jobs = crud.get_event_list()
 
     for event_id in jobs:
