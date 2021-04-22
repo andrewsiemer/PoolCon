@@ -104,7 +104,6 @@ def get_schedule_options():
     for id in entries:
         entry = db.query(Schedule).filter(Schedule.id==id[0]).first()
         options += '<option value=' + str(entry.id) + '>' + entry.equipment + ', ' + entry.start_time.strftime('%-I:%M %p') + ' - ' + entry.end_time.strftime('%-I:%M %p') + '</option>'
-        index += 1
 
     db.close()
 
