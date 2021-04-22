@@ -221,13 +221,14 @@ def toggle_event(event: str):
 
 # @sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), seconds=3)
 def record_temp():
+    global sched
     pool_temp = int(pool_data['pool-temp'].replace(' ºF', ''))
     air_temp = int(pool_data['air-temp'].replace(' ºF', ''))
     crud.add_temp(pool_temp, air_temp)
 
     temp_chart.labels.grouped, temp_chart.data.PoolTemperature.data, temp_chart.data.AirTemperature.data = crud.get_temp_chart_data()
     sched.add_job(record_temp, 'date', run_date=str(datetime.now() + timedelta(seconds=3)))
-#record_temp()
+record_temp()
 
 @app.on_event("shutdown")
 def shutdown_event():
