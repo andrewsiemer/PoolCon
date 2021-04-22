@@ -53,7 +53,7 @@ pool_data = {
     'pool-temp': str(round(water_temp.read())) + ' ºF',
     'air-temp': str(round(air_temp.read_temp())) + ' ºF',
     'water-valve': 'OFF',
-    'water-level': str(water_level.read()) + ' %'',
+    'water-level': str(water_level.read()) + ' %',
     'ph-level': str(round(ph_sensor.read())),
     'orp-level': str(round(orp_sensor.read())) + ' mV',
     'pump-chart': '', #pump_chart.get(),
