@@ -251,6 +251,7 @@ def record_temp():
         print('WAITING - RECORD TEMP')
     
     if not updating:
+        print('RECORD TEMP')
         updating = True
         pool_temp = int(pool_data['pool-temp'].replace(' ºF', ''))
         air_temp = int(pool_data['air-temp'].replace(' ºF', ''))
