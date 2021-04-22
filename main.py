@@ -192,7 +192,7 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
         manager.disconnect(websocket)
         await manager.broadcast(f"Client #{client_id} exited.")
 
-@sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)),seconds=5, max_instances=10)
+@sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)),seconds=5, max_instances=3)
 def update_sensors():
     global pool_data, updating
     if not updating:
@@ -217,6 +217,7 @@ def toggle_event(event: str):
     global pool_data, pool_pump, stopwatch, updating
     while updating:
         time.sleep(0.1)
+        print('WAITING')
     
     if not updating:
         updating = True
@@ -242,10 +243,9 @@ def toggle_event(event: str):
         pool_data['water-valve'] = water_valve.toggle()
     updating = False
 
-@sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), seconds=5, max_instances=10)
+@sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), seconds=5, max_instances=3)
 def record_temp():
     global updating
-    print('HERE' + str(updating))
     if not updating:
         updating = True
         pool_temp = int(pool_data['pool-temp'].replace(' ºF', ''))
