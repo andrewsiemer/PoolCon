@@ -113,7 +113,7 @@ def get_event_id(equipment, start_time, end_time):
     db = SessionLocal()
     ret = db.query(Schedule).filter(Schedule.equipment==equipment,Schedule.start_time==start_time,Schedule.end_time==end_time).first()
     db.close()
-    return ret
+    return ret.id
 
 def get_event_list():
     db = SessionLocal()
