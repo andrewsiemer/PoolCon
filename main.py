@@ -26,6 +26,13 @@ models.Base.metadata.create_all(bind=engine)
 sched = BackgroundScheduler(daemon=True, max_instances=3)
 sched.start()
 
+# import scheduled events
+jobs = crud.get_event_list()
+for event_id in jobs:
+    event = crud.get_event(event_id)
+    sched.add_job(control_relay, 'cron', hour=event.start_time, minute=event.start_time, args=[event.equipment,'ON'], id=str(event_id)+'_ON')
+    sched.add_job(control_relay, 'cron', hour=event.end_time, minute=event.end_time, args=[event.equipment,'OFF'], id=str(event_id)+'_OFF')
+
 # components definition
 pool_pump = Relay(2)
 pool_heater = Relay(3)
