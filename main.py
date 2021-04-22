@@ -197,6 +197,8 @@ def update_sensors():
     pool_data['temp-chart'] = temp_chart.get()
     pool_data['schedule-tbl'] = crud.get_schedule_table()
 
+    print("DONE")
+
 def update_schedule():
     global pool_data
     pool_data['schedule-tbl'] = crud.get_schedule_table()
