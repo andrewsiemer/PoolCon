@@ -50,17 +50,17 @@ pool_data = {
     'time': str(datetime.now().strftime('%A, %B %-d, %-H:%M %p')),
     'pool-pump': 'OFF',
     'pool-heater': 'OFF',
-    'pool-temp': '',
-    'air-temp': '',
+    'pool-temp': str(round(water_temp.read())) + ' ºF',
+    'air-temp': str(round(air_temp.read_temp())) + ' ºF',
     'water-valve': 'OFF',
-    'water-level': '',
-    'ph-level': '',
-    'orp-level': '',
+    'water-level': str(water_level.read()) + ' %'',
+    'ph-level': str(round(ph_sensor.read())),
+    'orp-level': str(round(orp_sensor.read())) + ' mV',
     'pump-chart': '', #pump_chart.get(),
-    'temp-chart': '',
+    'temp-chart': temp_chart.get(),
     'schedule-tbl': '',
     'schedule-opt': '',
-    'pump-time': ''
+    'pump-time': str(stopwatch)
 }
 
 def get_db():
