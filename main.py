@@ -101,8 +101,9 @@ async def add(request: Request, equipment: str, start_time: str, end_time: str):
         crud.add_event(equipment, start_datetime, end_datetime)
         event_id = crud.get_event_id(equipment, start_datetime, end_datetime)
         
-        sched.add_job(control_relay, 'cron', hour=start_datetime.strftime('%-H'), minute=14, args=[equipment,'ON'], id=str(event_id)+'_ON')
-        sched.add_job(control_relay, 'cron', hour=end_datetime.strftime('%-H'), minute=15, args=[equipment,'OFF'], id=str(event_id)+'_OFF')
+        sched.add_job(control_relay, 'cron', hour=start_datetime.strftime('%-H'), minute=start_datetime.strftime('%-M'), args=[equipment,'ON'], id=str(event_id)+'_ON')
+        sched.add_job(control_relay, 'cron', hour=end_datetime.strftime('%-H'), minute=end_datetime.strftime('%-M'), args=[equipment,'OFF'], id=str(event_id)+'_OFF')
+        update_schedule()
     else:
         print('Invalid time range.')
     
@@ -146,6 +147,7 @@ def remove(request: Request, event_id: str):
 
     sched.remove_job(str(event_id)+'_ON')
     sched.remove_job(str(event_id)+'_OFF')
+    update_schedule()
 
     return templates.TemplateResponse('index.html', { 'request': request })
 
@@ -160,6 +162,7 @@ def delete(request: Request):
         sched.remove_job(str(event_id)+'_ON')
         sched.remove_job(str(event_id)+'_OFF')
 
+    update_schedule()
     return templates.TemplateResponse('index.html', { 'request': request })
 
 @app.websocket("/ws/{client_id}")
@@ -192,6 +195,10 @@ def update_sensors():
     pool_data['orp-level'] = str(round(orp_sensor.read())) + ' mV'
     #pool_data['pump-chart'] = pump_chart.get()
     pool_data['temp-chart'] = temp_chart.get()
+    pool_data['schedule-tbl'] = crud.get_schedule_table()
+
+def update_schedule():
+    global pool_data
     pool_data['schedule-tbl'] = crud.get_schedule_table()
 
 
