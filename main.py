@@ -92,21 +92,18 @@ def home(request: Request):
     return templates.TemplateResponse('index.html', { 'request': request })
 
 @app.get("/add")
-async def add(request: Request):
-    json_param = await request.json()
-    print(json_param)
+async def add(request: Request, equipment: str, start_time: str, end_time: str):
+    start_datetime = datetime.strptime(start_time, '%I:%M %p')
+    end_datetime = datetime.strptime(end_time, '%I:%M %p')
 
-    # start_datetime = datetime.strptime(start_time, '%I:%M %p')
-    # end_datetime = datetime.strptime(end_time, '%I:%M %p')
-
-    # if start_datetime < end_datetime:
-    #     crud.add_event(equipment, start_datetime, end_datetime)
-    #     event_id = crud.get_event_id(equipment, start_datetime, end_datetime)
+    if start_datetime < end_datetime:
+        crud.add_event(equipment, start_datetime, end_datetime)
+        event_id = crud.get_event_id(equipment, start_datetime, end_datetime)
         
-    #     sched.add_job(control_relay, 'cron', hour=start_datetime.strftime('%-H'), minute=start_datetime.strftime('%-M'), args=[equipment,'ON'], id=str(event_id)+'_ON')
-    #     sched.add_job(control_relay, 'cron', hour=end_datetime.strftime('%-H'), minute=end_datetime.strftime('%-M'), args=[equipment,'OFF'], id=str(event_id)+'_OFF')
-    # else:
-    #     print('Invalid time range.')
+        sched.add_job(control_relay, 'cron', hour=start_datetime.strftime('%-H'), minute=start_datetime.strftime('%-M'), args=[equipment,'ON'], id=str(event_id)+'_ON')
+        sched.add_job(control_relay, 'cron', hour=end_datetime.strftime('%-H'), minute=end_datetime.strftime('%-M'), args=[equipment,'OFF'], id=str(event_id)+'_OFF')
+    else:
+        print('Invalid time range.')
 
 def control_relay(equipment, state):
     if 'Pool Pump' in equipment:
