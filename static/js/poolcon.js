@@ -18,7 +18,7 @@ ws.onmessage = function(event) {
     
     document.querySelector("#time").textContent = pool_data['time'];
     document.querySelector("#pool-pump").textContent = pool_data['pool-pump'];
-    document.querySelector("#tbl").textContent = 'ON';
+    document.querySelector("#tbl").textContent = pool_data['pool-heater'];
 
     if (pool_data['pool-pump'] == 'ON'){
         document.getElementById("pool-pump-btn").className = 'd-sm-inline-block btn btn-sm shadow-sm btn-active';
