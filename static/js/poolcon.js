@@ -18,7 +18,6 @@ ws.onmessage = function(event) {
     
     document.querySelector("#time").textContent = pool_data['time'];
     document.querySelector("#pool-pump").textContent = pool_data['pool-pump'];
-    document.querySelector("#tbl-data").textContent = pool_data['tbl-data'];
 
     if (pool_data['pool-pump'] == 'ON'){
         document.getElementById("pool-pump-btn").className = 'd-sm-inline-block btn btn-sm shadow-sm btn-active';
@@ -50,6 +49,8 @@ ws.onmessage = function(event) {
         temp_chart_data = pool_data['temp-chart'];
         var tempChart = new Chart(ctx, JSON.parse(temp_chart_data));
     }
+
+    document.querySelector("#schedule-tbl").textContent = pool_data['schedule-tbl'];
 };
 
 // create interval to ask for sensor updates
