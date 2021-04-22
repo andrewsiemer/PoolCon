@@ -169,9 +169,7 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
             data = await websocket.receive_text()
             client, event = data.split(' ')
             print('Client: ' + client + '\tEvent: ' + event)
-            if 'status-update' in event:
-                pass # update_sensors()
-            elif 'toggle' in event:
+            if 'toggle' in event:
                 toggle_event(event)
             elif 'load-schedule' in event:
                 pool_data['schedule-opt'] = crud.get_schedule_options()
@@ -190,7 +188,7 @@ def update_sensors():
     pool_data['water-level'] = str(water_level.read()) + ' %'
     pool_data['ph-level'] = str(round(ph_sensor.read()))
     pool_data['orp-level'] = str(round(orp_sensor.read())) + ' mV'
-    pool_data['pump-chart'] = '', #pump_chart.get()
+    #pool_data['pump-chart'] = pump_chart.get()
     pool_data['temp-chart'] = temp_chart.get()
     pool_data['schedule-table'] = crud.get_schedule_table()
 
