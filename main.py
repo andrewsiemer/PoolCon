@@ -23,7 +23,7 @@ templates = Jinja2Templates(directory='templates')
 models.Base.metadata.create_all(bind=engine)
 
 # task scheduler
-sched = BackgroundScheduler(daemon=True, max_instances=1)
+sched = BackgroundScheduler(daemon=True, max_instances=10)
 sched.start()
 
 # components definition
@@ -183,7 +183,7 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
         manager.disconnect(websocket)
         await manager.broadcast(f"Client #{client_id} exited.")
 
-# @sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)),seconds=5)
+@sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)),seconds=5)
 def update_sensors():
     global pool_data, sched
 
@@ -219,7 +219,7 @@ def toggle_event(event: str):
     if 'water-valve' in event:
         pool_data['water-valve'] = water_valve.toggle()
 
-# @sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), seconds=3)
+@sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), seconds=3)
 def record_temp():
     global sched
 
