@@ -171,7 +171,6 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
     await manager.connect(websocket)
     try:
         while True:
-            update_sensors()
             data = await websocket.receive_text()
             client, event = data.split(' ')
             print('Client: ' + client + '\tEvent: ' + event)
