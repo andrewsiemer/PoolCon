@@ -120,9 +120,9 @@ def get_event_id(equipment, start_time, end_time):
 def get_next_id():
     db = SessionLocal()
         
-    result = db.query(Schedule,func.max(Schedule.id))
+    last = db.query(Schedule,func.max(Schedule.id))
     if result:
-        result += 1
+        result = last[0][1] + 1
     else:
         result = 1
 
