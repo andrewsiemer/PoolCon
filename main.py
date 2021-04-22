@@ -173,7 +173,7 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
             client, event = data.split(' ')
             print('Client: ' + client + '\tEvent: ' + event)
             if 'status-update' in event:
-                update_sensors()
+                pass # update_sensors()
             elif 'toggle' in event:
                 toggle_event(event)
             elif 'load-schedule' in event:
@@ -183,6 +183,7 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
         manager.disconnect(websocket)
         await manager.broadcast(f"Client #{client_id} exited.")
 
+@sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)),seconds=5)
 def update_sensors():
     global pool_data
 
@@ -213,8 +214,6 @@ def toggle_event(event: str):
 
 @sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), minutes=1)
 def record_temp():
-    update_sensors()
-    
     pool_temp = int(pool_data['pool-temp'].replace(' ºF', ''))
     air_temp = int(pool_data['air-temp'].replace(' ºF', ''))
     crud.add_temp(pool_temp, air_temp)
