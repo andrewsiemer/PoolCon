@@ -53,7 +53,7 @@ pool_data = {
     'orp-level': str(round(orp_sensor.read())) + ' mV',
     'pump-chart': '', #pump_chart.get(),
     'temp-chart': temp_chart.get(),
-    'tbl-data': 'OFF',
+    'schedule-tbl': '',
     'schedule-opt': ''
 }
 
@@ -190,7 +190,7 @@ def update_sensors():
     pool_data['orp-level'] = str(round(orp_sensor.read())) + ' mV'
     #pool_data['pump-chart'] = pump_chart.get()
     pool_data['temp-chart'] = temp_chart.get()
-    pool_data['tbl-data'] = 'OFF'#crud.get_schedule_table()
+    pool_data['schedule-tbl'] = crud.get_schedule_table()
 
 def toggle_event(event: str):
     global pool_data, pool_pump
