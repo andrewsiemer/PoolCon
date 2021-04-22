@@ -118,7 +118,7 @@ class WaterSensor(object):
         while touch_val & 0x01:
             trig_section += 1
             touch_val >>= 1
-
+        print(trig_section * 5)
         return trig_section * 5
 
 class PHsensor(object):
