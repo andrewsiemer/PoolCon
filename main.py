@@ -12,7 +12,7 @@ from include.database import SessionLocal, engine
 import include.models as models
 import include.crud as crud
 from include.components import Relay, WaterSensor, DS18B20, DHT11, PHsensor, ORPsensor
-from include.chartjs import LineGraph
+from include.chartjs import PumpGraph, TempGraph
 
 app = FastAPI()
 
@@ -35,9 +35,9 @@ water_valve = Relay(4)
 water_level = WaterSensor()
 ph_sensor = PHsensor(0)
 orp_sensor = ORPsensor(1)
-pump_chart = LineGraph()
+pump_chart = PumpGraph()
 pump_chart.labels.grouped, pump_chart.data.PumpUsage.data = crud.get_pump_chart_data()
-temp_chart = LineGraph()
+temp_chart = TempGraph()
 temp_chart.labels.grouped, temp_chart.data.PoolTemperature.data, temp_chart.data.AirTemperature.data = crud.get_temp_chart_data()
 
 # data structure
