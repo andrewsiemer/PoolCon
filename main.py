@@ -2,7 +2,7 @@ import time, json
 from typing import List
 from datetime import datetime, timedelta
 
-from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect, Form
+from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect, BackgroundTasks
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -184,7 +184,8 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
         await manager.broadcast(f"Client #{client_id} exited.")
 
 # @sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)),seconds=5)
-def update_sensors():
+update_sensors()
+def update_sensors(background_tasks: BackgroundTasks):
     global pool_data
 
     pool_data['time'] = str(datetime.now().strftime('%A, %B %-d, %-I:%M %p'))
@@ -196,6 +197,8 @@ def update_sensors():
     #pool_data['pump-chart'] = pump_chart.get()
     pool_data['temp-chart'] = temp_chart.get()
     pool_data['schedule-tbl'] = crud.get_schedule_table()
+
+    background_tasks.add_task(update_sensors)
 
 def update_schedule():
     global pool_data
