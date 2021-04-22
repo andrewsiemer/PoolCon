@@ -23,7 +23,7 @@ templates = Jinja2Templates(directory='templates')
 models.Base.metadata.create_all(bind=engine)
 
 # task scheduler
-sched = BackgroundScheduler(daemon=True, max_instances=3)
+sched = BackgroundScheduler(daemon=True, max_instances=1)
 sched.start()
 
 # components definition
