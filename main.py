@@ -137,8 +137,8 @@ def control_relay(equipment, state):
             crud.add_status('pool-pump', state)
 
 @app.delete("/remove")
-def remove(request: Request, job: str = Form(...)):
-    parse = job.partition(', ')
+def remove(request: Request, event_id: str):
+    parse = event_id.partition(', ')
     print(parse)
     equipment = parse[0]
     start_time, sep, end_time = parse[2].partition(' - ')
