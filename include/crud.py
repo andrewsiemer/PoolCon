@@ -126,7 +126,6 @@ def get_next_id():
     else:
         result = 1
 
-    print(result)
     return result
 
 def get_event_list():
