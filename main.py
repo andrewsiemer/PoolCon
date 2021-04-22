@@ -227,5 +227,5 @@ def shutdown_event():
 jobs = crud.get_event_list()
 for event_id in jobs:
     event = crud.get_event(event_id)
-    sched.add_job(control_relay, 'cron', hour=event.start_time, minute=event.start_time, args=[event.equipment,'ON'], id=str(event_id)+'_ON')
-    sched.add_job(control_relay, 'cron', hour=event.end_time, minute=event.end_time, args=[event.equipment,'OFF'], id=str(event_id)+'_OFF')
+    sched.add_job(control_relay, 'cron', hour=event.start_time.strftime('%-H'), minute=event.start_time.strftime('%-M'), args=[event.equipment,'ON'], id=str(event_id)+'_ON')
+    sched.add_job(control_relay, 'cron', hour=event.end_time.strftime('%-H'), minute=event.end_time.strftime('%-M'), args=[event.equipment,'OFF'], id=str(event_id)+'_OFF')
