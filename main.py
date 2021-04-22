@@ -138,15 +138,6 @@ def control_relay(equipment, state):
 
 @app.get("/remove")
 def remove(request: Request, event_id: str):
-    parse = event_id.partition(', ')
-    print(parse)
-    equipment = parse[0]
-    start_time, sep, end_time = parse[2].partition(' - ')
-
-    start_datetime = datetime.strptime(start_time, '%I:%M %p')
-    end_datetime = datetime.strptime(end_time, '%I:%M %p')
-
-    event_id = crud.get_event_id(equipment, start_datetime, end_datetime)
     crud.remove_event(event_id)
 
     sched.remove_job(str(event_id)+'_ON')
