@@ -30,6 +30,7 @@ class Relay(object):
 
     def toggle(self):
         try:
+            print(grovepi.digitalRead(self.pin))
             if self.status == 'OFF':
                 self.status = 'ON'
                 grovepi.digitalWrite(self.pin, 1)
@@ -118,7 +119,7 @@ class WaterSensor(object):
         while touch_val & 0x01:
             trig_section += 1
             touch_val >>= 1
-            
+
         return trig_section * 5
 
 class PHsensor(object):
