@@ -17,7 +17,7 @@ ws.onmessage = function(event) {
     var pool_data = JSON.parse(event.data);
     
     document.querySelector("#time").textContent = pool_data['time'];
-    document.querySelector("#pool-pump").textContent = pool_data['pool-pump'];
+    document.querySelector("#pol-pump").textContent = pool_data['pool-pump'];
     document.querySelector("#tbl-data").textContent = pool_data['pool-heater'];
 
     if (pool_data['pool-pump'] == 'ON'){
