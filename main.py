@@ -40,8 +40,6 @@ pump_chart = PumpGraph()
 pump_chart.labels.grouped, pump_chart.data.PumpUsage.data = crud.get_pump_chart_data()
 temp_chart = TempGraph()
 temp_chart.labels.grouped, temp_chart.data.PoolTemperature.data, temp_chart.data.AirTemperature.data = crud.get_temp_chart_data()
-stopwatch = Stopwatch()
-stopwatch.reset()
 
 updating = False
 
@@ -60,7 +58,7 @@ pool_data = {
     'temp-chart': temp_chart.get(),
     'schedule-tbl': '',
     'schedule-opt': '',
-    'pump-time': str(stopwatch)
+    'pump-time': str(pool_pump.stopwatch)
 }
 
 def get_db():
@@ -116,18 +114,15 @@ async def add(request: Request, equipment: str = Form(...), start_time: str = Fo
     return templates.TemplateResponse('index.html', { 'request': request })
 
 def control_relay(equipment, state):
-    global stopwatch
     if 'Pool Pump' in equipment:
         if state == 'ON':
             pool_pump.on()
             pool_data['pool-pump'] = state
             crud.add_status('pool-pump', state)
-            stopwatch.start()
         else:
             pool_pump.off()
             pool_data['pool-pump'] = state
             crud.add_status('pool-pump', state)
-            stopwatch.stop()
     elif 'Pool Heater' in equipment:
         if state == 'ON':
             pool_heater.on()
@@ -212,14 +207,14 @@ def update_sensors():
     #pool_data['pump-chart'] = pump_chart.get()
     pool_data['temp-chart'] = temp_chart.get()
     pool_data['schedule-tbl'] = crud.get_schedule_table()
-    pool_data['pump-time'] = str(stopwatch) # str(datetime.strptime(str(round(stopwatch.duration)),'%S').strftime('%-I hr %M mins'))
+    pool_data['pump-time'] = str(pool_pump.stopwatch) # str(datetime.strptime(str(round(stopwatch.duration)),'%S').strftime('%-I hr %M mins'))
 
 def update_schedule():
     global pool_data
     pool_data['schedule-tbl'] = crud.get_schedule_table()
 
 def toggle_event(event: str):
-    global pool_data, pool_pump, stopwatch, updating
+    global pool_data, pool_pump, updating
     while updating:
         time.sleep(0.1)
     
@@ -229,19 +224,11 @@ def toggle_event(event: str):
         status = pool_pump.toggle()
         pool_data['pool-pump'] = status
         crud.add_status('pool-pump', status)
-        if status == 'ON':
-            stopwatch.start()
-        else:
-            stopwatch.stop()
     if 'pool-heater' in event:
         status = pool_heater.toggle()
         if status == 'ON' and pool_data['pool-pump'] == 'OFF':
             pool_data['pool-pump'] = pool_pump.toggle()
             crud.add_status('pool-pump', status)
-            if status == 'ON':
-                stopwatch.start()
-            else:
-                stopwatch.stop()
         pool_data['pool-heater'] = status
     if 'water-valve' in event:
         pool_data['water-valve'] = water_valve.toggle()
