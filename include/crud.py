@@ -18,7 +18,7 @@ def get_temp_chart_data():
     air = []
 
     entries = db.query(Temperature.timestamp).all()
-    length = len(entries)
+    length = len(entries) - 1
     for i in range(0,24):
         labels.append(entries[length - i][0].strftime('%-I:%M %p'))
         entry = db.query(Temperature).filter(Temperature.timestamp==entries[length - i][0]).first()
