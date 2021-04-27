@@ -2,7 +2,7 @@ import time, json, threading
 from typing import List
 from datetime import datetime, timedelta
 
-from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect, Form
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -98,7 +98,7 @@ def home(request: Request):
     return templates.TemplateResponse('index.html', { 'request': request })
 
 @app.post("/add")
-async def add(request: Request, equipment: str, start_time: str, end_time: str):
+async def add(request: Request, equipment: str = Form(...), start_time: str = Form(...) , end_time: str = Form(...)):
     global sched
     start_datetime = datetime.strptime(start_time, '%I:%M %p')
     end_datetime = datetime.strptime(end_time, '%I:%M %p')
