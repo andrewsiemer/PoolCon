@@ -200,7 +200,6 @@ def start_update_thread():
     x.start()
     x.join()
     updating = False
-    print('Done')
 
 def update_sensors():
     global pool_data
@@ -214,7 +213,6 @@ def update_sensors():
     pool_data['temp-chart'] = temp_chart.get()
     pool_data['schedule-tbl'] = crud.get_schedule_table()
     pool_data['pump-time'] = str(stopwatch) # str(datetime.strptime(str(round(stopwatch.duration)),'%S').strftime('%-I hr %M mins'))
-    print('DONE')
 
 def update_schedule():
     global pool_data
@@ -224,7 +222,6 @@ def toggle_event(event: str):
     global pool_data, pool_pump, stopwatch, updating
     while updating:
         time.sleep(0.1)
-        print('WAITING')
     
     if not updating:
         updating = True
@@ -252,16 +249,12 @@ def toggle_event(event: str):
 
 @sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), seconds=5, max_instances=3)
 def record_temp():
-    global updating
-    if not updating:
-        updating = True
-        pool_temp = int(pool_data['pool-temp'].replace(' ºF', ''))
-        air_temp = int(pool_data['air-temp'].replace(' ºF', ''))
+    pool_temp = int(pool_data['pool-temp'].replace(' ºF', ''))
+    air_temp = int(pool_data['air-temp'].replace(' ºF', ''))
 
-        crud.add_temp(pool_temp, air_temp)
+    crud.add_temp(pool_temp, air_temp)
 
-        temp_chart.labels.grouped, temp_chart.data.PoolTemperature.data, temp_chart.data.AirTemperature.data = crud.get_temp_chart_data()
-        updating = False
+    temp_chart.labels.grouped, temp_chart.data.PoolTemperature.data, temp_chart.data.AirTemperature.data = crud.get_temp_chart_data()
 
 
 @app.on_event("shutdown")
