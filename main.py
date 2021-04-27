@@ -113,7 +113,7 @@ async def add(request: Request, equipment: str = Form(...), start_time: str = Fo
     else:
         print('Invalid time range.')
     
-    return templates.TemplateResponse('index.html', { 'request': request })
+    #return templates.TemplateResponse('index.html', { 'request': request })
 
 def control_relay(equipment, state):
     global stopwatch
