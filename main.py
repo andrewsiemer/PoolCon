@@ -252,9 +252,9 @@ def record_temp():
     print('START')
     pool_temp = int(pool_data['pool-temp'].replace(' ºF', ''))
     air_temp = int(pool_data['air-temp'].replace(' ºF', ''))
-    print('ALMOST')
+
     crud.add_temp(pool_temp, air_temp)
-    print('FINISH')
+
     temp_chart.labels.grouped, temp_chart.data.PoolTemperature.data, temp_chart.data.AirTemperature.data = crud.get_temp_chart_data()
 
 
