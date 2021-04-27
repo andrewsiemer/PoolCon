@@ -7,7 +7,6 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from apscheduler.schedulers.background import BackgroundScheduler
 from sqlalchemy.orm import Session
-from stopwatch import Stopwatch
 
 from include.database import SessionLocal, engine
 import include.models as models
@@ -58,7 +57,9 @@ pool_data = {
     'temp-chart': temp_chart.get(),
     'schedule-tbl': '',
     'schedule-opt': '',
-    'pump-time': str(pool_pump.stopwatch)
+    'pump-time': str(pool_pump.stopwatch),
+    'heater-time': str(pool_heater.stopwatch),
+    'water-time': str(water_valve.stopwatch)
 }
 
 def get_db():
@@ -208,6 +209,8 @@ def update_sensors():
     pool_data['temp-chart'] = temp_chart.get()
     pool_data['schedule-tbl'] = crud.get_schedule_table()
     pool_data['pump-time'] = str(pool_pump.stopwatch) # str(datetime.strptime(str(round(stopwatch.duration)),'%S').strftime('%-I hr %M mins'))
+    pool_data['heater-time'] = str(pool_heater.stopwatch)
+    pool_data['water-time'] = str(water_valve.stopwatch)
 
 def update_schedule():
     global pool_data
