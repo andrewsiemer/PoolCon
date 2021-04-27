@@ -247,14 +247,16 @@ def toggle_event(event: str):
         pool_data['water-valve'] = water_valve.toggle()
     updating = False
 
-@sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), seconds=5, max_instances=3)
+@sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), seconds=10, max_instances=1)
 def record_temp():
+    print('START')
     pool_temp = int(pool_data['pool-temp'].replace(' ºF', ''))
     air_temp = int(pool_data['air-temp'].replace(' ºF', ''))
 
     crud.add_temp(pool_temp, air_temp)
 
     temp_chart.labels.grouped, temp_chart.data.PoolTemperature.data, temp_chart.data.AirTemperature.data = crud.get_temp_chart_data()
+    print('FINISH')
 
 
 @app.on_event("shutdown")
