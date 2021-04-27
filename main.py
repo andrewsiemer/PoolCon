@@ -113,7 +113,7 @@ async def add(request: Request, equipment: str = Form(...), start_time: str = Fo
     else:
         print('Invalid time range.')
     
-    return Response(status_code=200)# templates.TemplateResponse('index.html', { 'request': request })
+    return templates.TemplateResponse('index.html', { 'request': request })
 
 def control_relay(equipment, state):
     global stopwatch
@@ -149,8 +149,8 @@ def control_relay(equipment, state):
             pool_data['pool-pump'] = state
             crud.add_status('pool-pump', state)
 
-@app.get("/remove")
-def remove(request: Request, event_id: str):
+@app.post("/remove")
+def remove(request: Request, event_id: str = Form(...)):
     global sched
     crud.remove_event(event_id)
 
@@ -160,7 +160,7 @@ def remove(request: Request, event_id: str):
 
     return templates.TemplateResponse('index.html', { 'request': request })
 
-@app.get("/delete")
+@app.post("/delete")
 def delete(request: Request):
     global sched
     jobs = crud.get_event_list()
