@@ -254,9 +254,9 @@ def record_temp():
     air_temp = int(pool_data['air-temp'].replace(' ºF', ''))
 
     crud.add_temp(pool_temp, air_temp)
-
-    temp_chart.labels.grouped, temp_chart.data.PoolTemperature.data, temp_chart.data.AirTemperature.data = crud.get_temp_chart_data()
     print('FINISH')
+    temp_chart.labels.grouped, temp_chart.data.PoolTemperature.data, temp_chart.data.AirTemperature.data = crud.get_temp_chart_data()
+
 
 
 @app.on_event("shutdown")
