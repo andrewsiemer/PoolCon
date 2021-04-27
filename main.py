@@ -194,26 +194,26 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
 
 @sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)),seconds=5, max_instances=3)
 def start_update_thread():
+    global updating
     x = threading.Thread(target=update_sensors)
+    updating = True
     x.start()
     x.join()
+    updating = False
     print('Done')
 
 def update_sensors():
-    global pool_data, updating
-    if not updating:
-        updating = True
-        pool_data['time'] = str(datetime.now().strftime('%A, %B %-d, %-I:%M %p'))
-        pool_data['pool-temp'] = str(round(water_temp.read())) + ' ºF'
-        pool_data['air-temp'] = str(round(air_temp.read_temp())) + ' ºF'
-        pool_data['water-level'] = str(water_level.read()) + ' %'
-        pool_data['ph-level'] = str(round(ph_sensor.read()))
-        pool_data['orp-level'] = str(round(orp_sensor.read())) + ' mV'
-        #pool_data['pump-chart'] = pump_chart.get()
-        pool_data['temp-chart'] = temp_chart.get()
-        pool_data['schedule-tbl'] = crud.get_schedule_table()
-        pool_data['pump-time'] = str(stopwatch) # str(datetime.strptime(str(round(stopwatch.duration)),'%S').strftime('%-I hr %M mins'))
-        updating = False
+    global pool_data
+    pool_data['time'] = str(datetime.now().strftime('%A, %B %-d, %-I:%M %p'))
+    pool_data['pool-temp'] = str(round(water_temp.read())) + ' ºF'
+    pool_data['air-temp'] = str(round(air_temp.read_temp())) + ' ºF'
+    pool_data['water-level'] = str(water_level.read()) + ' %'
+    pool_data['ph-level'] = str(round(ph_sensor.read()))
+    pool_data['orp-level'] = str(round(orp_sensor.read())) + ' mV'
+    #pool_data['pump-chart'] = pump_chart.get()
+    pool_data['temp-chart'] = temp_chart.get()
+    pool_data['schedule-tbl'] = crud.get_schedule_table()
+    pool_data['pump-time'] = str(stopwatch) # str(datetime.strptime(str(round(stopwatch.duration)),'%S').strftime('%-I hr %M mins'))
 
 def update_schedule():
     global pool_data
