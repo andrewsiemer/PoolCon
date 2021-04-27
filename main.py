@@ -97,7 +97,7 @@ manager = ConnectionManager()
 def home(request: Request):
     return templates.TemplateResponse('index.html', { 'request': request })
 
-@app.get("/add")
+@app.post("/add")
 async def add(request: Request, equipment: str, start_time: str, end_time: str):
     global sched
     start_datetime = datetime.strptime(start_time, '%I:%M %p')
