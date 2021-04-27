@@ -1,5 +1,4 @@
 import time, json, threading
-from threading import Thread
 from typing import List
 from datetime import datetime, timedelta
 
@@ -193,40 +192,28 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
         manager.disconnect(websocket)
         await manager.broadcast(f"Client #{client_id} exited.")
 
-class ThreadWithReturnValue(Thread):
-    def __init__(self, group=None, target=None, name=None,
-                 args=(), kwargs={}, Verbose=None):
-        Thread.__init__(self, group, target, name, args, kwargs)
-        self._return = None
-    def run(self):
-        print(type(self._target))
-        if self._target is not None:
-            self._return = self._target(*self._args,
-                                                **self._kwargs)
-    def join(self, *args):
-        Thread.join(self, *args)
-        return self._return
-
 @sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)),seconds=5, max_instances=3)
 def start_update_thread():
-    x = threading.ThreadWithReturnValue(target=update_sensors)
+    x = threading.Thread(target=update_sensors)
     x.start()
-    print(x.join())
+    x.join()
+    print('Done')
 
 def update_sensors():
-    data = {}
-    data['time'] = str(datetime.now().strftime('%A, %B %-d, %-I:%M %p'))
-    data['pool-temp'] = str(round(water_temp.read())) + ' ºF'
-    data['air-temp'] = str(round(air_temp.read_temp())) + ' ºF'
-    data['water-level'] = str(water_level.read()) + ' %'
-    data['ph-level'] = str(round(ph_sensor.read()))
-    data['orp-level'] = str(round(orp_sensor.read())) + ' mV'
-    #data['pump-chart'] = pump_chart.get()
-    data['temp-chart'] = temp_chart.get()
-    data['schedule-tbl'] = crud.get_schedule_table()
-    data['pump-time'] = str(stopwatch) # str(datetime.strptime(str(round(stopwatch.duration)),'%S').strftime('%-I hr %M mins'))
-    
-    return data
+    global pool_data, updating
+    if not updating:
+        updating = True
+        pool_data['time'] = str(datetime.now().strftime('%A, %B %-d, %-I:%M %p'))
+        pool_data['pool-temp'] = str(round(water_temp.read())) + ' ºF'
+        pool_data['air-temp'] = str(round(air_temp.read_temp())) + ' ºF'
+        pool_data['water-level'] = str(water_level.read()) + ' %'
+        pool_data['ph-level'] = str(round(ph_sensor.read()))
+        pool_data['orp-level'] = str(round(orp_sensor.read())) + ' mV'
+        #pool_data['pump-chart'] = pump_chart.get()
+        pool_data['temp-chart'] = temp_chart.get()
+        pool_data['schedule-tbl'] = crud.get_schedule_table()
+        pool_data['pump-time'] = str(stopwatch) # str(datetime.strptime(str(round(stopwatch.duration)),'%S').strftime('%-I hr %M mins'))
+        updating = False
 
 def update_schedule():
     global pool_data
