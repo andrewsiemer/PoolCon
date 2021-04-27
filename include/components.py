@@ -1,3 +1,5 @@
+from stopwatch import Stopwatch
+
 import smbus, time, glob, include.grovepi as grovepi
 
 # Water Sensor
@@ -12,18 +14,22 @@ class Relay(object):
     def __init__(self, pin):
         self.pin = pin
         self.status = 'OFF'
+        self.stopwatch = Stopwatch()
+        self.stopwatch.reset()
         
         grovepi.pinMode(self.pin, 'OUTPUT')
         grovepi.digitalWrite(self.pin, 0)
 
     def on(self):
         self.status = 'ON'
+        self.stopwatch.start()
         grovepi.digitalWrite(self.pin, 1)
         grovepi.digitalWrite(self.pin, 1)
         grovepi.digitalWrite(self.pin, 1)
 
     def off(self):
         self.status = 'OFF'
+        self.stopwatch.stop()
         grovepi.digitalWrite(self.pin, 0)
         grovepi.digitalWrite(self.pin, 0)
         grovepi.digitalWrite(self.pin, 0)
@@ -41,15 +47,19 @@ class Relay(object):
 
             if self.status == 'OFF':
                 self.status = 'ON'
+                self.stopwatch.start()
                 grovepi.digitalWrite(self.pin, 1)
                 grovepi.digitalWrite(self.pin, 1)
                 grovepi.digitalWrite(self.pin, 1)
             else:
                 self.status = 'OFF'
+                self.stopwatch.stop()
                 grovepi.digitalWrite(self.pin, 0)
                 grovepi.digitalWrite(self.pin, 0)
                 grovepi.digitalWrite(self.pin, 0)
         except:
+            self.status = 'OFF'
+            self.stopwatch.stop()
             grovepi.digitalWrite(self.pin, 0)
         return self.status
 
