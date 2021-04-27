@@ -2,7 +2,7 @@ import time, json, threading
 from typing import List
 from datetime import datetime, timedelta
 
-from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect, Form
+from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect, Form, Response
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -113,7 +113,7 @@ async def add(request: Request, equipment: str = Form(...), start_time: str = Fo
     else:
         print('Invalid time range.')
     
-    #return templates.TemplateResponse('index.html', { 'request': request })
+    return Response(status_code=200)# templates.TemplateResponse('index.html', { 'request': request })
 
 def control_relay(equipment, state):
     global stopwatch
