@@ -208,7 +208,8 @@ def update_sensors():
     #pool_data['pump-chart'] = pump_chart.get()
     pool_data['temp-chart'] = temp_chart.get()
     pool_data['schedule-tbl'] = crud.get_schedule_table()
-    pool_data['pump-time'] = str(pool_pump.stopwatch) # str(datetime.strptime(str(round(stopwatch.duration)),'%S').strftime('%-I hr %M mins'))
+    time = datetime.strptime(str(round(pool_pump.stopwatch.duration)), '%S')
+    pool_data['pump-time'] = str(time.second) # str(datetime.strptime(str(round(pool_pump.stopwatch.duration)),'%S').strftime('%-I %M'))
     pool_data['heater-time'] = str(pool_heater.stopwatch)
     pool_data['water-time'] = str(water_valve.stopwatch)
 
