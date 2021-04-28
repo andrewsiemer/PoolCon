@@ -40,9 +40,7 @@ class Relay(object):
             while(status not in [0, 1]):
                 try:
                     status = int(grovepi.digitalRead(self.pin))
-                    print('RELAY STATUS')
                 except:
-                    print('CANNOT GET RELAY STATUS')
                     time.sleep(0.1)
 
             if self.status == 'OFF':
