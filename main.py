@@ -57,9 +57,9 @@ pool_data = {
     'temp-chart': temp_chart.get(),
     'schedule-tbl': '',
     'schedule-opt': '',
-    'pump-time': str(pool_pump.stopwatch),
-    'heater-time': str(pool_heater.stopwatch),
-    'water-time': str(water_valve.stopwatch)
+    'pump-time': '...',
+    'heater-time': '...',
+    'water-time': '...'
 }
 
 def get_db():
