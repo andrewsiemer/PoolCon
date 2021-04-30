@@ -14,7 +14,7 @@ import include.crud as crud
 from include.components import Relay, WaterSensor, DS18B20, DHT11, PHsensor, ORPsensor
 from include.chartjs import PumpGraph, TempGraph
 
-app = FastAPI()
+app = FastAPI() # define application
 
 # location of web service static files and html templates
 app.mount('/static', StaticFiles(directory='static'), name='static')
@@ -62,16 +62,7 @@ pool_data = {
     'water-time': '...'
 }
 
-def get_db():
-    '''
-    Create database session
-    '''
-    try:
-        db = SessionLocal()
-        yield db
-    finally:
-        db.close()
-
+# WebSocket connection manager
 class ConnectionManager:
     def __init__(self):
         self.active_connections: List[WebSocket] = []
@@ -94,10 +85,16 @@ manager = ConnectionManager()
 
 @app.get("/")
 def home(request: Request):
+    '''
+    Returns dashboard endpoint
+    '''
     return templates.TemplateResponse('index.html', { 'request': request })
 
 @app.post("/add")
 async def add(request: Request, equipment: str = Form(...), start_time: str = Form(...) , end_time: str = Form(...)):
+    '''
+    Add a scheduled event
+    '''
     global sched
     start_datetime = datetime.strptime(start_time, '%I:%M %p')
     end_datetime = datetime.strptime(end_time, '%I:%M %p')
@@ -114,6 +111,7 @@ async def add(request: Request, equipment: str = Form(...), start_time: str = Fo
     
     return templates.TemplateResponse('index.html', { 'request': request })
 
+# control relay from a scheduled event
 def control_relay(equipment, state):
     if 'Pool Pump' in equipment:
         if state == 'ON':
@@ -147,6 +145,9 @@ def control_relay(equipment, state):
 
 @app.post("/remove")
 def remove(request: Request, event_id: str = Form(...)):
+    '''
+    Remove a scheduled event
+    '''
     global sched
     crud.remove_event(event_id)
 
@@ -158,6 +159,9 @@ def remove(request: Request, event_id: str = Form(...)):
 
 @app.post("/delete")
 def delete(request: Request):
+    '''
+    Delete all scheduled events
+    '''
     global sched
     jobs = crud.get_event_list()
 
@@ -172,6 +176,9 @@ def delete(request: Request):
 
 @app.websocket("/ws/{client_id}")
 async def websocket_endpoint(websocket: WebSocket, client_id: int):
+    '''
+    Client WebSocket function
+    '''
     global pool_data
     await manager.connect(websocket)
     try:
@@ -190,6 +197,9 @@ async def websocket_endpoint(websocket: WebSocket, client_id: int):
 
 @sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)),seconds=5, max_instances=3)
 def start_update_thread():
+    '''
+    Starts a thread to update component readings
+    '''
     global updating
     x = threading.Thread(target=update_sensors)
     updating = True
@@ -197,6 +207,7 @@ def start_update_thread():
     x.join()
     updating = False
 
+# fetches updates from all components
 def update_sensors():
     global pool_data
     pool_data['time'] = str(datetime.now().strftime('%A, %B %-d, %-I:%M %p'))
@@ -212,10 +223,12 @@ def update_sensors():
     pool_data['heater-time'] = str(round(pool_heater.stopwatch.duration) // 3600) + ' hr ' + str((round(pool_heater.stopwatch.duration) % 3600) // 60) + ' mins ' + str(round(pool_heater.stopwatch.duration) % 60) + ' secs'
     pool_data['water-time'] = str(round(water_valve.stopwatch.duration) // 3600) + ' hr ' + str((round(water_valve.stopwatch.duration) % 3600) // 60) + ' mins ' + str(round(water_valve.stopwatch.duration) % 60) + ' secs'
 
+# fetches the schedule for the UI table
 def update_schedule():
     global pool_data
     pool_data['schedule-tbl'] = crud.get_schedule_table()
 
+# handles toggle event for the relays
 def toggle_event(event: str):
     global pool_data, pool_pump, updating
     while updating:
@@ -239,6 +252,9 @@ def toggle_event(event: str):
 
 @sched.scheduled_job('interval', start_date=str(datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)), seconds=5, max_instances=1)
 def record_temp():
+    '''
+    Records the current temperatures to the db and updates UI temperature chart
+    '''
     pool_temp = int(pool_data['pool-temp'].replace(' ºF', ''))
     air_temp = int(pool_data['air-temp'].replace(' ºF', ''))
 
@@ -248,10 +264,13 @@ def record_temp():
 
 @app.on_event("shutdown")
 def shutdown_event():
+    '''
+    Global shutdown function
+    '''
     global sched
     sched.shutdown()
 
-# import scheduled events
+# import scheduled events from db on startup
 jobs = crud.get_event_list()
 for event_id in jobs:
     event = crud.get_event(event_id)
